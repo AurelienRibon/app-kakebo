@@ -4,7 +4,7 @@
 
     <div class="container">
       <div
-        v-for="(item, index) of categories"
+        v-for="(item, index) of expenseCategories"
         :key="index"
         class="item"
         :class="{ 'item-extra': item.extra }"
@@ -51,19 +51,19 @@
 </style>
 
 <script>
-  import data from "../data.json";
+  import expenseCategories from '../meta/expense-categories.json';
 
   export default {
     data() {
       return {
-        categories: data.expenseCategories
+        expenseCategories,
       };
     },
 
     methods: {
       onItemClick(category) {
         this.$emit('categoryChosen', category);
-      }
-    }
+      },
+    },
   };
 </script>
