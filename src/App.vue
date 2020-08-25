@@ -7,28 +7,28 @@
 </template>
 
 <style lang="scss" scoped>
-section {
-  height: 100vh;
+  section {
+    height: 100vh;
 
-  display: flex;
-  flex-direction: column;
-}
+    display: flex;
+    flex-direction: column;
+  }
 
-main {
-  flex: 1;
-  padding: 20px;
+  main {
+    flex: 1;
+    padding: 20px;
 
-  display: flex;
-  flex-direction: column;
+    display: flex;
+    flex-direction: column;
 
-  overflow-y: auto;
-}
+    overflow-y: auto;
+  }
 </style>
 
 <script>
-import AddExpense from './components/AddExpense.vue';
+  import AddExpense from './components/AddExpense.vue';
 
-export default {
-  components: { AddExpense },
-};
+  export default {
+    components: { AddExpense },
+  };
 </script>

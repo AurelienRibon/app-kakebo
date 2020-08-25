@@ -2,20 +2,11 @@
   <div>
     <nav>&#187; Étape {{ index }} sur 4</nav>
 
-    <AddExpenseCategory
-      v-if="index === 1"
-      @categoryChosen="onCategoryChosen"
-    ></AddExpenseCategory>
+    <AddExpenseCategory v-if="index === 1" @categoryChosen="onCategoryChosen"></AddExpenseCategory>
 
-    <AddExpenseAmount
-      v-if="index === 2"
-      @amountChosen="onAmountChosen"
-    ></AddExpenseAmount>
+    <AddExpenseAmount v-if="index === 2" @amountChosen="onAmountChosen"></AddExpenseAmount>
 
-    <AddExpenseDate
-      v-if="index === 3"
-      @dateChosen="onDateChosen"
-    ></AddExpenseDate>
+    <AddExpenseDate v-if="index === 3" @dateChosen="onDateChosen"></AddExpenseDate>
   </div>
 </template>
 
@@ -47,7 +38,7 @@
       onDateChosen(date) {
         this.expense.date = date;
         this.index = 1;
-      }
+      },
     },
   };
 </script>
