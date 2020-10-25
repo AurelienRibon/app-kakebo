@@ -1,0 +1,11 @@
+{
+  "include": ["*.ts", "src/**/*.ts", "src/**/*.vue"],
+  "compilerOptions": {
+    "module": "CommonJS",
+    "target": "ESNext",
+    "lib": ["ESNext", "DOM", "DOM.Iterable"],
+    "noEmit": true,
+    "strict": true,
+    "esModuleInterop": true
+  }
+}

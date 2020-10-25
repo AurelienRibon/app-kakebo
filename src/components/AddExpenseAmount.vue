@@ -55,10 +55,11 @@
   }
 </style>
 
-<script>
+<script lang="ts">
+  import { defineComponent } from 'vue';
   import { formatAmount } from '../lib/amount-formatter';
 
-  export default {
+  export default defineComponent({
     data() {
       return {
         positive: false,
@@ -97,5 +98,5 @@
         this.$emit('amountChosen', amount);
       },
     },
-  };
+  });
 </script>

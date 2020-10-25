@@ -50,10 +50,11 @@
   }
 </style>
 
-<script>
+<script lang="ts">
+import { defineComponent } from 'vue';
   import expenseCategories from '../meta/expense-categories.json';
 
-  export default {
+  export default defineComponent({
     data() {
       return {
         expenseCategories,
@@ -65,5 +66,5 @@
         this.$emit('categoryChosen', category);
       },
     },
-  };
+  });
 </script>

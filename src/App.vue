@@ -1,34 +1,31 @@
 <template>
-  <section>
-    <main>
-      <AddExpense></AddExpense>
-    </main>
-  </section>
+  <main>
+    <section>
+      <Home></Home>
+    </section>
+  </main>
 </template>
 
+<script lang="ts">
+  import { defineComponent } from 'vue';
+  import Home from './components/Home.vue';
+
+  export default defineComponent({
+    components: { Home },
+  });
+</script>
+
+<style lang="scss" src="./main.scss"></style>
+
 <style lang="scss" scoped>
-  section {
+  main {
     height: 100vh;
 
     display: flex;
     flex-direction: column;
   }
 
-  main {
-    flex: 1;
-    padding: 20px;
-
-    display: flex;
-    flex-direction: column;
-
-    overflow-y: auto;
+  section {
+    overflow-y: scroll;
   }
 </style>
-
-<script>
-  import AddExpense from './components/AddExpense.vue';
-
-  export default {
-    components: { AddExpense },
-  };
-</script>
