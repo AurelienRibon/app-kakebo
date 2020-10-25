@@ -8,12 +8,12 @@
 
     <div class="container">
       <div
-        v-for="(item, index) of expenseCategories"
-        :key="index"
+        v-for="item of categories"
+        :key="item.name"
+        v-ripple
         class="item"
         :class="{ 'item-extra': item.extra }"
-        v-ripple
-        @click="onItemClick(item.id)"
+        @click="onItemClick(item.name)"
       >
         <span class="item-icon mdi" :class="item.icon"></span>
         <span class="item-name">{{ item.name }}</span>
@@ -28,18 +28,20 @@
 
 <script lang="ts">
   import { defineComponent } from 'vue';
-  import expenseCategories from '../meta/expense-categories.json';
+  import categories from '../meta/categories.json';
 
   export default defineComponent({
+    emits: ['category-chosen'],
+
     data() {
       return {
-        expenseCategories,
+        categories,
       };
     },
 
     methods: {
-      onItemClick(category) {
-        this.$emit('categoryChosen', category);
+      onItemClick(category: string): void {
+        this.$emit('category-chosen', category);
       },
     },
   });

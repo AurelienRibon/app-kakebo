@@ -11,7 +11,7 @@
         <div :class="{ unselected: !positive }">&plus;</div>
         <div :class="{ unselected: positive }">&minus;</div>
       </div>
-      <input ref="input" type="text" @keydown="onKeyDown" inputmode="numeric" />
+      <input ref="input" type="text" inputmode="numeric" @keydown="onKeyDown" />
       <div>€</div>
     </form>
 
@@ -30,10 +30,18 @@
   import { formatAmount } from '../lib/amount-formatter';
 
   export default defineComponent({
+    emits: ['amount-chosen'],
+
     data() {
       return {
         positive: false,
       };
+    },
+
+    computed: {
+      input(): HTMLInputElement {
+        return this.$refs.input as HTMLInputElement;
+      },
     },
 
     mounted() {
@@ -42,30 +50,30 @@
     },
 
     methods: {
-      reset() {
-        this.$refs.input.value = '0.00';
+      reset(): void {
+        this.input.value = '0.00';
       },
-      focus() {
-        this.$refs.input.focus();
+      focus(): void {
+        this.input.focus();
       },
-      onKeyDown(event: KeyboardEvent) {
+      onKeyDown(event: KeyboardEvent): void {
         event.preventDefault();
 
         if (event.key === 'Backspace') {
-          this.$refs.input.value = '0.00';
+          this.input.value = '0.00';
         } else if (/\d/.test(event.key)) {
-          const value = this.$refs.input.value;
+          const value = this.input.value;
           const newDigit = event.key;
-          this.$refs.input.value = formatAmount(value, newDigit);
+          this.input.value = formatAmount(value, newDigit);
         }
       },
-      onSignsClick() {
+      onSignsClick(): void {
         this.positive = !this.positive;
         this.focus();
       },
-      onOkClick() {
-        const amount = Number(this.$refs.input.value);
-        this.$emit('amountChosen', amount);
+      onOkClick(): void {
+        const amount = Number(this.input.value);
+        this.$emit('amount-chosen', amount);
       },
     },
   });

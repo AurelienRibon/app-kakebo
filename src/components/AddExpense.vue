@@ -5,9 +5,18 @@
 <template>
   <div>
     <nav>Étape {{ index }} sur 4</nav>
-    <AddExpenseCategory v-if="index === 1" @categoryChosen="onCategoryChosen"></AddExpenseCategory>
-    <AddExpenseAmount v-if="index === 2" @amountChosen="onAmountChosen"></AddExpenseAmount>
-    <AddExpenseDate v-if="index === 3" @dateChosen="onDateChosen"></AddExpenseDate>
+    <AddExpenseCategory
+      v-if="index === 1"
+      @category-chosen="onCategoryChosen"
+    ></AddExpenseCategory>
+    <AddExpenseAmount
+      v-if="index === 2"
+      @amount-chosen="onAmountChosen"
+    ></AddExpenseAmount>
+    <AddExpenseDate
+      v-if="index === 3"
+      @date-chosen="onDateChosen"
+    ></AddExpenseDate>
   </div>
 </template>
 

@@ -1,9 +1,24 @@
 {
   "root": true,
-  "parser": "@typescript-eslint/parser",
+  "parser": "vue-eslint-parser",
+  "parserOptions": {
+    "ecmaVersion": 2020,
+    "sourceType": "module",
+    "parser": "@typescript-eslint/parser"
+  },
+  "env": {
+    "browser": true
+  },
   "plugins": ["prettier", "vue", "@typescript-eslint"],
-  "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended", "plugin:vue/essential"],
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:vue/vue3-recommended"
+  ],
   "rules": {
-    "prettier/prettier": "error"
+    "prettier/prettier": "error",
+    "vue/html-self-closing": 0,
+    "vue/max-attributes-per-line": 0,
+    "vue/singleline-html-element-content-newline": 0
   }
 }
