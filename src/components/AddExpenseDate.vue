@@ -12,28 +12,6 @@
   </main>
 </template>
 
-<style lang="scss" scoped>
-  main {
-    background: transparent;
-  }
-
-  input {
-    caret-color: transparent;
-    outline: none;
-    border: 0;
-    background: #093759;
-    color: white;
-    font-size: 20px;
-    padding: 10px;
-    width: 100%;
-  }
-
-  .buttons {
-    margin-top: 20px;
-    text-align: right;
-  }
-</style>
-
 <script lang="ts">
   import { defineComponent } from 'vue';
 
@@ -59,3 +37,25 @@
     },
   });
 </script>
+
+<style lang="scss" scoped>
+  main {
+    background: transparent;
+  }
+
+  input {
+    caret-color: transparent;
+    outline: none;
+    border: 0;
+    background: #093759;
+    color: white;
+    font-size: 20px;
+    padding: 10px;
+    width: 100%;
+  }
+
+  .buttons {
+    margin-top: 20px;
+    text-align: right;
+  }
+</style>

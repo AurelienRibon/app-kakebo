@@ -17,44 +17,6 @@
   </main>
 </template>
 
-<style lang="scss" scoped>
-  main {
-    background: transparent;
-  }
-
-  form {
-    display: flex;
-
-    & > * {
-      font-size: 50px;
-      color: white;
-    }
-  }
-
-  input {
-    flex: 1;
-    caret-color: transparent;
-    outline: none;
-    border: 0;
-    background: none;
-    min-width: 0px;
-    text-align: right;
-  }
-
-  .signs {
-    display: flex;
-
-    .unselected {
-      color: #5555558a;
-    }
-  }
-
-  .buttons {
-    margin-top: 20px;
-    text-align: right;
-  }
-</style>
-
 <script lang="ts">
   import { defineComponent } from 'vue';
   import { formatAmount } from '../lib/amount-formatter';
@@ -100,3 +62,41 @@
     },
   });
 </script>
+
+<style lang="scss" scoped>
+  main {
+    background: transparent;
+  }
+
+  form {
+    display: flex;
+
+    & > * {
+      font-size: 50px;
+      color: white;
+    }
+  }
+
+  input {
+    flex: 1;
+    caret-color: transparent;
+    outline: none;
+    border: 0;
+    background: none;
+    min-width: 0px;
+    text-align: right;
+  }
+
+  .signs {
+    display: flex;
+
+    .unselected {
+      color: #5555558a;
+    }
+  }
+
+  .buttons {
+    margin-top: 20px;
+    text-align: right;
+  }
+</style>

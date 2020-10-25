@@ -18,6 +18,25 @@
   </div>
 </template>
 
+<script lang="ts">
+  import { defineComponent } from 'vue';
+  import expenseCategories from '../meta/expense-categories.json';
+
+  export default defineComponent({
+    data() {
+      return {
+        expenseCategories,
+      };
+    },
+
+    methods: {
+      onItemClick(category) {
+        this.$emit('categoryChosen', category);
+      },
+    },
+  });
+</script>
+
 <style lang="scss" scoped>
   .container {
     display: grid;
@@ -49,22 +68,3 @@
     }
   }
 </style>
-
-<script lang="ts">
-import { defineComponent } from 'vue';
-  import expenseCategories from '../meta/expense-categories.json';
-
-  export default defineComponent({
-    data() {
-      return {
-        expenseCategories,
-      };
-    },
-
-    methods: {
-      onItemClick(category) {
-        this.$emit('categoryChosen', category);
-      },
-    },
-  });
-</script>
