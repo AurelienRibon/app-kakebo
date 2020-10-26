@@ -20,7 +20,7 @@ export function getUnknownCategoryName(): string {
   return '$unknown';
 }
 
-export function getCategoryDef(name: string): CategoryDef | undefined {
+export function getCategoryDef(name: string): CategoryDef {
   return categoriesMap.get(name) || unknownCategory;
 }
 
