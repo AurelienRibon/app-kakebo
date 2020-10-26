@@ -1,13 +1,13 @@
 [
-  { "id": "courses", "name": "courses", "icon": "mdi-cart" },
-  { "id": "restos", "name": "restos", "icon": "mdi-silverware-fork-knife", "extra": true },
-  { "id": "essentiel", "name": "essentiel", "icon": "mdi-clipboard-check" },
-  { "id": "voiture", "name": "voiture", "icon": "mdi-car" },
-  { "id": "famille", "name": "famille", "icon": "mdi-account-multiple" },
-  { "id": "voyages", "name": "voyages", "icon": "mdi-airplane", "extra": true },
-  { "id": "cadeaux", "name": "cadeaux", "icon": "mdi-gift", "extra": true },
-  { "id": "vêtements", "name": "vêtements", "icon": "mdi-hanger" },
-  { "id": "shopping", "name": "shopping", "icon": "mdi-shopping", "extra": true },
-  { "id": "santé", "name": "santé", "icon": "mdi-hospital" },
-  { "id": "animaux", "name": "animaux", "icon": "mdi-paw" }
+  { "name": "courses", "icon": "mdi-cart" },
+  { "name": "restos", "icon": "mdi-silverware-fork-knife", "extra": true },
+  { "name": "essentiel", "icon": "mdi-clipboard-check" },
+  { "name": "voiture", "icon": "mdi-car" },
+  { "name": "famille", "icon": "mdi-account-multiple" },
+  { "name": "voyages", "icon": "mdi-airplane", "extra": true },
+  { "name": "cadeaux", "icon": "mdi-gift", "extra": true },
+  { "name": "vêtements", "icon": "mdi-hanger" },
+  { "name": "shopping", "icon": "mdi-shopping", "extra": true },
+  { "name": "santé", "icon": "mdi-hospital" },
+  { "name": "animaux", "icon": "mdi-paw" }
 ]
