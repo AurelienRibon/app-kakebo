@@ -1,5 +1,6 @@
 {
   "include": ["*.ts", "src/**/*.ts", "src/**/*.vue"],
+  "exclude": ["node_modules", "dist"],
   "compilerOptions": {
     "module": "CommonJS",
     "target": "ESNext",

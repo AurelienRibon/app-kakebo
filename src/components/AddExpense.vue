@@ -9,10 +9,12 @@
       v-if="index === 1"
       @category-chosen="onCategoryChosen"
     ></AddExpenseCategory>
+
     <AddExpenseAmount
       v-if="index === 2"
       @amount-chosen="onAmountChosen"
     ></AddExpenseAmount>
+
     <AddExpenseDate
       v-if="index === 3"
       @date-chosen="onDateChosen"
