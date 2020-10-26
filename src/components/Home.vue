@@ -4,7 +4,7 @@
 
 <template>
   <section>
-    <h1>Kakebo</h1>
+    <h1>Kakeibo</h1>
 
     <div class="chart">
       <i class="mdi mdi-poll"></i>
