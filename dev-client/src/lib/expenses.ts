@@ -2,6 +2,10 @@ import testExpensesSpecs from '../../../data/test-expenses.json';
 import { formatDateToDay } from './dates';
 import Expense from '../models/expense';
 
+// -----------------------------------------------------------------------------
+// TYPES
+// -----------------------------------------------------------------------------
+
 export interface SameDayExpenses {
   date: Date;
   expenses: Expense[];

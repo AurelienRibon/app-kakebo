@@ -3,9 +3,10 @@
 <!-- ----------------------------------------------------------------------- -->
 
 <template>
-  <div class="container">
+  <h1>Dépenses fréquentes</h1>
+  <section>
     <div
-      v-for="item of categories"
+      v-for="item of categoriesFrequent"
       :key="item.name"
       v-ripple
       class="item"
@@ -15,7 +16,22 @@
       <span class="item-icon mdi" :class="item.icon"></span>
       <span class="item-name">{{ item.name }}</span>
     </div>
-  </div>
+  </section>
+
+  <h1>Dépenses peu fréquentes</h1>
+  <section>
+    <div
+      v-for="item of categoriesInfrequent"
+      :key="item.name"
+      v-ripple
+      class="item"
+      :class="{ 'item-extra': item.extra }"
+      @click="onItemClick(item.name)"
+    >
+      <span class="item-icon mdi" :class="item.icon"></span>
+      <span class="item-name">{{ item.name }}</span>
+    </div>
+  </section>
 </template>
 
 <!-- ----------------------------------------------------------------------- -->
@@ -24,6 +40,7 @@
 
 <script lang="ts">
   import { defineComponent } from 'vue';
+  import { CategoryDef } from '../lib/categories';
   import categories from '../meta/categories.json';
 
   export default defineComponent({
@@ -31,8 +48,17 @@
 
     data() {
       return {
-        categories,
+        categories: categories as CategoryDef[],
       };
+    },
+
+    computed: {
+      categoriesFrequent(): CategoryDef[] {
+        return this.categories.filter((it) => !it.infrequent);
+      },
+      categoriesInfrequent(): CategoryDef[] {
+        return this.categories.filter((it) => !!it.infrequent);
+      },
     },
 
     methods: {
@@ -50,7 +76,13 @@
 <style lang="scss" scoped>
   @import '../theme.scss';
 
-  .container {
+  h1 {
+    font-family: Montserrat, sans-serif;
+    font-weight: 200;
+    font-size: 1.5em;
+  }
+
+  section {
     display: grid;
     grid-template-columns: repeat(3, 100px);
     grid-auto-flow: row;
@@ -58,6 +90,7 @@
     justify-content: center;
 
     margin-top: 15px;
+    margin-bottom: 30px;
   }
 
   .item {

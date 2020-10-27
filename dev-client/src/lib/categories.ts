@@ -1,16 +1,21 @@
 import categories from '../meta/categories.json';
 
-interface CategoryDef {
-  name: string;
-  icon: string;
-  extra?: boolean;
-}
-
 const categoriesMap = indexCategoryDefsByName();
 const unknownCategory: CategoryDef = {
   name: '$unknown',
   icon: 'mdi-help-circle',
 };
+
+// -----------------------------------------------------------------------------
+// TYPES
+// -----------------------------------------------------------------------------
+
+export interface CategoryDef {
+  name: string;
+  icon: string;
+  extra?: boolean;
+  infrequent?: boolean;
+}
 
 // -----------------------------------------------------------------------------
 // API
