@@ -52,7 +52,7 @@
         this.expense.amount = amount;
         this.index += 1;
       },
-      onDateChosen(date: number): void {
+      onDateChosen(date: Date): void {
         this.expense.date = date;
         this.index = 1;
       },

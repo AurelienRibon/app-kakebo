@@ -39,15 +39,13 @@
 
     methods: {
       reset(): void {
-        const today = new Date().toISOString().slice(0, 10);
-        this.input.value = today;
+        this.input.value = new Date().toISOString().slice(0, 10);
       },
       focus(): void {
         this.input.focus();
       },
       onOkClick(): void {
-        const date = new Date(this.input.value);
-        this.$emit('date-chosen', date);
+        this.$emit('date-chosen', new Date(this.input.value));
       },
     },
   });
