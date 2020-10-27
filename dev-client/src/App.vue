@@ -4,9 +4,7 @@
 
 <template>
   <main>
-    <section>
-      <Home></Home>
-    </section>
+    <Home></Home>
   </main>
 </template>
 
@@ -32,12 +30,9 @@
 <style lang="scss" scoped>
   main {
     height: 100vh;
+    overflow-y: scroll;
 
     display: flex;
     flex-direction: column;
-  }
-
-  section {
-    overflow-y: scroll;
   }
 </style>
