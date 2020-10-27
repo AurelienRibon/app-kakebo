@@ -11,6 +11,10 @@
     </div>
 
     <HomeExpensesList :expenses="expenses"></HomeExpensesList>
+
+    <div v-ripple="onBtnAddExpenseClick" class="btn-add-expense">
+      <i class="mdi mdi-plus"></i>
+    </div>
   </section>
 </template>
 
@@ -24,15 +28,26 @@
   import { getExpenses } from '../lib/expenses';
   import Expense from '../models/expense';
 
+  type State = 'home' | 'addExpense';
+
   export default defineComponent({
     components: { HomeExpensesList },
 
     data() {
-      return { expenses: [] as Expense[] };
+      return {
+        state: 'home' as State,
+        expenses: [] as Expense[],
+      };
     },
 
     async mounted() {
       this.expenses = await getExpenses();
+    },
+
+    methods: {
+      onBtnAddExpenseClick(): void {
+        this.state = 'addExpense';
+      },
     },
   });
 </script>
@@ -61,5 +76,21 @@
     color: $color-accent2;
     font-size: 200px;
     text-align: center;
+  }
+
+  .btn-add-expense {
+    $size: 80px;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: $size;
+    height: $size;
+    font-size: $size - 10px;
+    border-radius: $size;
+    text-align: center;
+    line-height: $size;
+    background: $color-accent2;
+    color: $app-bgcolor;
+    box-shadow: 0px 6px 14px 1px rgb(0 0 0 / 55%);
   }
 </style>
