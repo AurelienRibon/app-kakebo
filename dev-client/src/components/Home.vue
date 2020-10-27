@@ -15,6 +15,13 @@
     <div v-ripple="onBtnAddExpenseClick" class="btn-add-expense">
       <i class="mdi mdi-plus"></i>
     </div>
+
+    <transition name="slide">
+      <AddExpense
+        v-if="state === 'addExpense'"
+        class="panel-add-expense"
+      ></AddExpense>
+    </transition>
   </section>
 </template>
 
@@ -25,13 +32,14 @@
 <script lang="ts">
   import { defineComponent } from 'vue';
   import HomeExpensesList from './HomeExpensesList.vue';
+  import AddExpense from './AddExpense.vue';
   import { getExpenses } from '../lib/expenses';
   import Expense from '../models/expense';
 
   type State = 'home' | 'addExpense';
 
   export default defineComponent({
-    components: { HomeExpensesList },
+    components: { HomeExpensesList, AddExpense },
 
     data() {
       return {
@@ -92,5 +100,25 @@
     background: $accent2;
     color: $app-bgcolor;
     box-shadow: 0px 6px 14px 1px rgb(0 0 0 / 55%);
+  }
+
+  .panel-add-expense {
+    position: absolute;
+    top: 60px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    background: $app-bgcolor;
+    border-radius: 10px 10px 0px 0px;
+    border-top: 2px solid $accent1;
+    padding: 10px;
+  }
+
+  .slide-enter-active {
+    transition: transform 0.5s ease;
+  }
+
+  .slide-enter-from {
+    transform: translateY(100vh);
   }
 </style>
