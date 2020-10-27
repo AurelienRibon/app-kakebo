@@ -42,6 +42,8 @@
 <!-- ----------------------------------------------------------------------- -->
 
 <style lang="scss" scoped>
+  @import '../theme.scss';
+
   section {
     display: flex;
     flex-direction: column;
@@ -50,13 +52,13 @@
 
   h1 {
     font-family: Montserrat, sans-serif;
-    font-size: 40px;
-    font-weight: 200;
+    font-size: 3.4em;
+    font-weight: 100;
     margin-bottom: 20px;
   }
 
   .chart {
-    color: #44657f;
+    color: $color-accent2;
     font-size: 200px;
     text-align: center;
   }

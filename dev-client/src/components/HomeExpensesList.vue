@@ -76,20 +76,24 @@
 <!-- ----------------------------------------------------------------------- -->
 
 <style lang="scss" scoped>
+  @import '../theme.scss';
+
   .expense-group {
-    margin-bottom: 20px;
+    margin-bottom: 30px;
+    padding-top: 7px;
+    border-top: 1px solid #adadad;
   }
 
   .expense-group-title {
     margin-bottom: 10px;
+    font-size: 1.2em;
   }
 
   .expense-item {
     display: flex;
     align-items: center;
     justify-content: space-between;
-
-    height: 28px;
+    margin: 6px 0px;
   }
 
   .expense-item-amount {
@@ -97,7 +101,7 @@
   }
 
   .expense-item-category {
-    background: #ffa500;
+    background: $color-accent1;
     padding: 2px 6px;
     border-radius: 20px;
 
