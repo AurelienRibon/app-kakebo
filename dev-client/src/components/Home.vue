@@ -104,6 +104,7 @@
 
   .panel-add-expense {
     position: absolute;
+    overflow-y: auto;
     top: 60px;
     left: 0px;
     right: 0px;
