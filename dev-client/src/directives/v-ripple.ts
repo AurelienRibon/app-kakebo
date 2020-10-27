@@ -1,21 +1,17 @@
-import { Directive, DirectiveBinding } from 'vue';
+import { Directive } from 'vue';
 import { px } from '../lib/utils';
 
 export function getVRippleDirective(): Directive {
   return {
-    mounted(el: HTMLElement, binding: DirectiveBinding) {
+    mounted(el: HTMLElement) {
       if (getComputedStyle(el).position === 'static') {
         el.style.position = 'relative';
       }
 
       el.style.overflow = 'hidden';
 
-      const callback =
-        typeof binding.value === 'function' ? binding.value : () => undefined;
-
       el.addEventListener('touchstart', (event) => {
-        applyRippleEffect(event, el);
-        setTimeout(callback, 200);
+        applyRippleEffect(event, el)
       });
     },
   };

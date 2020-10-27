@@ -12,7 +12,7 @@
 
     <HomeExpensesList :expenses="expenses"></HomeExpensesList>
 
-    <div v-ripple="onBtnAddExpenseClick" class="btn-add-expense">
+    <div v-ripple class="btn-add-expense" @click="onBtnAddExpenseClick">
       <i class="mdi mdi-plus"></i>
     </div>
 
