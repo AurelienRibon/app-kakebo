@@ -1,13 +1,20 @@
 [
   { "name": "courses", "icon": "mdi-cart" },
-  { "name": "restos", "icon": "mdi-silverware-fork-knife", "extra": true },
-  { "name": "essentiel", "icon": "mdi-clipboard-check" },
   { "name": "voiture", "icon": "mdi-car" },
+  { "name": "culture", "icon": "mdi-book-open-variant" },
+  { "name": "entretien", "icon": "mdi-tools" },
+  { "name": "santé", "icon": "mdi-hospital-box" },
+  { "name": "vêtements", "icon": "mdi-hanger" },
   { "name": "famille", "icon": "mdi-account-multiple" },
+  { "name": "restos", "icon": "mdi-silverware-fork-knife", "extra": true },
+  { "name": "shopping", "icon": "mdi-shopping", "extra": true },
   { "name": "voyages", "icon": "mdi-airplane", "extra": true },
   { "name": "cadeaux", "icon": "mdi-gift", "extra": true },
-  { "name": "vêtements", "icon": "mdi-hanger" },
-  { "name": "shopping", "icon": "mdi-shopping", "extra": true },
-  { "name": "santé", "icon": "mdi-hospital" },
-  { "name": "animaux", "icon": "mdi-paw" }
+
+  { "name": "maison", "icon": "mdi-home", "infrequent": true },
+  { "name": "impots", "icon": "mdi-bank", "infrequent": true },
+  { "name": "banque", "icon": "mdi-currency-eur", "infrequent": true },
+  { "name": "école", "icon": "mdi-school", "infrequent": true },
+  { "name": "animaux", "icon": "mdi-paw", "infrequent": true },
+  { "name": "divers", "icon": "mdi-help", "infrequent": true }
 ]
