@@ -101,7 +101,7 @@
   }
 
   .expense-item-category {
-    background: $color-accent1;
+    background: $accent1;
     padding: 2px 6px;
     border-radius: 20px;
 

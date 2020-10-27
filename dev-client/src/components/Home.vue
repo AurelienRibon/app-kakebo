@@ -73,7 +73,7 @@
   }
 
   .chart {
-    color: $color-accent2;
+    color: $accent2;
     font-size: 200px;
     text-align: center;
   }
@@ -89,7 +89,7 @@
     border-radius: $size;
     text-align: center;
     line-height: $size;
-    background: $color-accent2;
+    background: $accent2;
     color: $app-bgcolor;
     box-shadow: 0px 6px 14px 1px rgb(0 0 0 / 55%);
   }
