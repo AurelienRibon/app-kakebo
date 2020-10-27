@@ -3,21 +3,17 @@
 <!-- ----------------------------------------------------------------------- -->
 
 <template>
-  <div>
-    <h1>CATÉGORIE</h1>
-
-    <div class="container">
-      <div
-        v-for="item of categories"
-        :key="item.name"
-        v-ripple
-        class="item"
-        :class="{ 'item-extra': item.extra }"
-        @click="onItemClick(item.name)"
-      >
-        <span class="item-icon mdi" :class="item.icon"></span>
-        <span class="item-name">{{ item.name }}</span>
-      </div>
+  <div class="container">
+    <div
+      v-for="item of categories"
+      :key="item.name"
+      v-ripple
+      class="item"
+      :class="{ 'item-extra': item.extra }"
+      @click="onItemClick(item.name)"
+    >
+      <span class="item-icon mdi" :class="item.icon"></span>
+      <span class="item-name">{{ item.name }}</span>
     </div>
   </div>
 </template>
@@ -52,12 +48,16 @@
 <!-- ----------------------------------------------------------------------- -->
 
 <style lang="scss" scoped>
+  @import '../theme.scss';
+
   .container {
     display: grid;
-    grid-template-columns: repeat(auto-fill, 100px);
+    grid-template-columns: repeat(3, 100px);
     grid-auto-flow: row;
     grid-gap: 15px;
     justify-content: center;
+
+    margin-top: 15px;
   }
 
   .item {
@@ -71,14 +71,15 @@
 
     color: hsl(0, 0%, 0%);
     background: hsl(0, 0%, 100%);
+    border: 1px solid black;
 
     &.item-extra {
-      background: hsl(45, 100%, 62%);
+      background: $accent1;
     }
+  }
 
-    .item-icon {
-      font-size: 36px;
-      margin-bottom: 5px;
-    }
+  .item-icon {
+    font-size: 36px;
+    margin-bottom: 5px;
   }
 </style>

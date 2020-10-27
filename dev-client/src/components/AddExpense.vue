@@ -4,7 +4,6 @@
 
 <template>
   <div>
-    <nav>Étape {{ index }} sur 4</nav>
     <AddExpenseCategory
       v-if="index === 1"
       @category-chosen="onCategoryChosen"

@@ -18,19 +18,6 @@ html {
   color: $text-color;
 }
 
-nav {
-  height: 40px;
-
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-
-  font-family: Montserrat, sans-serif;
-  font-size: 30px;
-  font-weight: 200;
-  margin-bottom: 20px;
-}
-
 button {
   border: none;
   outline: none;
