@@ -44,7 +44,7 @@
   import categories from '../meta/categories.json';
 
   export default defineComponent({
-    emits: ['category-chosen'],
+    emits: ['done'],
 
     data() {
       return {
@@ -63,7 +63,7 @@
 
     methods: {
       onItemClick(category: string): void {
-        this.$emit('category-chosen', category);
+        this.$emit('done', category);
       },
     },
   });

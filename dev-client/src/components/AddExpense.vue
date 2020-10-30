@@ -6,7 +6,7 @@
   <div>
     <AddExpenseCategory
       v-if="index === 1"
-      @category-chosen="onCategoryChosen"
+      @done="onCategoryChosen"
     ></AddExpenseCategory>
 
     <AddExpenseAmount
