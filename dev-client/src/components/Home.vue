@@ -11,17 +11,6 @@
     </div>
 
     <HomeExpensesList :expenses="expenses"></HomeExpensesList>
-
-    <div v-ripple class="btn-add-expense" @click="onBtnAddExpenseClick">
-      <i class="mdi mdi-plus"></i>
-    </div>
-
-    <transition name="slide">
-      <AddExpense
-        v-if="state === 'addExpense'"
-        class="panel-add-expense"
-      ></AddExpense>
-    </transition>
   </section>
 </template>
 
@@ -30,31 +19,17 @@
 <!-- ----------------------------------------------------------------------- -->
 
 <script lang="ts">
-  import { defineComponent } from 'vue';
-  import HomeExpensesList from './HomeExpensesList.vue';
-  import AddExpense from './AddExpense.vue';
-  import { getExpenses } from '../lib/expenses';
+  import { defineComponent, PropType } from 'vue';
   import Expense from '../models/expense';
-
-  type State = 'home' | 'addExpense';
+  import HomeExpensesList from './HomeExpensesList.vue';
 
   export default defineComponent({
-    components: { HomeExpensesList, AddExpense },
+    components: { HomeExpensesList },
 
-    data() {
-      return {
-        state: 'home' as State,
-        expenses: [] as Expense[],
-      };
-    },
-
-    async mounted() {
-      this.expenses = await getExpenses();
-    },
-
-    methods: {
-      onBtnAddExpenseClick(): void {
-        this.state = 'addExpense';
+    props: {
+      expenses: {
+        type: Array as PropType<Expense[]>,
+        required: true,
       },
     },
   });
@@ -84,42 +59,5 @@
     color: $accent2;
     font-size: 200px;
     text-align: center;
-  }
-
-  .btn-add-expense {
-    $size: 80px;
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    width: $size;
-    height: $size;
-    font-size: $size - 10px;
-    border-radius: $size;
-    text-align: center;
-    line-height: $size;
-    background: $accent2;
-    color: $app-bgcolor;
-    box-shadow: 0px 6px 14px 1px rgb(0 0 0 / 55%);
-  }
-
-  .panel-add-expense {
-    position: absolute;
-    overflow-y: auto;
-    top: 60px;
-    left: 0px;
-    right: 0px;
-    bottom: 0px;
-    background: $app-bgcolor;
-    border-radius: 10px 10px 0px 0px;
-    border-top: 2px solid $accent1;
-    padding: 20px;
-  }
-
-  .slide-enter-active {
-    transition: transform 0.5s ease;
-  }
-
-  .slide-enter-from {
-    transform: translateY(100vh);
   }
 </style>
