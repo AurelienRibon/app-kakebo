@@ -5,8 +5,8 @@
 <template>
   <main>
     <section>
-      <label for="amount">montant</label>
-      <input id="amount" v-model="amount" type="text" inputmode="numeric" />
+      <label>montant</label>
+      <input v-model="amount" type="text" inputmode="numeric" />
     </section>
 
     <section>
@@ -15,9 +15,10 @@
     </section>
 
     <section>
-      <label for="periodicity">périodicité</label>
-      <select id="periodicity">
-        <option value="1">PONCTUEL</option>
+      <label>périodicité</label>
+      <select v-model="periodicity">
+        <option value="one-time">ponctuel</option>
+        <option value="monthly">une fois par mois</option>
       </select>
     </section>
 
@@ -57,7 +58,9 @@
     setup() {
       const date = ref(formatDateToDay(new Date()));
       const amount = ref(0);
-      return { date, amount };
+      const periodicity = ref('one-time');
+
+      return { date, amount, periodicity };
     },
   });
 </script>
@@ -91,7 +94,7 @@
     background: none;
     box-shadow: inset 0px 3px 2px 0px rgb(0 0 0 / 13%);
 
-    &#amount {
+    &[inputmode='numeric'] {
       text-align: right;
     }
   }
