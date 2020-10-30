@@ -64,7 +64,7 @@
   @import './theme.scss';
 
   main {
-    height: 100vh;
+    height: --vwHeight;
     overflow-y: scroll;
 
     display: flex;
