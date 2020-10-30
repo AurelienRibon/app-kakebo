@@ -9,15 +9,10 @@
       @done="onCategoryChosen"
     ></AddExpenseCategory>
 
-    <AddExpenseAmount
+    <AddExpenseDetails
       v-if="index === 2"
-      @amount-chosen="onAmountChosen"
-    ></AddExpenseAmount>
-
-    <AddExpenseDate
-      v-if="index === 3"
-      @date-chosen="onDateChosen"
-    ></AddExpenseDate>
+      @done="onExpenseDone"
+    ></AddExpenseDetails>
   </div>
 </template>
 
@@ -26,35 +21,28 @@
 <!-- ----------------------------------------------------------------------- -->
 
 <script lang="ts">
-  import { defineComponent } from 'vue';
+  import { defineComponent, ref } from 'vue';
   import AddExpenseCategory from './AddExpenseCategory.vue';
-  import AddExpenseAmount from './AddExpenseAmount.vue';
-  import AddExpenseDate from './AddExpenseDate.vue';
+  import AddExpenseDetails from './AddExpenseDetails.vue';
   import Expense from '../models/expense';
 
   export default defineComponent({
-    components: { AddExpenseCategory, AddExpenseAmount, AddExpenseDate },
+    components: { AddExpenseCategory, AddExpenseDetails },
 
-    data() {
-      return {
-        expense: new Expense(),
-        index: 1,
-      };
-    },
+    setup() {
+      const expense = new Expense();
+      const index = ref(1);
 
-    methods: {
-      onCategoryChosen(category: string): void {
-        this.expense.category = category;
-        this.index += 1;
-      },
-      onAmountChosen(amount: number): void {
-        this.expense.amount = amount;
-        this.index += 1;
-      },
-      onDateChosen(date: Date): void {
-        this.expense.date = date;
-        this.index = 1;
-      },
+      function onCategoryChosen(category: string): void {
+        expense.category = category;
+        index.value += 1;
+      }
+
+      function onExpenseDone(): void {
+        void 0;
+      }
+
+      return { expense, index, onCategoryChosen, onExpenseDone };
     },
   });
 </script>
