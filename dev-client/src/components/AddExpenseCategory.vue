@@ -3,7 +3,7 @@
 <!-- ----------------------------------------------------------------------- -->
 
 <template>
-  <h1>Dépenses fréquentes</h1>
+  <h1>dépenses fréquentes</h1>
   <section>
     <div
       v-for="item of categoriesFrequent"
@@ -18,7 +18,7 @@
     </div>
   </section>
 
-  <h1>Dépenses peu fréquentes</h1>
+  <h1>dépenses peu fréquentes</h1>
   <section>
     <div
       v-for="item of categoriesInfrequent"

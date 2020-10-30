@@ -112,7 +112,7 @@
     background: $app-bgcolor;
     border-radius: 10px 10px 0px 0px;
     border-top: 2px solid $accent1;
-    padding: 10px;
+    padding: 20px;
   }
 
   .slide-enter-active {
