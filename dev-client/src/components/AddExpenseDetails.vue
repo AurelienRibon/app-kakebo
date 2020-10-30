@@ -11,7 +11,7 @@
 
     <section>
       <label for="date">date</label>
-      <input id="date" v-model="date" type="date" />
+      <input id="date" v-model="date" type="date" :disabled="dateDisabled" />
     </section>
 
     <section>
@@ -49,7 +49,7 @@
 <!-- ----------------------------------------------------------------------- -->
 
 <script lang="ts">
-  import { defineComponent, ref } from 'vue';
+  import { computed, defineComponent, ref } from 'vue';
   import { formatDateToDay } from '../lib/dates';
 
   export default defineComponent({
@@ -59,8 +59,9 @@
       const date = ref(formatDateToDay(new Date()));
       const amount = ref(0);
       const periodicity = ref('one-time');
+      const dateDisabled = computed(() => periodicity.value !== 'one-time');
 
-      return { date, amount, periodicity };
+      return { date, amount, periodicity, dateDisabled };
     },
   });
 </script>
