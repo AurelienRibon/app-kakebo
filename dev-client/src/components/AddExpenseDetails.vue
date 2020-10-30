@@ -92,8 +92,6 @@
     border-radius: 4px;
     outline: none;
     padding: 0 10px;
-    background: none;
-    box-shadow: inset 0px 3px 2px 0px rgb(0 0 0 / 13%);
 
     &[inputmode='numeric'] {
       text-align: right;
