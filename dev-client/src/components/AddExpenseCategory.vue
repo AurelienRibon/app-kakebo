@@ -77,8 +77,7 @@
   @import '../theme.scss';
 
   h1 {
-    font-family: Montserrat, sans-serif;
-    font-weight: 200;
+    font-weight: 300;
     font-size: 1.5em;
   }
 

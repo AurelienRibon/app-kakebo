@@ -49,9 +49,8 @@
   }
 
   h1 {
-    font-family: Montserrat, sans-serif;
-    font-size: 3.4em;
-    font-weight: 100;
+    font-size: 4.3em;
+    font-weight: 200;
     margin-bottom: 20px;
   }
 
