@@ -1,6 +1,12 @@
 import testExpensesSpecs from '../../../data/test-expenses.json';
 import { formatDateToDay } from './dates';
 import { Expense } from '../models/expense';
+import expenseTypes from '../meta/expense-types.json';
+
+type ExpenseTypeDef = { name: string; icon: string; default?: boolean };
+
+const expenseTypesByName: ReadonlyMap<string, ExpenseTypeDef> = indexTypesByName();
+const expenseTypeDefaultName: string = lookupExpenseTypeDefaultName();
 
 // -----------------------------------------------------------------------------
 // TYPES
@@ -14,6 +20,18 @@ export interface SameDayExpenses {
 // -----------------------------------------------------------------------------
 // API
 // -----------------------------------------------------------------------------
+
+export function hasExpenseType(name: string): boolean {
+  return expenseTypesByName.has(name);
+}
+
+export function getExpenseTypeDefs(): ExpenseTypeDef[] {
+  return expenseTypes;
+}
+
+export function getExpenseTypeDefaultName(): string {
+  return expenseTypeDefaultName;
+}
 
 export async function getExpenses(): Promise<Expense[]> {
   return testExpensesSpecs.map((it) => new Expense(it));
@@ -40,4 +58,22 @@ export function splitExpensesByDay(expenses: Expense[]): SameDayExpenses[] {
   }
 
   return result;
+}
+
+// -----------------------------------------------------------------------------
+// HELPERS
+// -----------------------------------------------------------------------------
+
+function indexTypesByName() {
+  return new Map(expenseTypes.map((it) => [it.name, it]));
+}
+
+function lookupExpenseTypeDefaultName() {
+  for (const [name, def] of expenseTypesByName.entries()) {
+    if (def.default) {
+      return name;
+    }
+  }
+
+  throw new Error(`No expense type was set as default.`);
 }

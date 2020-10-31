@@ -1,0 +1,6 @@
+[
+  { "name": "card", "icon": "mdi-credit-card", "default": true },
+  { "name": "cash", "icon": "mdi-cash-100" },
+  { "name": "check", "icon": "mdi-checkbook" },
+  { "name": "transfer", "icon": "mdi-bank-transfer-out" }
+]
