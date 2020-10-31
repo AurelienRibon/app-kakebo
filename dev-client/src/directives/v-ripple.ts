@@ -11,7 +11,7 @@ export function getVRippleDirective(): Directive {
       el.style.overflow = 'hidden';
 
       el.addEventListener('touchstart', (event) => {
-        applyRippleEffect(event, el)
+        applyRippleEffect(event, el);
       });
     },
   };

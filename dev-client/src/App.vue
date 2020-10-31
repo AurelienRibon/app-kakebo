@@ -11,10 +11,7 @@
     </div>
 
     <transition name="slide">
-      <AddExpense
-        v-if="state === 'addExpense'"
-        class="panel-add-expense"
-      ></AddExpense>
+      <AddExpense v-if="state === 'addExpense'" class="panel-add-expense"></AddExpense>
     </transition>
   </main>
 </template>

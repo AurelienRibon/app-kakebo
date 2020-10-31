@@ -10,9 +10,7 @@ export function formatDate(date: Date): string {
   const dtf = new Intl.DateTimeFormat('fr');
   const daysDiff = computeDaysDiff(new Date(), date);
 
-  return daysDiff >= -1 && daysDiff <= 0
-    ? rtf.format(daysDiff, 'day')
-    : dtf.format(date);
+  return daysDiff >= -1 && daysDiff <= 0 ? rtf.format(daysDiff, 'day') : dtf.format(date);
 }
 
 // -----------------------------------------------------------------------------

@@ -4,27 +4,17 @@
 
 <template>
   <div>
-    <div
-      v-for="sameDayExpenses of expensesByDay"
-      :key="sameDayExpenses.date"
-      class="expense-group"
-    >
+    <div v-for="sameDayExpenses of expensesByDay" :key="sameDayExpenses.date" class="expense-group">
       <div class="expense-group-title">
         {{ formatExpenseDate(sameDayExpenses) }}
       </div>
-      <div
-        v-for="expense of sameDayExpenses.expenses"
-        :key="expense.date"
-        class="expense-items"
-      >
+      <div v-for="expense of sameDayExpenses.expenses" :key="expense.date" class="expense-items">
         <div class="expense-item">
           <div class="expense-item-category">
             <span class="mdi" :class="getExpenseIcon(expense)"></span>
             <span>{{ expense.category }}</span>
           </div>
-          <div class="expense-item-amount">
-            {{ formatExpenseAmount(expense) }}€
-          </div>
+          <div class="expense-item-amount">{{ formatExpenseAmount(expense) }}€</div>
         </div>
       </div>
     </div>

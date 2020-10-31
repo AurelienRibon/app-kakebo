@@ -4,15 +4,8 @@
 
 <template>
   <div>
-    <AddExpenseCategory
-      v-if="index === 1"
-      @done="onCategoryChosen"
-    ></AddExpenseCategory>
-
-    <AddExpenseDetails
-      v-if="index === 2"
-      @done="onExpenseDone"
-    ></AddExpenseDetails>
+    <AddExpenseCategory v-if="index === 1" @done="onCategoryChosen"></AddExpenseCategory>
+    <AddExpenseDetails v-if="index === 2" @done="onExpenseDone"></AddExpenseDetails>
   </div>
 </template>
 
