@@ -89,7 +89,7 @@
     line-height: 50px;
     font-size: 1.8em;
     border: 1px solid black;
-    border-radius: 4px;
+    border-radius: 6px;
     outline: none;
     padding: 0 10px;
 
@@ -102,12 +102,14 @@
     display: flex;
     height: 45px;
     border: 1px solid black;
+    border-radius: 6px;
 
     & > div {
       flex: 1;
       text-align: center;
       line-height: 45px;
       font-size: 2em;
+      border-radius: 6px;
 
       &.type-selected {
         background: $accent1;

@@ -104,6 +104,7 @@
     color: hsl(0, 0%, 0%);
     background: hsl(0, 0%, 100%);
     border: 1px solid black;
+    border-radius: 10px;
 
     &.item-extra {
       background: $accent1;
