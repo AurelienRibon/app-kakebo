@@ -1,14 +1,11 @@
 import { getUnknownCategoryName, hasCategoryName } from '../lib/categories';
-
-export const EXPENSE_TYPES = ['card', 'cash', 'check', 'transfer'] as const;
-
-export type ExpenseType = typeof EXPENSE_TYPES[number];
+import { getExpenseTypeDefaultName, hasExpenseType } from '../lib/expenses';
 
 export class Expense {
   date: Date;
   category: string;
   amount: number;
-  type: ExpenseType;
+  type: string;
 
   constructor(spec: Record<string, unknown> = {}) {
     this.date = this.setupDate(spec.date);
@@ -22,18 +19,14 @@ export class Expense {
   }
 
   private setupCategory(category: unknown): string {
-    return typeof category === 'string' && hasCategoryName(category)
-      ? category
-      : getUnknownCategoryName();
+    return typeof category === 'string' && hasCategoryName(category) ? category : getUnknownCategoryName();
   }
 
   private setupAmount(amount: unknown): number {
     return typeof amount === 'number' ? amount : 0;
   }
 
-  private setupType(type: unknown): ExpenseType {
-    return (EXPENSE_TYPES as readonly unknown[]).includes(type)
-      ? (type as ExpenseType)
-      : 'card';
+  private setupType(type: unknown): string {
+    return typeof type === 'string' && hasExpenseType(type) ? type : getExpenseTypeDefaultName();
   }
 }
