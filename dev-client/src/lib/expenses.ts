@@ -1,6 +1,6 @@
 import testExpensesSpecs from '../../../data/test-expenses.json';
 import { formatDateToDay } from './dates';
-import Expense from '../models/expense';
+import { Expense } from '../models/expense';
 
 // -----------------------------------------------------------------------------
 // TYPES

@@ -28,7 +28,7 @@
   import Home from './components/Home.vue';
   import AddExpense from './components/AddExpense.vue';
   import { getExpenses } from './lib/expenses';
-  import Expense from './models/expense';
+  import { Expense } from './models/expense';
 
   type State = 'home' | 'addExpense';
 

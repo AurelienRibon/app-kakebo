@@ -41,7 +41,7 @@
   import { getCategoryDef } from '../lib/categories';
   import { formatDate } from '../lib/dates';
   import { SameDayExpenses, splitExpensesByDay } from '../lib/expenses';
-  import Expense from '../models/expense';
+  import { Expense } from '../models/expense';
 
   export default defineComponent({
     props: {

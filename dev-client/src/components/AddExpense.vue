@@ -24,7 +24,7 @@
   import { defineComponent, ref } from 'vue';
   import AddExpenseCategory from './AddExpenseCategory.vue';
   import AddExpenseDetails from './AddExpenseDetails.vue';
-  import Expense from '../models/expense';
+  import { Expense } from '../models/expense';
 
   export default defineComponent({
     components: { AddExpenseCategory, AddExpenseDetails },

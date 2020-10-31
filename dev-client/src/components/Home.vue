@@ -20,7 +20,7 @@
 
 <script lang="ts">
   import { defineComponent, PropType } from 'vue';
-  import Expense from '../models/expense';
+  import { Expense } from '../models/expense';
   import HomeExpensesList from './HomeExpensesList.vue';
 
   export default defineComponent({
