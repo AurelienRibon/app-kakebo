@@ -25,10 +25,15 @@
     <section>
       <label>type</label>
       <div class="type-container">
-        <div class="type-selected"><i class="mdi mdi-credit-card"></i></div>
-        <div><i class="mdi mdi-cash-100"></i></div>
-        <div><i class="mdi mdi-checkbook"></i></div>
-        <div><i class="mdi mdi-bank-transfer-out"></i></div>
+        <div
+          v-for="t of EXPENSE_TYPES"
+          :key="t"
+          v-ripple
+          :class="{ selected: t === type }"
+          @click="type = t"
+        >
+          <i class="mdi" :class="getTypeIcon(t)"></i>
+        </div>
       </div>
     </section>
 
@@ -51,6 +56,14 @@
 <script lang="ts">
   import { computed, defineComponent, ref } from 'vue';
   import { formatDateToDay } from '../lib/dates';
+  import { ExpenseType, EXPENSE_TYPES } from '../models/expense';
+
+  const TYPES_ICONS: Record<ExpenseType, string> = {
+    card: 'mdi-credit-card',
+    cash: 'mdi-cash-100',
+    check: 'mdi-checkbook',
+    transfer: 'mdi-bank-transfer-out',
+  };
 
   export default defineComponent({
     emits: ['done'],
@@ -59,9 +72,16 @@
       const date = ref(formatDateToDay(new Date()));
       const amount = ref(0);
       const periodicity = ref('one-time');
+      const type = ref('card');
       const dateDisabled = computed(() => periodicity.value !== 'one-time');
 
-      return { date, amount, periodicity, dateDisabled };
+      return { date, amount, periodicity, type, EXPENSE_TYPES, dateDisabled };
+    },
+
+    methods: {
+      getTypeIcon(type: ExpenseType): string {
+        return TYPES_ICONS[type];
+      },
     },
   });
 </script>
