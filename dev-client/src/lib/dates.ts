@@ -1,7 +1,7 @@
 export function formatDateToDay(date: Date): string {
   const year = date.getUTCFullYear();
-  const month = date.getUTCMonth() + 1;
-  const day = date.getUTCDate();
+  const month = pad(date.getUTCMonth() + 1);
+  const day = pad(date.getUTCDate());
   return `${year}-${month}-${day}`;
 }
 
@@ -21,4 +21,8 @@ function computeDaysDiff(date1: Date, date2: Date) {
   const millisDiff = date2.getTime() - date1.getTime();
   const daysDiff = millisDiff / 1000 / 60 / 60 / 24;
   return daysDiff >= 0 ? Math.floor(daysDiff) : Math.ceil(daysDiff);
+}
+
+function pad(value: number) {
+  return String(value).padStart(2, '0');
 }
