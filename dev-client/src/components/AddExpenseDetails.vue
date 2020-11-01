@@ -6,7 +6,7 @@
   <main>
     <section>
       <label>montant</label>
-      <input v-model="amount" type="text" inputmode="numeric" />
+      <input :value="amount" type="number" inputmode="numeric" @beforeinput="amountChanged" />
     </section>
 
     <section>
@@ -55,6 +55,7 @@
 
 <script lang="ts">
   import { computed, defineComponent, ref } from 'vue';
+  import { updateAmount } from '../lib/amounts';
   import { formatDateToDay } from '../lib/dates';
   import { getExpenseTypeDefs } from '../lib/expenses';
 
@@ -63,13 +64,28 @@
 
     setup() {
       const date = ref(formatDateToDay(new Date()));
-      const amount = ref(0);
+      const amount = ref('0.00');
       const periodicity = ref('one-time');
       const type = ref('card');
       const typeDefs = getExpenseTypeDefs();
       const dateDisabled = computed(() => periodicity.value !== 'one-time');
 
-      return { date, amount, periodicity, type, typeDefs, dateDisabled };
+      const amountChanged = (event: InputEvent) => {
+        event.preventDefault();
+
+        switch (event.inputType) {
+          case 'deleteContentBackward':
+            amount.value = updateAmount(amount.value, null);
+            break;
+          case 'insertText':
+            if (typeof event.data === 'string' && /^\d$/.test(event.data)) {
+              amount.value = updateAmount(amount.value, event.data);
+            }
+            break;
+        }
+      };
+
+      return { date, amount, periodicity, type, typeDefs, dateDisabled, amountChanged };
     },
   });
 </script>
@@ -103,6 +119,7 @@
 
     &[inputmode='numeric'] {
       text-align: right;
+      caret-color: #0000;
     }
   }
 
