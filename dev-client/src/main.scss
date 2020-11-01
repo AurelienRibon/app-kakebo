@@ -29,6 +29,8 @@ html {
 
   background: $app-bgcolor;
   color: $text-color;
+
+  -webkit-tap-highlight-color: transparent;
 }
 
 button {
