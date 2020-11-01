@@ -73,26 +73,27 @@
 
       const amountChanged = (event: InputEvent) => {
         event.preventDefault();
-
-        switch (event.inputType) {
-          case 'deleteContentBackward':
-            amount.value = updateAmount(amount.value, null);
-            break;
-          case 'insertText':
-            if (typeof event.data === 'string' && /^\d$/.test(event.data)) {
-              amount.value = updateAmount(amount.value, event.data);
-            }
-            break;
-        }
+        amount.value = updateAmountFromEvent(event, amount.value);
       };
 
       return { date, amount, periodicity, type, typeDefs, dateDisabled, amountChanged };
     },
   });
+
+  function updateAmountFromEvent(event: InputEvent, amount: number): string {
+    switch (event.inputType) {
+      case 'deleteContentBackward':
+        return updateAmount(amount, null);
+      case 'insertText': {
+        const valid = typeof event.data === 'string' && /^\d$/.test(event.data);
+        return valid ? updateAmount(amount, event.data) : amount;
+      }
+    }
+  }
 </script>
 
 <!-- ----------------------------------------------------------------------- -->
-<!-- CODE -->
+<!-- STYLE -->
 <!-- ----------------------------------------------------------------------- -->
 
 <style lang="scss" scoped>
