@@ -5,7 +5,7 @@
 <template>
   <div>
     <AddExpenseCategory v-if="index === 1" @done="onCategoryChosen"></AddExpenseCategory>
-    <AddExpenseDetails v-if="index === 2" @done="onExpenseDone"></AddExpenseDetails>
+    <AddExpenseDetails v-if="index === 2" @done="onDetailsDone" @cancel="onDetailsCancel"></AddExpenseDetails>
   </div>
 </template>
 
@@ -21,8 +21,9 @@
 
   export default defineComponent({
     components: { AddExpenseCategory, AddExpenseDetails },
+    emits: ['cancel'],
 
-    setup() {
+    setup(props, context) {
       const expense = new Expense();
       const index = ref(1);
 
@@ -31,11 +32,15 @@
         index.value += 1;
       }
 
-      function onExpenseDone(): void {
+      function onDetailsCancel(): void {
+        context.emit('cancel');
+      }
+
+      function onDetailsDone(): void {
         void 0;
       }
 
-      return { expense, index, onCategoryChosen, onExpenseDone };
+      return { expense, index, onCategoryChosen, onDetailsCancel, onDetailsDone };
     },
   });
 </script>

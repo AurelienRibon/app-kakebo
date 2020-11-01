@@ -11,7 +11,7 @@
     </div>
 
     <transition name="slide">
-      <AddExpense v-if="state === 'addExpense'" class="panel-add-expense"></AddExpense>
+      <AddExpense v-if="state === 'addExpense'" class="panel-add-expense" @cancel="onExpenseCancel"></AddExpense>
     </transition>
   </main>
 </template>
@@ -46,6 +46,9 @@
     methods: {
       onBtnAddExpenseClick(): void {
         this.state = 'addExpense';
+      },
+      onExpenseCancel(): void {
+        this.state = 'home';
       },
     },
   });
@@ -97,11 +100,13 @@
     padding: 20px;
   }
 
-  .slide-enter-active {
-    transition: transform 0.5s ease;
+  .slide-enter-active,
+  .slide-leave-active {
+    transition: transform 0.4s ease;
   }
 
-  .slide-enter-from {
-    transform: translateY(100vh);
+  .slide-enter-from,
+  .slide-leave-to {
+    transform: translateY(var(--vwHeight));
   }
 </style>
