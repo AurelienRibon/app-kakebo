@@ -52,6 +52,11 @@
       <label>commentaire</label>
       <input type="text" />
     </section>
+
+    <ButtonsSection>
+      <button v-ripple v-tap class="btn-light" @tap="cancel">ANNULER</button>
+      <button v-ripple v-tap @tap="done">AJOUTER</button>
+    </ButtonsSection>
   </main>
 </template>
 
@@ -64,11 +69,13 @@
   import { updateAmount } from '../lib/amounts';
   import { formatDateToDay, formatDateToMonth } from '../lib/dates';
   import { getExpenseTypeDefs } from '../lib/expenses';
+  import ButtonsSection from './ButtonsSection.vue';
 
   export default defineComponent({
-    emits: ['done'],
+    components: { ButtonsSection },
+    emits: ['cancel', 'done'],
 
-    setup() {
+    setup(props, context) {
       const date = ref(formatDateToDay());
       const periodicity = ref('one-time');
       watch(periodicity, (value) => {
@@ -84,7 +91,10 @@
       const type = ref('card');
       const typeDefs = getExpenseTypeDefs();
 
-      return { date, periodicity, amount, onAmountInput, type, typeDefs };
+      const cancel = () => context.emit('cancel');
+      const done = () => context.emit('done');
+
+      return { date, periodicity, amount, onAmountInput, type, typeDefs, cancel, done };
     },
   });
 
