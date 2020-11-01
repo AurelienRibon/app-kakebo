@@ -6,7 +6,7 @@
   <main>
     <section>
       <label>montant</label>
-      <input :value="amount" type="number" inputmode="numeric" @beforeinput="amountChanged" />
+      <input :value="amount" type="number" autofocus inputmode="numeric" @beforeinput="amountChanged" />
     </section>
 
     <section>
