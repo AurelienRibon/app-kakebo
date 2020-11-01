@@ -35,12 +35,18 @@ html {
 
 button {
   border: none;
+  border-radius: 6px;
   outline: none;
-  background: #08375a;
-  color: #e0e0e0;
+  background: $accent1;
+  color: $text-accent1;
   font-weight: bold;
   min-width: 100px;
   min-height: 50px;
+
+  &.btn-light {
+    background: #929292;
+    color: #fff;
+  }
 }
 
 textarea,
