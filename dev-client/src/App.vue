@@ -26,10 +26,10 @@
 
 <script lang="ts">
   import { defineComponent } from 'vue';
-  import Home from './components/Home.vue';
-  import AddExpense from './components/AddExpense.vue';
   import { getExpenses } from './lib/expenses';
   import { Expense } from './models/expense';
+  import Home from './components/Home.vue';
+  import AddExpense from './components/AddExpense.vue';
 
   type State = 'home' | 'addExpense';
 
