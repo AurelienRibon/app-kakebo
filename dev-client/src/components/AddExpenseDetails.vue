@@ -10,17 +10,17 @@
     </section>
 
     <section>
-      <label>date</label>
-      <input v-if="periodicity === 'one-time'" v-model="date" type="date" />
-      <input v-if="periodicity === 'monthly'" v-model="date" type="month" />
-    </section>
-
-    <section>
       <label>périodicité</label>
       <select v-model="periodicity">
         <option value="one-time">ponctuel</option>
         <option value="monthly">une fois par mois</option>
       </select>
+    </section>
+
+    <section>
+      <label>date</label>
+      <input v-if="periodicity === 'one-time'" v-model="date" type="date" />
+      <input v-if="periodicity === 'monthly'" v-model="date" type="month" />
     </section>
 
     <section>
