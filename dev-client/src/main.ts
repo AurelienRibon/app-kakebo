@@ -1,11 +1,13 @@
 import { createApp } from 'vue';
-import { getVRippleDirective } from './directives/v-ripple';
 import App from './App.vue';
+import { getVRippleDirective } from './directives/v-ripple';
+import { getVTapDirective } from './directives/v-tap';
 
 updateCSSViewportHeight();
 
 const app = createApp(App);
 app.directive('ripple', getVRippleDirective());
+app.directive('tap', getVTapDirective());
 app.mount('#app');
 
 // -----------------------------------------------------------------------------

@@ -29,8 +29,9 @@
           v-for="def of typeDefs"
           :key="def.name"
           v-ripple
+          v-tap
           :class="{ selected: def.name === type }"
-          @click="type = def.name"
+          @tap="type = def.name"
         >
           <i class="mdi" :class="def.icon"></i>
         </div>

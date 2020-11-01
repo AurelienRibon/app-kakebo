@@ -6,7 +6,7 @@
   <main>
     <Home :expenses="expenses"></Home>
 
-    <div v-ripple class="btn-add-expense" @click="onBtnAddExpenseClick">
+    <div v-ripple v-tap class="btn-add-expense" @tap="onBtnAddExpenseClick">
       <i class="mdi mdi-plus"></i>
     </div>
 

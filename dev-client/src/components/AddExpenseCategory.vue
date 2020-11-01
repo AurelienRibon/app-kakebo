@@ -9,9 +9,10 @@
       v-for="item of categoriesFrequent"
       :key="item.name"
       v-ripple
+      v-tap
       class="item"
       :class="{ 'item-extra': item.extra }"
-      @click="onItemClick(item.name)"
+      @tap="onItemClick(item.name)"
     >
       <span class="item-icon mdi" :class="item.icon"></span>
       <span class="item-name">{{ item.name }}</span>
@@ -24,9 +25,10 @@
       v-for="item of categoriesInfrequent"
       :key="item.name"
       v-ripple
+      v-tap
       class="item"
       :class="{ 'item-extra': item.extra }"
-      @click="onItemClick(item.name)"
+      @tap="onItemClick(item.name)"
     >
       <span class="item-icon mdi" :class="item.icon"></span>
       <span class="item-name">{{ item.name }}</span>
