@@ -15,6 +15,6 @@ app.mount('#app');
 // -----------------------------------------------------------------------------
 
 function updateCSSViewportHeight() {
-  const vwHeight = visualViewport.height;
-  document.documentElement.style.setProperty('--vwHeight', `${vwHeight}px`);
+  const h = visualViewport.height;
+  document.documentElement.style.setProperty('--h', `${h}px`);
 }

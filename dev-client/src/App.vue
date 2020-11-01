@@ -68,7 +68,7 @@
   @import './theme.scss';
 
   main {
-    height: var(--vwHeight);
+    height: var(--h);
     overflow-y: scroll;
 
     display: flex;
@@ -129,6 +129,6 @@
 
   .slide-enter-from,
   .slide-leave-to {
-    transform: translateY(var(--vwHeight));
+    transform: translateY(var(--h));
   }
 </style>
