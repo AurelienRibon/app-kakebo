@@ -10,6 +10,10 @@
       <i class="mdi mdi-plus"></i>
     </div>
 
+    <transition name="fade">
+      <div v-if="state === 'addExpense'" class="smoke"></div>
+    </transition>
+
     <transition name="slide">
       <AddExpense v-if="state === 'addExpense'" class="panel-add-expense" @cancel="onExpenseCancel"></AddExpense>
     </transition>
@@ -73,31 +77,49 @@
 
   .btn-add-expense {
     $size: 80px;
+
     position: fixed;
     bottom: 20px;
     right: 20px;
     width: $size;
     height: $size;
-    font-size: $size - 10px;
-    border-radius: $size;
-    text-align: center;
     line-height: $size;
-    background: $accent2;
+
+    font-size: $size - 10px;
+    text-align: center;
     color: $app-bgcolor;
+    background: $accent2;
+    border-radius: $size;
     box-shadow: 0px 6px 14px 1px rgb(0 0 0 / 55%);
   }
 
   .panel-add-expense {
-    position: absolute;
+    @include modal;
     overflow-y: auto;
-    top: 60px;
-    left: 0px;
-    right: 0px;
-    bottom: 0px;
-    background: $app-bgcolor;
-    border-radius: 10px 10px 0px 0px;
-    border-top: 2px solid $accent1;
     padding: 20px;
+
+    background: $app-bgcolor;
+    border-top: 4px solid $accent1;
+  }
+
+  .smoke {
+    @include modal;
+    background: #000a;
+  }
+
+  // Transitions
+
+  .fade-enter-active,
+  .fade-leave-active {
+    transition: opacity 0.3s ease;
+  }
+  .fade-leave-active {
+    transition-duration: 0.8s;
+  }
+
+  .fade-enter-from,
+  .fade-leave-to {
+    opacity: 0;
   }
 
   .slide-enter-active,

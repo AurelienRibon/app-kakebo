@@ -5,3 +5,11 @@ $accent1: #ffa500;
 $accent2: #506e9e;
 
 $text-accent1: #212121;
+
+@mixin modal {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+}
