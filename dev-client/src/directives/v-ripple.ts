@@ -9,10 +9,7 @@ export function getVRippleDirective(): Directive {
       }
 
       el.style.overflow = 'hidden';
-
-      el.addEventListener('touchstart', (event) => {
-        applyRippleEffect(event, el);
-      });
+      el.addEventListener('touchstart', (event) => applyRippleEffect(event, el));
     },
   };
 }
@@ -33,7 +30,7 @@ function applyRippleEffect(event: TouchEvent, elem: HTMLElement): void {
     elem.appendChild(ripple);
   }
 
-  ripple.classList.remove('show');
+  ripple.classList.remove('ripple-active');
 
   const touchX = event.touches[0].pageX;
   const touchY = event.touches[0].pageY;
@@ -43,5 +40,5 @@ function applyRippleEffect(event: TouchEvent, elem: HTMLElement): void {
 
   ripple.style.left = px(x);
   ripple.style.top = px(y);
-  ripple.classList.add('show');
+  ripple.classList.add('ripple-active');
 }

@@ -1,13 +1,13 @@
 .ripple {
   position: absolute;
-  background: rgba(0, 0, 0, 0.9);
+  background: rgba(0, 0, 0, 0.7);
   border-radius: 100%;
   transform: scale(0);
   pointer-events: none;
-}
 
-.ripple.show {
-  animation: ripple 0.5s ease-out;
+  &.ripple-active {
+    animation: ripple 0.4s ease-out;
+  }
 }
 
 @-webkit-keyframes ripple {
