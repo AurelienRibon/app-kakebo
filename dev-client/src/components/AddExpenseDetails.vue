@@ -122,6 +122,13 @@
       text-align: right;
       caret-color: #0000;
     }
+
+    &:focus {
+      background: #ffedcc;
+      border: 3px solid #ffa500;
+      padding: 0 8px;
+      line-height: 46px;
+    }
   }
 
   .type-container {
