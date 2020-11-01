@@ -84,15 +84,16 @@
     },
   });
 
-  function updateAmountFromEvent(event: InputEvent, amount: number): string {
-    switch (event.inputType) {
-      case 'deleteContentBackward':
-        return updateAmount(amount, null);
-      case 'insertText': {
-        const valid = typeof event.data === 'string' && /^\d$/.test(event.data);
-        return valid ? updateAmount(amount, event.data) : amount;
-      }
+  function updateAmountFromEvent(event: InputEvent, amount: string): string {
+    if (event.inputType === 'deleteContentBackward') {
+      return updateAmount(amount, null);
     }
+
+    if (event.inputType === 'insertText' && typeof event.data === 'string' && /^\d$/.test(event.data)) {
+      return updateAmount(amount, event.data);
+    }
+
+    return amount;
   }
 </script>
 
