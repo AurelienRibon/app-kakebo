@@ -17,10 +17,14 @@
       </select>
     </section>
 
-    <section>
+    <section v-if="periodicity === 'one-time'">
       <label>date</label>
-      <input v-if="periodicity === 'one-time'" v-model="date" type="date" />
-      <input v-if="periodicity === 'monthly'" v-model="date" type="month" />
+      <input v-model="date" type="date" />
+    </section>
+
+    <section v-if="periodicity === 'monthly'">
+      <label>date de début</label>
+      <input v-model="date" type="month" />
     </section>
 
     <section>
