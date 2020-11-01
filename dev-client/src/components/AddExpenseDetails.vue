@@ -6,12 +6,13 @@
   <main>
     <section>
       <label>montant</label>
-      <input :value="amount" type="number" autofocus inputmode="numeric" @beforeinput="amountChanged" />
+      <input :value="amount" type="number" autofocus inputmode="numeric" @beforeinput="onAmountInput" />
     </section>
 
     <section>
-      <label for="date">date</label>
-      <input id="date" v-model="date" type="date" :disabled="dateDisabled" />
+      <label>date</label>
+      <input v-if="periodicity === 'one-time'" v-model="date" type="date" />
+      <input v-if="periodicity === 'monthly'" v-model="date" type="month" />
     </section>
 
     <section>
@@ -39,13 +40,13 @@
     </section>
 
     <section>
-      <label for="label">libellé</label>
-      <input id="label" type="text" />
+      <label>libellé</label>
+      <input type="text" />
     </section>
 
     <section>
-      <label for="note">commentaire</label>
-      <input id="note" type="text" />
+      <label>commentaire</label>
+      <input type="text" />
     </section>
   </main>
 </template>
@@ -55,28 +56,31 @@
 <!-- ----------------------------------------------------------------------- -->
 
 <script lang="ts">
-  import { computed, defineComponent, ref } from 'vue';
+  import { defineComponent, ref, watch } from 'vue';
   import { updateAmount } from '../lib/amounts';
-  import { formatDateToDay } from '../lib/dates';
+  import { formatDateToDay, formatDateToMonth } from '../lib/dates';
   import { getExpenseTypeDefs } from '../lib/expenses';
 
   export default defineComponent({
     emits: ['done'],
 
     setup() {
-      const date = ref(formatDateToDay(new Date()));
-      const amount = ref('0.00');
+      const date = ref(formatDateToDay());
       const periodicity = ref('one-time');
-      const type = ref('card');
-      const typeDefs = getExpenseTypeDefs();
-      const dateDisabled = computed(() => periodicity.value !== 'one-time');
+      watch(periodicity, (value) => {
+        date.value = value === 'monthly' ? formatDateToMonth() : formatDateToDay();
+      });
 
-      const amountChanged = (event: InputEvent) => {
+      const amount = ref('0.00');
+      const onAmountInput = (event: InputEvent) => {
         event.preventDefault();
         amount.value = updateAmountFromEvent(event, amount.value);
       };
 
-      return { date, amount, periodicity, type, typeDefs, dateDisabled, amountChanged };
+      const type = ref('card');
+      const typeDefs = getExpenseTypeDefs();
+
+      return { date, periodicity, amount, onAmountInput, type, typeDefs };
     },
   });
 

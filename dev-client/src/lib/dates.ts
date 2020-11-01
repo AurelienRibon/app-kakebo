@@ -1,15 +1,20 @@
-export function formatDateToDay(date: Date): string {
+export function formatDateToDay(date = new Date()): string {
   const year = date.getUTCFullYear();
   const month = pad(date.getUTCMonth() + 1);
   const day = pad(date.getUTCDate());
   return `${year}-${month}-${day}`;
 }
 
+export function formatDateToMonth(date = new Date()): string {
+  const year = date.getUTCFullYear();
+  const month = pad(date.getUTCMonth() + 1);
+  return `${year}-${month}`;
+}
+
 export function formatDate(date: Date): string {
   const rtf = new Intl.RelativeTimeFormat('fr', { numeric: 'auto' });
   const dtf = new Intl.DateTimeFormat('fr');
   const daysDiff = computeDaysDiff(new Date(), date);
-
   return daysDiff >= -1 && daysDiff <= 0 ? rtf.format(daysDiff, 'day') : dtf.format(date);
 }
 
