@@ -43,17 +43,20 @@
       </div>
     </section>
 
-    <section>
-      <label>libellé</label>
-      <input type="text" />
-    </section>
+    <template v-if="withLabels">
+      <section>
+        <label>libellé</label>
+        <input type="text" />
+      </section>
 
-    <section>
-      <label>commentaire</label>
-      <input type="text" />
-    </section>
+      <section>
+        <label>commentaire</label>
+        <input type="text" />
+      </section>
+    </template>
 
-    <ButtonsSection>
+    <ButtonsSection class="buttons">
+      <button v-if="!withLabels" v-ripple v-tap class="btn-flat" @tap="extend">ANNOTER</button>
       <button v-ripple v-tap class="btn-light" @tap="cancel">ANNULER</button>
       <button v-ripple v-tap @tap="done">AJOUTER</button>
     </ButtonsSection>
@@ -90,11 +93,13 @@
 
       const type = ref('card');
       const typeDefs = getExpenseTypeDefs();
+      const withLabels = ref(false);
 
+      const extend = () => (withLabels.value = true);
       const cancel = () => context.emit('cancel');
       const done = () => context.emit('done');
 
-      return { date, periodicity, amount, onAmountInput, type, typeDefs, cancel, done };
+      return { date, periodicity, amount, onAmountInput, type, typeDefs, withLabels, extend, cancel, done };
     },
   });
 
@@ -169,5 +174,9 @@
         background: $accent1;
       }
     }
+  }
+
+  .buttons {
+    margin-top: 40px;
   }
 </style>
