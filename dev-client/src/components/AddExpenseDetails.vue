@@ -136,7 +136,7 @@
       line-height: 45px;
       font-size: 2em;
       border-radius: 6px;
-      transition: background 0.5s ease;
+      transition: background 0.3s ease;
 
       &.selected {
         background: $accent1;
