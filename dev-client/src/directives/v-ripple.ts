@@ -24,7 +24,7 @@ export function getVRippleDirective(): Directive {
 function applyRippleEffect(event: TouchEvent, elem: HTMLElement): void {
   const { top, left, width, height } = elem.getBoundingClientRect();
 
-  let ripple: HTMLElement | null = elem.querySelector('.ripple');
+  let ripple = elem.querySelector<HTMLElement>('.ripple');
   if (!ripple) {
     ripple = document.createElement('span');
     ripple.className = 'ripple';
