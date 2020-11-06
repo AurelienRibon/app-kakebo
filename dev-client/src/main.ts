@@ -1,7 +1,9 @@
 import { createApp } from 'vue';
 import { getVRippleDirective } from './directives/v-ripple';
 import { getVTapDirective } from './directives/v-tap';
-import App from './App.vue';
+import App from './components/App.vue';
+
+import './main.scss';
 
 updateCSSViewportHeight();
 

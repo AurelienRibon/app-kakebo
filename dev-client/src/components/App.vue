@@ -26,10 +26,10 @@
 
 <script lang="ts">
   import { defineComponent } from 'vue';
-  import { getExpenses } from './lib/expenses';
-  import { Expense } from './models/expense';
-  import Home from './components/Home.vue';
-  import AddExpense from './components/AddExpense.vue';
+  import { getExpenses } from '../lib/expenses';
+  import { Expense } from '../models/expense';
+  import Home from './Home.vue';
+  import AddExpense from './AddExpense.vue';
 
   type State = 'home' | 'addExpense';
 
@@ -62,10 +62,8 @@
 <!-- STYLE -->
 <!-- ----------------------------------------------------------------------- -->
 
-<style lang="scss" src="./main.scss"></style>
-
 <style lang="scss" scoped>
-  @import './theme.scss';
+  @import '../theme.scss';
 
   main {
     height: var(--h);
@@ -90,7 +88,7 @@
     color: $app-bgcolor;
     background: $accent2;
     border-radius: $size;
-    box-shadow: 0px 6px 14px 1px rgb(0 0 0 / 55%);
+    box-shadow: 0px 6px 14px 1px #0005;
   }
 
   .panel-add-expense {
