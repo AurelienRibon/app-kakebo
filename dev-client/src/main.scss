@@ -43,9 +43,19 @@ button {
   min-width: 100px;
   min-height: 50px;
 
-  &.btn-light {
+  &.btn-secondary {
     background: #929292;
     color: #fff;
+  }
+
+  &.btn-primary {
+    background: $accent1;
+    color: #fff;
+  }
+
+  &.btn-primary-2 {
+    background: white;
+    color: #000;
   }
 
   &.btn-flat {
