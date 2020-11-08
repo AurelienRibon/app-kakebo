@@ -98,7 +98,7 @@
 
       function bundle() {
         return {
-          amount: Number(amount.value),
+          amount: -Number(amount.value),
           periodicity: periodicity.value,
           date: new Date(date.value),
           type: type.value,
