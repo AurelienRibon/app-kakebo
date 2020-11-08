@@ -6,6 +6,8 @@
   <main>
     <Home :expenses="expenses"></Home>
 
+    <MenuBar class="menu-bar"></MenuBar>
+
     <div v-ripple v-tap class="btn-add-expense" @tap="onBtnAddExpenseClick">
       <i class="mdi mdi-plus"></i>
     </div>
@@ -35,11 +37,12 @@
   import { Expense } from '../models/expense';
   import Home from './Home.vue';
   import AddExpense from './AddExpense.vue';
+  import MenuBar from './MenuBar.vue';
 
   type State = 'home' | 'addExpense';
 
   export default defineComponent({
-    components: { Home, AddExpense },
+    components: { Home, MenuBar, AddExpense },
 
     data() {
       return {
@@ -61,6 +64,8 @@
       },
       onExpenseDone(data: Record<string, unknown>): void {
         const expense = new Expense(data);
+        this.expenses.unshift(expense);
+        this.state = 'home';
       },
     },
   });
@@ -81,11 +86,21 @@
     flex-direction: column;
   }
 
+  .menu-bar {
+    height: 60px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #ffa500;
+    border-top: 2px solid #000;
+  }
+
   .btn-add-expense {
     $size: 80px;
 
     position: fixed;
-    bottom: 20px;
+    bottom: 80px;
     right: 20px;
     width: $size;
     height: $size;
@@ -96,7 +111,7 @@
     color: $app-bgcolor;
     background: $accent2;
     border-radius: $size;
-    box-shadow: 0px 6px 14px 1px #0005;
+    box-shadow: 0px 4px 8px 0px #0009;
   }
 
   .panel-add-expense {
