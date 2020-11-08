@@ -4,7 +4,7 @@
 
 <template>
   <div>
-    <AddExpenseCategory v-if="index === 1" @done="onCategoryChosen"></AddExpenseCategory>
+    <AddExpenseCategory v-if="index === 1" @done="onCategoryDone"></AddExpenseCategory>
     <AddExpenseDetails v-if="index === 2" @done="onDetailsDone" @cancel="onDetailsCancel"></AddExpenseDetails>
   </div>
 </template>
@@ -15,32 +15,31 @@
 
 <script lang="ts">
   import { defineComponent, ref } from 'vue';
-  import { Expense } from '../models/expense';
   import AddExpenseCategory from './AddExpenseCategory.vue';
   import AddExpenseDetails from './AddExpenseDetails.vue';
 
   export default defineComponent({
     components: { AddExpenseCategory, AddExpenseDetails },
-    emits: ['cancel'],
+    emits: ['done', 'cancel'],
 
     setup(props, context) {
-      const expense = new Expense();
       const index = ref(1);
+      let category = '';
 
-      function onCategoryChosen(category: string): void {
-        expense.category = category;
+      function onCategoryDone(cat: string): void {
+        category = cat;
         index.value += 1;
+      }
+
+      function onDetailsDone(details: Record<string, unknown>): void {
+        context.emit('done', { category, ...details });
       }
 
       function onDetailsCancel(): void {
         context.emit('cancel');
       }
 
-      function onDetailsDone(): void {
-        void 0;
-      }
-
-      return { expense, index, onCategoryChosen, onDetailsCancel, onDetailsDone };
+      return { index, onCategoryDone, onDetailsDone, onDetailsCancel };
     },
   });
 </script>

@@ -15,7 +15,12 @@
     </transition>
 
     <transition name="slide">
-      <AddExpense v-if="state === 'addExpense'" class="panel-add-expense" @cancel="onExpenseCancel"></AddExpense>
+      <AddExpense
+        v-if="state === 'addExpense'"
+        class="panel-add-expense"
+        @cancel="onExpenseCancel"
+        @done="onExpenseDone"
+      ></AddExpense>
     </transition>
   </main>
 </template>
@@ -53,6 +58,9 @@
       },
       onExpenseCancel(): void {
         this.state = 'home';
+      },
+      onExpenseDone(data: Record<string, unknown>): void {
+        const expense = new Expense(data);
       },
     },
   });

@@ -85,30 +85,37 @@
       const amount = ref('0.00');
       const onAmountInput = (event: InputEvent) => {
         event.preventDefault();
-        amount.value = updateAmountFromEvent(event, amount.value);
+        amount.value = setAmount(event, amount.value);
       };
 
       const type = ref('card');
       const typeDefs = getExpenseTypeDefs();
 
       const cancel = () => context.emit('cancel');
-      const done = () => context.emit('done');
+      const done = () => context.emit('done', bundle());
 
       return { date, periodicity, amount, onAmountInput, type, typeDefs, cancel, done };
+
+      function bundle() {
+        return {
+          amount: Number(amount.value),
+          periodicity: periodicity.value,
+          date: new Date(date.value),
+          type: type.value,
+        };
+      }
+
+      function setAmount(event: InputEvent, amount: string): string {
+        if (event.inputType === 'deleteContentBackward') {
+          return updateAmount(amount, null);
+        } else if (event.inputType === 'insertText' && typeof event.data === 'string' && /^\d$/.test(event.data)) {
+          return updateAmount(amount, event.data);
+        } else {
+          return amount;
+        }
+      }
     },
   });
-
-  function updateAmountFromEvent(event: InputEvent, amount: string): string {
-    if (event.inputType === 'deleteContentBackward') {
-      return updateAmount(amount, null);
-    }
-
-    if (event.inputType === 'insertText' && typeof event.data === 'string' && /^\d$/.test(event.data)) {
-      return updateAmount(amount, event.data);
-    }
-
-    return amount;
-  }
 </script>
 
 <!-- ----------------------------------------------------------------------- -->
@@ -178,6 +185,6 @@
     right: 0;
     padding: 15px;
     background: $accent1;
-    border-top: 2px solid black;
+    border-top: 1px solid black;
   }
 </style>
