@@ -1,16 +1,16 @@
 <template>
   <div class="container">
-    <div class="item">
+    <div v-ripple v-tap class="item" @tap="select('home')">
       <i class="mdi mdi-home"></i>
       <span>acceuil</span>
     </div>
 
-    <div class="item">
-      <i class="mdi mdi-poll"></i>
+    <div v-ripple v-tap class="item" @tap="select('stats')">
+      <i class="mdi mdi-chart-bar"></i>
       <span>stats</span>
     </div>
 
-    <div class="item">
+    <div v-ripple v-tap class="item" @tap="select('list')">
       <i class="mdi mdi-format-list-bulleted-square"></i>
       <span>liste</span>
     </div>
@@ -19,17 +19,28 @@
 
 <script lang="ts">
   import { defineComponent } from 'vue';
-  export default defineComponent({});
+  import { MainPage } from '../models/page';
+
+  export default defineComponent({
+    emits: ['select'],
+
+    setup(props, ctx) {
+      return { select };
+
+      function select(name: MainPage) {
+        ctx.emit('select', name);
+      }
+    },
+  });
 </script>
 
 <style lang="scss" scoped>
   .container {
     display: flex;
-    justify-content: space-around;
   }
 
   .item {
-    width: 70px;
+    flex: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
