@@ -3,7 +3,7 @@
 <!-- ----------------------------------------------------------------------- -->
 
 <template>
-  <div>
+  <section>
     <div v-for="sameDayExpenses of expensesByDay" :key="sameDayExpenses.date" class="expense-group">
       <div class="expense-group-title">
         {{ formatExpenseDate(sameDayExpenses) }}
@@ -18,7 +18,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </section>
 </template>
 
 <!-- ----------------------------------------------------------------------- -->
@@ -37,7 +37,7 @@
     props: {
       expenses: {
         type: Array as PropType<Expense[]>,
-        default: () => [],
+        required: true,
       },
     },
 
@@ -68,10 +68,19 @@
 <style lang="scss" scoped>
   @import '../theme.scss';
 
+  section {
+    padding: 20px;
+  }
+
   .expense-group {
     margin-bottom: 30px;
-    padding-top: 7px;
+    padding-top: 20px;
     border-top: 1px solid #adadad;
+
+    &:first-of-type {
+      padding-top: 0;
+      border-top: 0;
+    }
   }
 
   .expense-group-title {
