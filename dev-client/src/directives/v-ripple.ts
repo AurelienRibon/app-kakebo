@@ -41,4 +41,11 @@ function applyRippleEffect(event: TouchEvent, elem: HTMLElement): void {
   ripple.style.left = px(x);
   ripple.style.top = px(y);
   ripple.classList.add('ripple-active');
+
+  const animationEndListener = () => {
+    ripple?.removeEventListener('animationend', animationEndListener);
+    ripple?.classList.remove('ripple-active');
+  };
+
+  ripple.addEventListener('animationend', animationEndListener);
 }
