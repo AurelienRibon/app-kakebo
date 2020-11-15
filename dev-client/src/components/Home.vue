@@ -9,8 +9,6 @@
     <div class="chart">
       <i class="mdi mdi-poll"></i>
     </div>
-
-    <HomeExpensesList :expenses="expenses"></HomeExpensesList>
   </section>
 </template>
 
@@ -19,20 +17,9 @@
 <!-- ----------------------------------------------------------------------- -->
 
 <script lang="ts">
-  import { defineComponent, PropType } from 'vue';
-  import { Expense } from '../models/expense';
-  import HomeExpensesList from './HomeExpensesList.vue';
+  import { defineComponent } from 'vue';
 
-  export default defineComponent({
-    components: { HomeExpensesList },
-
-    props: {
-      expenses: {
-        type: Array as PropType<Expense[]>,
-        required: true,
-      },
-    },
-  });
+  export default defineComponent({});
 </script>
 
 <!-- ----------------------------------------------------------------------- -->

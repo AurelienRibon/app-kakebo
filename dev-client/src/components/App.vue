@@ -4,13 +4,16 @@
 
 <template>
   <main>
-    <Home :expenses="expenses"></Home>
+    <Home v-if="page === 'home'"></Home>
+    <ExpensesList v-if="page === 'list'" :expenses="expenses"></ExpensesList>
 
-    <MenuBar class="menu-bar"></MenuBar>
+    <MenuBar class="menu-bar" @select="onMenuSelect"></MenuBar>
 
-    <div v-ripple v-tap class="btn-add-expense" @tap="onBtnAddExpenseClick">
-      <i class="mdi mdi-plus"></i>
-    </div>
+    <transition name="zoom">
+      <div v-if="page === 'home'" v-ripple v-tap class="btn-add-expense" @tap="onBtnAddExpenseClick">
+        <i class="mdi mdi-plus"></i>
+      </div>
+    </transition>
 
     <transition name="fade">
       <div v-if="state === 'addExpense'" class="smoke"></div>
@@ -32,41 +35,47 @@
 <!-- ----------------------------------------------------------------------- -->
 
 <script lang="ts">
-  import { defineComponent } from 'vue';
+  import { defineComponent, onMounted, ref } from 'vue';
   import { getExpenses } from '../lib/expenses';
   import { Expense } from '../models/expense';
-  import Home from './Home.vue';
+  import { MainPage } from '../models/page';
   import AddExpense from './AddExpense.vue';
+  import ExpensesList from './ExpensesList.vue';
+  import Home from './Home.vue';
   import MenuBar from './MenuBar.vue';
 
-  type State = 'home' | 'addExpense';
+  type State = 'idle' | 'addExpense';
 
   export default defineComponent({
-    components: { Home, MenuBar, AddExpense },
+    components: { Home, MenuBar, AddExpense, ExpensesList },
 
-    data() {
-      return {
-        state: 'home' as State,
-        expenses: [] as Expense[],
-      };
-    },
+    setup() {
+      const page = ref('home' as MainPage);
+      const state = ref('idle' as State);
+      const expenses = ref([] as Expense[]);
 
-    async mounted() {
-      this.expenses = await getExpenses();
-    },
+      onMounted(async () => {
+        expenses.value = await getExpenses();
+      });
 
-    methods: {
-      onBtnAddExpenseClick(): void {
-        this.state = 'addExpense';
-      },
-      onExpenseCancel(): void {
-        this.state = 'home';
-      },
-      onExpenseDone(data: Record<string, unknown>): void {
-        const expense = new Expense(data);
-        this.expenses.unshift(expense);
-        this.state = 'home';
-      },
+      return { state, page, expenses, onBtnAddExpenseClick, onExpenseCancel, onExpenseDone, onMenuSelect };
+
+      function onBtnAddExpenseClick(): void {
+        state.value = 'addExpense';
+      }
+
+      function onExpenseCancel(): void {
+        state.value = 'idle';
+      }
+
+      function onExpenseDone(data: Record<string, unknown>): void {
+        expenses.value.unshift(new Expense(data));
+        state.value = 'idle';
+      }
+
+      function onMenuSelect(choice: MainPage): void {
+        page.value = choice;
+      }
     },
   });
 </script>
@@ -151,5 +160,23 @@
   .slide-enter-from,
   .slide-leave-to {
     transform: translateY(var(--h));
+  }
+
+  .zoom-enter-active {
+    transition: transform 0.3s ease-out;
+  }
+
+  .zoom-leave-active {
+    transition: transform 0.15s ease-in;
+  }
+
+  .zoom-enter-from,
+  .zoom-leave-to {
+    transform: scale(0);
+  }
+
+  .zoom-enter-to,
+  .zoom-leave-from {
+    transform: scale(1);
   }
 </style>
