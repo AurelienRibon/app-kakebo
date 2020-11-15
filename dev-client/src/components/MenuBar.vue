@@ -5,6 +5,11 @@
       <span>acceuil</span>
     </div>
 
+    <div v-ripple v-tap class="item" @tap="select('setup')">
+      <i class="mdi mdi-bullseye-arrow"></i>
+      <span>objectif</span>
+    </div>
+
     <div v-ripple v-tap class="item" @tap="select('stats')">
       <i class="mdi mdi-chart-bar"></i>
       <span>stats</span>
