@@ -53,10 +53,10 @@
       <input type="text" />
     </section>
 
-    <ButtonsSection class="buttons">
+    <ButtonsGroup class="buttons">
       <button v-ripple v-tap class="btn-secondary" @tap="cancel">ANNULER</button>
       <button v-ripple v-tap class="btn-primary-2" @tap="done">AJOUTER</button>
-    </ButtonsSection>
+    </ButtonsGroup>
   </main>
 </template>
 
@@ -69,10 +69,10 @@
   import { updateAmount } from '../lib/amounts';
   import { formatDateToDay, formatDateToMonth } from '../lib/dates';
   import { getExpenseTypeDefs } from '../lib/expenses';
-  import ButtonsSection from './ButtonsSection.vue';
+  import ButtonsGroup from './ButtonsGroup.vue';
 
   export default defineComponent({
-    components: { ButtonsSection },
+    components: { ButtonsGroup },
     emits: ['cancel', 'done'],
 
     setup(props, context) {
