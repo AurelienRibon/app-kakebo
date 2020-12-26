@@ -78,11 +78,13 @@
     setup(props, context) {
       const date = ref(formatDateToDay());
       const periodicity = ref('one-time');
+
       watch(periodicity, (value) => {
         date.value = value === 'monthly' ? formatDateToMonth() : formatDateToDay();
       });
 
       const amount = ref('0.00');
+
       const onAmountInput = (event: InputEvent) => {
         event.preventDefault();
         amount.value = setAmount(event, amount.value);
@@ -100,7 +102,7 @@
         return {
           amount: -Number(amount.value),
           periodicity: periodicity.value,
-          date: new Date(date.value),
+          date: date.value,
           type: type.value,
         };
       }

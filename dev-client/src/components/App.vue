@@ -36,7 +36,7 @@
 
 <script lang="ts">
   import { defineComponent, onMounted, ref } from 'vue';
-  import { getExpenses } from '../lib/expenses';
+  import { createExpense, createNewExpense, loadExpenses } from '../lib/expenses';
   import { Expense } from '../models/expense';
   import { MainPage } from '../models/page';
   import AddExpense from './AddExpense.vue';
@@ -55,7 +55,7 @@
       const expenses = ref([] as Expense[]);
 
       onMounted(async () => {
-        expenses.value = await getExpenses();
+        expenses.value = await loadExpenses();
       });
 
       return { state, page, expenses, onBtnAddExpenseClick, onExpenseCancel, onExpenseDone, onMenuSelect };
@@ -68,8 +68,9 @@
         state.value = 'idle';
       }
 
-      function onExpenseDone(data: Record<string, unknown>): void {
-        expenses.value.unshift(new Expense(data));
+      function onExpenseDone(spec: Record<string, unknown>): void {
+        const expense = createNewExpense(spec);
+        expenses.value.unshift(expense);
         state.value = 'idle';
       }
 
