@@ -16,4 +16,13 @@ export class Expense {
     this.category = category || 'unknown';
     this.type = type || getExpenseDefaultType();
   }
+
+  serialize(): Record<string, unknown> {
+    return {
+      date: formatDateToDay(this.date),
+      amount: this.amount,
+      category: this.category,
+      type: this.type,
+    };
+  }
 }
