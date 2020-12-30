@@ -19,3 +19,7 @@ export function randInt(max: number): number {
 export function px(value: number): string {
   return `${value}px`;
 }
+
+export function str(value: unknown): string {
+  return JSON.stringify(value);
+}
