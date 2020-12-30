@@ -15,10 +15,6 @@
       </div>
     </transition>
 
-    <transition name="fade">
-      <div v-if="state === 'addExpense'" class="smoke"></div>
-    </transition>
-
     <transition name="slide">
       <AddExpense
         v-if="state === 'addExpense'"
@@ -134,11 +130,6 @@
 
     background: $app-bgcolor;
     border-top: 4px solid $accent1;
-  }
-
-  .smoke {
-    @include modal;
-    background: #000a;
   }
 
   // Transitions
