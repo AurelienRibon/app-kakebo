@@ -4,17 +4,17 @@ export function getVTapDirective(): Directive {
   return {
     mounted(el: HTMLElement) {
       el.addEventListener('touchstart', () => {
-        let moves = 0;
-        const touchmoveListener = () => ++moves;
+        const startTime = Date.now();
 
-        document.addEventListener('touchmove', touchmoveListener);
+        const touchendListener = () => {
+          el.removeEventListener('touchend', touchendListener);
 
-        setTimeout(() => {
-          document.removeEventListener('touchmove', touchmoveListener);
-          if (moves === 0) {
+          if (Date.now() - startTime < 200) {
             el.dispatchEvent(new Event('tap'));
           }
-        }, 150);
+        };
+
+        el.addEventListener('touchend', touchendListener);
       });
     },
   };
