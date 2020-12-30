@@ -1,8 +1,7 @@
-import testExpensesSpecs from '../../../data/test-expenses.json';
 import { formatDateToDay } from './dates';
+import { str } from './utils';
 import { Expense } from '../models/expense';
 import expenseTypes from '../meta/expense-types.json';
-import { guid } from './utils';
 
 type ExpenseTypeDef = { name: string; icon: string; default?: boolean };
 
@@ -38,45 +37,19 @@ export function getExpenseDefaultType(): string {
   return expenseDefaultType;
 }
 
-export async function loadExpenses(): Promise<Expense[]> {
-  const expenses = [] as Expense[];
+export function createExpense(spec: Record<string, unknown>): Expense {
+  const { date, amount, category } = spec;
 
-  for (const spec of testExpensesSpecs as Record<string, unknown>[]) {
-    const expense = createExpense(spec);
-    if (expense) {
-      expenses.push(expense);
-    }
-  }
-
-  return expenses;
-}
-
-export function createExpense(spec: Record<string, unknown>): Expense | undefined {
-  const { id, date, amount, category } = spec;
-
-  if (
-    typeof id !== 'string' ||
-    typeof date !== 'string' ||
-    typeof amount !== 'number' ||
-    typeof category !== 'string'
-  ) {
-    return;
+  if (typeof date !== 'string' || typeof amount !== 'number' || typeof category !== 'string') {
+    throw new Error(`Invalid expense specification, missing attributes. ${str(spec)}`);
   }
 
   const finalDate = new Date(date);
-  if (id.length === 0 || !finalDate.toJSON()) {
-    return;
+  if (!finalDate.toJSON()) {
+    throw new Error(`Invalid expense specification, invalid date. ${str(spec)}`);
   }
 
-  return new Expense(id, finalDate, amount, category);
-}
-
-export function createNewExpense(spec: Record<string, unknown>): Expense {
-  const expense = createExpense({ ...spec, id: guid() });
-  if (!expense) {
-    throw new Error('Invalid expense specification.');
-  }
-  return expense;
+  return new Expense(finalDate, amount, category);
 }
 
 export function splitExpensesByDay(expenses: Expense[]): SameDayExpenses[] {
