@@ -1,9 +1,12 @@
 import { createApp } from 'vue';
+import { Plugins } from '@capacitor/core';
 import { getVAutofocusDirective } from './directives/v-autofocus';
 import { getVRippleDirective } from './directives/v-ripple';
 import { getVTapDirective } from './directives/v-tap';
 import App from './components/App.vue';
 import './main.scss';
+
+Plugins.Keyboard.setAccessoryBarVisible({ isVisible: true });
 
 updateCSSViewportHeight();
 
