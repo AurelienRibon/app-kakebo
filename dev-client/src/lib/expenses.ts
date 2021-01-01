@@ -1,12 +1,6 @@
 import { formatDateToDay } from './dates';
 import { str } from './utils';
-import { Expense } from '../models/expense';
-import expenseTypes from '../meta/expense-types.json';
-
-type ExpenseTypeDef = { name: string; icon: string; default?: boolean };
-
-const expenseTypesByName: ReadonlyMap<string, ExpenseTypeDef> = indexTypesByName();
-const expenseDefaultType: string = lookupExpenseDefaultType();
+import { Expense, getExpenseTypeDefs } from '../models/expense';
 
 // -----------------------------------------------------------------------------
 // TYPES
@@ -22,19 +16,7 @@ export interface SameDayExpenses {
 // -----------------------------------------------------------------------------
 
 export function hasExpenseType(name: string): boolean {
-  return expenseTypesByName.has(name);
-}
-
-export function getExpenseTypeDefs(): ExpenseTypeDef[] {
-  return expenseTypes;
-}
-
-export function getExpenseDefaultCategory(): string {
-  return 'unknown';
-}
-
-export function getExpenseDefaultType(): string {
-  return expenseDefaultType;
+  return getExpenseTypeDefs().some((it) => it.name === name);
 }
 
 export function createExpense(spec: Record<string, unknown>): Expense {
@@ -48,6 +30,8 @@ export function createExpense(spec: Record<string, unknown>): Expense {
   if (!finalDate.toJSON()) {
     throw new Error(`Invalid expense specification, invalid date. ${str(spec)}`);
   }
+
+  // TODO type, label, comment
 
   return new Expense(finalDate, amount, category);
 }
@@ -73,22 +57,4 @@ export function splitExpensesByDay(expenses: Expense[]): SameDayExpenses[] {
   }
 
   return result;
-}
-
-// -----------------------------------------------------------------------------
-// HELPERS
-// -----------------------------------------------------------------------------
-
-function indexTypesByName() {
-  return new Map(expenseTypes.map((it) => [it.name, it]));
-}
-
-function lookupExpenseDefaultType() {
-  for (const [name, def] of expenseTypesByName.entries()) {
-    if (def.default) {
-      return name;
-    }
-  }
-
-  throw new Error(`No expense type was set as default.`);
 }
