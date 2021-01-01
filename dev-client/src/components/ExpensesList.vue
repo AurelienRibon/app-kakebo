@@ -26,11 +26,11 @@
 <!-- ----------------------------------------------------------------------- -->
 
 <script lang="ts">
-  import { defineComponent, PropType } from 'vue';
+  import { computed, defineComponent, PropType } from 'vue';
   import { formatAmount } from '../lib/amounts';
   import { getCategoryDef } from '../lib/categories';
   import { formatDate } from '../lib/dates';
-  import { SameDayExpenses, splitExpensesByDay } from '../lib/expenses';
+  import { splitExpensesByDay } from '../lib/expenses';
   import { Expense } from '../models/expense';
 
   export default defineComponent({
@@ -41,22 +41,21 @@
       },
     },
 
-    computed: {
-      expensesByDay(): SameDayExpenses[] {
-        return splitExpensesByDay(this.expenses);
-      },
-    },
+    setup(props) {
+      const expensesByDay = computed(() => splitExpensesByDay(props.expenses));
+      return { expensesByDay, formatExpenseAmount, formatExpenseDate, getExpenseIcon };
 
-    methods: {
-      formatExpenseAmount(expense: Expense): string {
+      function formatExpenseAmount(expense: Expense): string {
         return formatAmount(expense.amount);
-      },
-      formatExpenseDate(expense: Expense): string {
+      }
+
+      function formatExpenseDate(expense: Expense): string {
         return formatDate(expense.date);
-      },
-      getExpenseIcon(expense: Expense): string {
+      }
+
+      function getExpenseIcon(expense: Expense): string {
         return getCategoryDef(expense.category).icon;
-      },
+      }
     },
   });
 </script>
