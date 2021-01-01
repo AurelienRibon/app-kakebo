@@ -3,61 +3,59 @@
 <!-- ----------------------------------------------------------------------- -->
 
 <template>
-  <main>
-    <section>
-      <label>montant</label>
-      <input v-autofocus :value="amount" type="number" inputmode="numeric" @beforeinput="onAmountInput" />
-    </section>
+  <section>
+    <label>montant</label>
+    <input v-autofocus :value="amount" type="number" inputmode="numeric" @beforeinput="onAmountInput" />
+  </section>
 
-    <section>
-      <label>périodicité</label>
-      <select v-model="periodicity">
-        <option value="one-time">ponctuel</option>
-        <option value="monthly">une fois par mois</option>
-      </select>
-    </section>
+  <section>
+    <label>périodicité</label>
+    <select v-model="periodicity">
+      <option value="one-time">ponctuel</option>
+      <option value="monthly">une fois par mois</option>
+    </select>
+  </section>
 
-    <section v-if="periodicity === 'one-time'">
-      <label>date</label>
-      <input v-model="date" type="date" />
-    </section>
+  <section v-if="periodicity === 'one-time'">
+    <label>date</label>
+    <input v-model="date" type="date" />
+  </section>
 
-    <section v-if="periodicity === 'monthly'">
-      <label>date de début</label>
-      <input v-model="date" type="month" />
-    </section>
+  <section v-if="periodicity === 'monthly'">
+    <label>date de début</label>
+    <input v-model="date" type="month" />
+  </section>
 
-    <section>
-      <label>type</label>
-      <div class="type-container">
-        <div
-          v-for="def of typeDefs"
-          :key="def.name"
-          v-ripple
-          v-tap
-          :class="{ selected: def.name === type }"
-          @tap="type = def.name"
-        >
-          <i class="mdi" :class="def.icon"></i>
-        </div>
+  <section>
+    <label>type</label>
+    <div class="type-container">
+      <div
+        v-for="def of typeDefs"
+        :key="def.name"
+        v-ripple
+        v-tap
+        :class="{ selected: def.name === type }"
+        @tap="type = def.name"
+      >
+        <i class="mdi" :class="def.icon"></i>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <section>
-      <label>libellé</label>
-      <input v-model="label" type="text" />
-    </section>
+  <section>
+    <label>libellé</label>
+    <input v-model="label" type="text" />
+  </section>
 
-    <section>
-      <label>commentaire</label>
-      <input v-model="comment" type="text" />
-    </section>
+  <section>
+    <label>commentaire</label>
+    <input v-model="comment" type="text" />
+  </section>
 
-    <ButtonsGroup class="buttons">
-      <button v-ripple v-tap class="btn-secondary" @tap="cancel">ANNULER</button>
-      <button v-ripple v-tap class="btn-primary-2" @tap="done">AJOUTER</button>
-    </ButtonsGroup>
-  </main>
+  <ButtonsGroup class="buttons">
+    <button v-ripple v-tap class="btn-secondary" @tap="cancel">ANNULER</button>
+    <button v-ripple v-tap class="btn-primary-2" @tap="done">AJOUTER</button>
+  </ButtonsGroup>
 </template>
 
 <!-- ----------------------------------------------------------------------- -->
