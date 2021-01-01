@@ -14,7 +14,11 @@
             <span class="mdi" :class="getExpenseIcon(expense)"></span>
             <span>{{ expense.category }}</span>
           </div>
+          <div class="expense-item-spacer"></div>
           <div class="expense-item-amount">{{ formatExpenseAmount(expense) }}€</div>
+          <div v-ripple v-tap class="expense-item-edit" @tap="edit(expense)">
+            <i class="mdi mdi-pencil"></i>
+          </div>
         </div>
       </div>
     </div>
@@ -41,9 +45,15 @@
       },
     },
 
+    emits: ['edit'],
+
     setup(props) {
       const expensesByDay = computed(() => splitExpensesByDay(props.expenses));
-      return { expensesByDay, formatExpenseAmount, formatExpenseDate, getExpenseIcon };
+      return { expensesByDay, edit, formatExpenseAmount, formatExpenseDate, getExpenseIcon };
+
+      function edit(expense: Expense): void {
+        void expense; // TODO
+      }
 
       function formatExpenseAmount(expense: Expense): string {
         return formatAmount(expense.amount);
@@ -69,6 +79,7 @@
 
   section {
     padding: 20px;
+    padding-right: 10px;
   }
 
   .expense-group {
@@ -90,12 +101,21 @@
   .expense-item {
     display: flex;
     align-items: center;
-    justify-content: space-between;
     margin: 6px 0px;
+  }
+
+  .expense-item-spacer {
+    flex: 1;
   }
 
   .expense-item-amount {
     font-weight: bold;
+  }
+
+  .expense-item-edit {
+    padding: 6px 8px;
+    margin: -6px -8px;
+    margin-left: 0px;
   }
 
   .expense-item-category {
