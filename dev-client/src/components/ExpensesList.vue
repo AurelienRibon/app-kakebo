@@ -3,7 +3,7 @@
 <!-- ----------------------------------------------------------------------- -->
 
 <template>
-  <section>
+  <div class="container">
     <div v-for="sameDayExpenses of expensesByDay" :key="sameDayExpenses.date" class="expense-group">
       <div class="expense-group-title">
         {{ formatExpenseDate(sameDayExpenses) }}
@@ -22,7 +22,7 @@
         </div>
       </div>
     </div>
-  </section>
+  </div>
 </template>
 
 <!-- ----------------------------------------------------------------------- -->
@@ -77,7 +77,7 @@
 <style lang="scss" scoped>
   @import '../theme.scss';
 
-  section {
+  .container {
     padding: 20px;
     padding-right: 10px;
   }

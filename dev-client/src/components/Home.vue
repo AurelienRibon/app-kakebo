@@ -3,13 +3,13 @@
 <!-- ----------------------------------------------------------------------- -->
 
 <template>
-  <section>
+  <div class="container">
     <h1>Kakeibo</h1>
 
     <div class="chart">
       <i class="mdi mdi-poll"></i>
     </div>
-  </section>
+  </div>
 </template>
 
 <!-- ----------------------------------------------------------------------- -->
@@ -29,7 +29,7 @@
 <style lang="scss" scoped>
   @import '../theme.scss';
 
-  section {
+  .container {
     display: flex;
     flex-direction: column;
     padding: 20px;
