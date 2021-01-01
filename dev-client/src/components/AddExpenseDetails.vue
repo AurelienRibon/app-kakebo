@@ -45,12 +45,12 @@
 
     <section>
       <label>libellé</label>
-      <input type="text" />
+      <input v-model="label" type="text" />
     </section>
 
     <section>
       <label>commentaire</label>
-      <input type="text" />
+      <input v-model="comment" type="text" />
     </section>
 
     <ButtonsGroup class="buttons">
@@ -78,42 +78,40 @@
     setup(props, { emit }) {
       const date = ref(formatDateToDay());
       const periodicity = ref('one-time');
+      const label = ref('');
+      const comment = ref('');
+      const amount = ref('0.00');
+      const type = ref('card');
+      const typeDefs = getExpenseTypeDefs();
 
       watch(periodicity, (value) => {
         date.value = value === 'monthly' ? formatDateToMonth() : formatDateToDay();
       });
 
-      const amount = ref('0.00');
+      return { date, periodicity, label, comment, amount, onAmountInput, type, typeDefs, cancel, done };
 
-      const onAmountInput = (event: InputEvent) => {
-        event.preventDefault();
-        amount.value = setAmount(event, amount.value);
-      };
+      function cancel(): void {
+        emit('cancel');
+      }
 
-      const type = ref('card');
-      const typeDefs = getExpenseTypeDefs();
-
-      const cancel = () => emit('cancel');
-      const done = () => emit('done', bundle());
-
-      return { date, periodicity, amount, onAmountInput, type, typeDefs, cancel, done };
-
-      function bundle() {
-        return {
+      function done(): void {
+        emit('done', {
           amount: -Number(amount.value),
           periodicity: periodicity.value,
           date: date.value,
           type: type.value,
-        };
+          label: label.value,
+          comment: label.value,
+        });
       }
 
-      function setAmount(event: InputEvent, amount: string): string {
+      function onAmountInput(event: InputEvent): void {
+        event.preventDefault();
+
         if (event.inputType === 'deleteContentBackward') {
-          return updateAmount(amount, null);
+          amount.value = updateAmount(amount.value, null);
         } else if (event.inputType === 'insertText' && typeof event.data === 'string' && /^\d$/.test(event.data)) {
-          return updateAmount(amount, event.data);
-        } else {
-          return amount;
+          amount.value = updateAmount(amount.value, event.data);
         }
       }
     },
