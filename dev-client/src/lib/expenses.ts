@@ -20,20 +20,19 @@ export function hasExpenseType(name: string): boolean {
 }
 
 export function createExpense(spec: Record<string, unknown>): Expense {
-  const { date, amount, category } = spec;
+  const date = typeof spec.date === 'string' ? new Date(spec.date) : undefined;
+  const amount = typeof spec.amount === 'number' ? spec.amount : undefined;
+  const category = typeof spec.category === 'string' ? spec.category : undefined;
 
-  if (typeof date !== 'string' || typeof amount !== 'number' || typeof category !== 'string') {
-    throw new Error(`Invalid expense specification, missing attributes. ${str(spec)}`);
+  if (date === undefined || !date.toJSON() || amount === undefined || category === undefined) {
+    throw new Error(`Invalid expense specification: ${str(spec)}`);
   }
 
-  const finalDate = new Date(date);
-  if (!finalDate.toJSON()) {
-    throw new Error(`Invalid expense specification, invalid date. ${str(spec)}`);
-  }
+  const type = typeof spec.type === 'string' ? spec.type : '';
+  const label = typeof spec.label === 'string' ? spec.label : '';
+  const comment = typeof spec.comment === 'string' ? spec.comment : '';
 
-  // TODO type, label, comment
-
-  return new Expense(finalDate, amount, category);
+  return new Expense(date, amount, category, type, label, comment);
 }
 
 export function splitExpensesByDay(expenses: Expense[]): SameDayExpenses[] {
