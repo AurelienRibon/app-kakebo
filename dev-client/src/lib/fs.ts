@@ -7,7 +7,11 @@ const DIR_APP = 'kakebo';
 
 export async function writeFile(fileName: string, content: string): Promise<void> {
   const path = `${DIR_APP}/${fileName}`;
-  await Filesystem.mkdir({ path: DIR_APP, directory: DIR_ROOT, recursive: true });
+  try {
+    await Filesystem.mkdir({ path: DIR_APP, directory: DIR_ROOT, recursive: true });
+  } catch (err) {
+    void 0;
+  }
   await Filesystem.writeFile({ path, data: content, directory: DIR_ROOT, encoding: ENCODING });
 }
 
