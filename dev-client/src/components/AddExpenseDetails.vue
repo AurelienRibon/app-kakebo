@@ -75,7 +75,7 @@
     components: { ButtonsGroup },
     emits: ['cancel', 'done'],
 
-    setup(props, context) {
+    setup(props, { emit }) {
       const date = ref(formatDateToDay());
       const periodicity = ref('one-time');
 
@@ -93,8 +93,8 @@
       const type = ref('card');
       const typeDefs = getExpenseTypeDefs();
 
-      const cancel = () => context.emit('cancel');
-      const done = () => context.emit('done', bundle());
+      const cancel = () => emit('cancel');
+      const done = () => emit('done', bundle());
 
       return { date, periodicity, amount, onAmountInput, type, typeDefs, cancel, done };
 

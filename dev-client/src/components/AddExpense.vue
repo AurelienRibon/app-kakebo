@@ -22,7 +22,7 @@
     components: { AddExpenseCategory, AddExpenseDetails },
     emits: ['done', 'cancel'],
 
-    setup(props, context) {
+    setup(props, { emit }) {
       const index = ref(1);
       let category = '';
 
@@ -32,11 +32,11 @@
       }
 
       function onDetailsDone(details: Record<string, unknown>): void {
-        context.emit('done', { category, ...details });
+        emit('done', { category, ...details });
       }
 
       function onDetailsCancel(): void {
-        context.emit('cancel');
+        emit('cancel');
       }
 
       return { index, onCategoryDone, onDetailsDone, onDetailsCancel };
