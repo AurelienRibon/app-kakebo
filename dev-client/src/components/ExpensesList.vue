@@ -14,7 +14,7 @@
             <span class="mdi" :class="getExpenseIcon(expense)"></span>
             <span>{{ expense.category }}</span>
           </div>
-          <div class="expense-item-spacer"></div>
+          <div class="expense-item-label">{{ expense.label }}</div>
           <div class="expense-item-amount">{{ formatExpenseAmount(expense) }}€</div>
           <div v-ripple v-tap class="expense-item-edit" @tap="edit(expense)">
             <i class="mdi mdi-pencil"></i>
@@ -95,7 +95,8 @@
 
   .expense-group-title {
     margin-bottom: 10px;
-    font-size: 1.2em;
+    font-size: 1.8em;
+    font-weight: 100;
   }
 
   .expense-item {
@@ -104,8 +105,12 @@
     margin: 6px 0px;
   }
 
-  .expense-item-spacer {
+  .expense-item-label {
     flex: 1;
+    margin: 0 10px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   .expense-item-amount {
@@ -116,6 +121,8 @@
     padding: 6px 8px;
     margin: -6px -8px;
     margin-left: 0px;
+    border-radius: 100px;
+    color: #a5a5a5;
   }
 
   .expense-item-category {
