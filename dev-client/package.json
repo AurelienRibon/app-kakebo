@@ -5,7 +5,7 @@
   "main": "src/index.html",
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "build": "vue-cli-service build && cap copy",
     "lint": "eslint 'src/**/*.{js,ts,vue}'",
     "format": "prettier --write 'src/**/*.{js,ts,vue}'"
   },
