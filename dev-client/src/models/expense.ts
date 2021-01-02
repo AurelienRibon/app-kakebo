@@ -15,16 +15,14 @@ export class Expense {
   public readonly category: string;
   public readonly type: string;
   public readonly label: string;
-  public readonly comment: string;
 
-  constructor(date = new Date(), amount = 0, category = 'unknown', type = DEFAULT_TYPE, label = '', comment = '') {
+  constructor(date = new Date(), amount = 0, category = 'unknown', type = DEFAULT_TYPE, label = '') {
     this.id = guid();
     this.date = date;
     this.amount = amount;
     this.category = category;
     this.type = type;
     this.label = label;
-    this.comment = comment;
   }
 
   serialize(): Record<string, unknown> {
@@ -34,7 +32,6 @@ export class Expense {
       category: this.category,
       type: this.type,
       label: this.label,
-      comment: this.comment,
     };
   }
 }
@@ -50,9 +47,8 @@ export function createExpenseFromSpec(spec: ExpenseSpec): Expense {
 
   const type = typeof spec.type === 'string' ? spec.type : '';
   const label = typeof spec.label === 'string' ? spec.label : '';
-  const comment = typeof spec.comment === 'string' ? spec.comment : '';
 
-  return new Expense(date, amount, category, type, label, comment);
+  return new Expense(date, amount, category, type, label);
 }
 
 export function getExpenseTypeDefs(): ExpenseTypeDef[] {

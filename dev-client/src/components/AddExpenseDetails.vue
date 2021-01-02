@@ -51,11 +51,6 @@
     </datalist>
   </section>
 
-  <section>
-    <label>commentaire</label>
-    <input v-model="comment" type="text" />
-  </section>
-
   <ButtonsGroup class="buttons">
     <button v-ripple v-tap class="btn-secondary" @tap="cancel">ANNULER</button>
     <button v-ripple v-tap class="btn-primary" @tap="done">AJOUTER</button>
@@ -93,7 +88,6 @@
       const label = ref('');
       const labels = extractExpensesLabels(store.expenses, props.category);
 
-      const comment = ref('');
       const amount = ref('0.00');
       const type = ref('card');
       const typeDefs = getExpenseTypeDefs();
@@ -102,7 +96,7 @@
         date.value = value === 'monthly' ? formatDateToMonth() : formatDateToDay();
       });
 
-      return { date, periodicity, label, labels, comment, amount, onAmountInput, type, typeDefs, cancel, done };
+      return { date, periodicity, label, labels, amount, onAmountInput, type, typeDefs, cancel, done };
 
       function cancel(): void {
         emit('cancel');
@@ -115,7 +109,6 @@
           date: date.value,
           type: type.value,
           label: label.value,
-          comment: label.value,
         });
       }
 
