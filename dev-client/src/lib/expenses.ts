@@ -32,6 +32,12 @@ export function createExpenseFromSpec(spec: ExpenseSpec): Expense {
   return new Expense(date, amount, category, type, label);
 }
 
+export function createExpensesFromSpec(specs: ExpenseSpec[]): Expense[] {
+  const expenses = specs.map(createExpenseFromSpec);
+  expenses.sort((a, b) => b.date.getTime() - a.date.getTime());
+  return expenses;
+}
+
 export function splitExpensesByDay(expenses: Expense[]): SameDayExpenses[] {
   const expensesByDay: Map<string, Expense[]> = new Map();
   for (const expense of expenses) {

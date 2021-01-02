@@ -1,5 +1,5 @@
 import { Expense } from './expense';
-import { createExpenseFromSpec, ExpenseSpec } from '../lib/expenses';
+import { createExpenseFromSpec, createExpensesFromSpec, ExpenseSpec } from '../lib/expenses';
 import { readFile, writeFile } from '../lib/fs';
 
 class Store {
@@ -25,9 +25,9 @@ class Store {
 
   async load(): Promise<void> {
     const content = await readFile('data.json');
-    const spec = JSON.parse(content) as ExpenseSpec;
+    const spec = JSON.parse(content);
     const specExpenses = spec.expenses as ExpenseSpec[];
-    this._expenses = specExpenses.map(createExpenseFromSpec);
+    this._expenses = createExpensesFromSpec(specExpenses);
   }
 
   async save(): Promise<void> {
