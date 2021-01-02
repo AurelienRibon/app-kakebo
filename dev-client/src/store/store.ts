@@ -1,4 +1,4 @@
-import { Expense } from './expense';
+import { Expense } from '../models/expense';
 import { createExpenseFromSpec, createExpensesFromSpec, ExpenseSpec } from '../lib/expenses';
 import { readFile, writeFile } from '../lib/fs';
 

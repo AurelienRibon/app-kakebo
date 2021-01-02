@@ -34,8 +34,8 @@
   import { defineComponent, onMounted, ref } from 'vue';
   import { Expense } from '../models/expense';
   import { MainPage } from '../models/page';
-  import { store } from '../models/store';
   import { ExpenseSpec } from '../lib/expenses';
+  import { store } from '../store/store';
   import AddExpense from './AddExpense.vue';
   import ExpensesList from './ExpensesList.vue';
   import Home from './Home.vue';

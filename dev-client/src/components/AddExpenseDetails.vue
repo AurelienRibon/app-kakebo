@@ -67,7 +67,7 @@
   import { formatDateToDay, formatDateToMonth } from '../lib/dates';
   import { extractExpensesLabels } from '../lib/expenses';
   import { getExpenseTypeDefs } from '../lib/expenses-types';
-  import { store } from '../models/store';
+  import { store } from '../store/store';
   import ButtonsGroup from './ButtonsGroup.vue';
 
   export default defineComponent({
