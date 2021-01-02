@@ -32,8 +32,7 @@
 
 <script lang="ts">
   import { defineComponent, onMounted, ref } from 'vue';
-  import { createExpense } from '../lib/expenses';
-  import { Expense } from '../models/expense';
+  import { Expense, ExpenseSpec } from '../models/expense';
   import { MainPage } from '../models/page';
   import { store } from '../models/store';
   import AddExpense from './AddExpense.vue';
@@ -66,9 +65,8 @@
         state.value = 'idle';
       }
 
-      async function onExpenseDone(spec: Record<string, unknown>): Promise<void> {
-        const expense = createExpense(spec);
-        expenses.value.unshift(expense);
+      async function onExpenseDone(spec: ExpenseSpec): Promise<void> {
+        store.addExpenseFromSpec(spec);
         await store.save();
         state.value = 'idle';
       }
