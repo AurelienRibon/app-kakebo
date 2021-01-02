@@ -1,4 +1,5 @@
-import { createExpenseFromSpec, Expense, ExpenseSpec } from './expense';
+import { Expense } from './expense';
+import { createExpenseFromSpec, ExpenseSpec } from '../lib/expenses';
 import { readFile, writeFile } from '../lib/fs';
 
 class Store {

@@ -1,12 +1,10 @@
 import { formatDateToDay } from '../lib/dates';
-import { guid, str } from '../lib/utils';
+import { guid } from '../lib/utils';
 import expenseTypeDefs from '../meta/expense-types.json';
 
 type ExpenseTypeDef = { name: string; icon: string; default?: boolean };
 
 const DEFAULT_TYPE = lookupDefaultType();
-
-export type ExpenseSpec = Record<string, unknown>;
 
 export class Expense {
   public readonly id: string;
@@ -34,21 +32,6 @@ export class Expense {
       label: this.label,
     };
   }
-}
-
-export function createExpenseFromSpec(spec: ExpenseSpec): Expense {
-  const date = typeof spec.date === 'string' ? new Date(spec.date) : undefined;
-  const amount = typeof spec.amount === 'number' ? spec.amount : undefined;
-  const category = typeof spec.category === 'string' ? spec.category : undefined;
-
-  if (date === undefined || !date.toJSON() || amount === undefined || category === undefined) {
-    throw new Error(`Invalid expense specification: ${str(spec)}`);
-  }
-
-  const type = typeof spec.type === 'string' ? spec.type : '';
-  const label = typeof spec.label === 'string' ? spec.label : '';
-
-  return new Expense(date, amount, category, type, label);
 }
 
 export function getExpenseTypeDefs(): ExpenseTypeDef[] {

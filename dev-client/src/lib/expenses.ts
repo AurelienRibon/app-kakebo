@@ -1,9 +1,35 @@
 import { formatDateToDay } from './dates';
+import { str } from './utils';
 import { Expense } from '../models/expense';
 
-interface SameDayExpenses {
+// -----------------------------------------------------------------------------
+// TYPES
+// -----------------------------------------------------------------------------
+
+export interface SameDayExpenses {
   date: Date;
   expenses: Expense[];
+}
+
+export type ExpenseSpec = Record<string, unknown>;
+
+// -----------------------------------------------------------------------------
+// API
+// -----------------------------------------------------------------------------
+
+export function createExpenseFromSpec(spec: ExpenseSpec): Expense {
+  const date = typeof spec.date === 'string' ? new Date(spec.date) : undefined;
+  const amount = typeof spec.amount === 'number' ? spec.amount : undefined;
+  const category = typeof spec.category === 'string' ? spec.category : undefined;
+
+  if (date === undefined || !date.toJSON() || amount === undefined || category === undefined) {
+    throw new Error(`Invalid expense specification: ${str(spec)}`);
+  }
+
+  const type = typeof spec.type === 'string' ? spec.type : '';
+  const label = typeof spec.label === 'string' ? spec.label : '';
+
+  return new Expense(date, amount, category, type, label);
 }
 
 export function splitExpensesByDay(expenses: Expense[]): SameDayExpenses[] {

@@ -32,9 +32,10 @@
 
 <script lang="ts">
   import { defineComponent, onMounted, ref } from 'vue';
-  import { Expense, ExpenseSpec } from '../models/expense';
+  import { Expense } from '../models/expense';
   import { MainPage } from '../models/page';
   import { store } from '../models/store';
+  import { ExpenseSpec } from '../lib/expenses';
   import AddExpense from './AddExpense.vue';
   import ExpensesList from './ExpensesList.vue';
   import Home from './Home.vue';
