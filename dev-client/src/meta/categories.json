@@ -2,7 +2,7 @@
   { "name": "courses", "icon": "mdi-cart" },
   { "name": "voiture", "icon": "mdi-car" },
   { "name": "culture", "icon": "mdi-book-open-variant" },
-  { "name": "entretien", "icon": "mdi-tools" },
+  { "name": "maison", "icon": "mdi-home" },
   { "name": "santé", "icon": "mdi-hospital-box" },
   { "name": "vêtements", "icon": "mdi-hanger" },
   { "name": "famille", "icon": "mdi-account-multiple" },
@@ -11,10 +11,11 @@
   { "name": "voyages", "icon": "mdi-airplane", "extra": true },
   { "name": "cadeaux", "icon": "mdi-gift", "extra": true },
 
-  { "name": "maison", "icon": "mdi-home", "infrequent": true },
   { "name": "impots", "icon": "mdi-bank", "infrequent": true },
   { "name": "banque", "icon": "mdi-currency-eur", "infrequent": true },
   { "name": "école", "icon": "mdi-school", "infrequent": true },
   { "name": "animaux", "icon": "mdi-paw", "infrequent": true },
+  { "name": "salaires", "icon": "mdi-briefcase", "infrequent": true },
+  { "name": "dons", "icon": "mdi-charity", "infrequent": true },
   { "name": "divers", "icon": "mdi-help", "infrequent": true }
 ]
