@@ -1,3 +1,4 @@
+import { getCategoryDef } from '../lib/categories';
 import { formatDateToDay } from '../lib/dates';
 import { ExpensePeriodicity, getExpenseDefaultPeriodicity } from '../lib/expenses-periodicities';
 import { getExpenseDefaultType } from '../lib/expenses-types';
@@ -32,8 +33,12 @@ export class Expense {
     this.periodicity = periodicity;
   }
 
-  get recurring(): boolean {
-    return this.periodicity !== 'one-time';
+  isExtra(): boolean {
+    return getCategoryDef(this.category).extra === true;
+  }
+
+  isPositive(): boolean {
+    return this.amount > 0;
   }
 
   serialize(): Record<string, unknown> {

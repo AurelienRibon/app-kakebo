@@ -10,12 +10,14 @@
       </div>
       <div v-for="expense of sameDayExpenses.expenses" :key="expense.date" class="expense-items">
         <div class="expense-item">
-          <div class="expense-item-category" :class="{ 'expense-item-recurring': expense.recurring }">
+          <div class="expense-item-category" :class="{ 'expense-item-extra': expense.isExtra() }">
             <span class="mdi" :class="getExpenseIcon(expense)"></span>
             <span>{{ expense.category }}</span>
           </div>
           <div class="expense-item-label">{{ expense.label }}</div>
-          <div class="expense-item-amount">{{ formatExpenseAmount(expense) }}€</div>
+          <div class="expense-item-amount" :class="{ 'expense-item-positive': expense.isPositive() }">
+            {{ formatExpenseAmount(expense) }}€
+          </div>
           <div v-ripple v-tap class="expense-item-edit" @tap="edit(expense)">
             <i class="mdi mdi-pencil"></i>
           </div>
@@ -114,6 +116,10 @@
 
   .expense-item-amount {
     font-weight: bold;
+
+    &.expense-item-positive {
+      color: #e09200;
+    }
   }
 
   .expense-item-edit {
@@ -125,17 +131,17 @@
   }
 
   .expense-item-category {
-    background: $accent1;
     padding: 2px 6px;
     border: 1px solid black;
     border-radius: 20px;
+    font-size: 0.9em;
 
     & > span:first-of-type {
       margin-right: 2px;
     }
 
-    &.expense-item-recurring {
-      background: none;
+    &.expense-item-extra {
+      background: $accent1;
     }
   }
 </style>
