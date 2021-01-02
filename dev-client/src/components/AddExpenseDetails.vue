@@ -5,7 +5,12 @@
 <template>
   <section>
     <label>montant</label>
-    <input v-autofocus :value="amount" type="number" inputmode="numeric" @beforeinput="updateAmount" />
+    <div class="amount-container">
+      <div v-ripple v-tap class="amount-sign" @tap="updateSign">
+        <span>{{ sign }}</span>
+      </div>
+      <input ref="refAmount" :value="amount" type="number" inputmode="numeric" @beforeinput="updateAmount" />
+    </div>
   </section>
 
   <section>
@@ -62,7 +67,7 @@
 <!-- ----------------------------------------------------------------------- -->
 
 <script lang="ts">
-  import { defineComponent, ref, watch } from 'vue';
+  import { defineComponent, onMounted, ref, watch } from 'vue';
   import { addDigitToAmount } from '../lib/amounts';
   import { formatDateToDay, formatDateToMonth } from '../lib/dates';
   import { extractExpensesLabels } from '../lib/expenses';
@@ -89,14 +94,34 @@
       const labels = extractExpensesLabels(store.expenses, props.category);
 
       const amount = ref('0.00');
+      const sign = ref('-');
       const type = ref('card');
       const typeDefs = getExpenseTypeDefs();
+
+      const refAmount = ref(null);
 
       watch(periodicity, (value) => {
         date.value = value === 'monthly' ? formatDateToMonth() : formatDateToDay();
       });
 
-      return { date, periodicity, label, labels, amount, type, typeDefs, cancel, done, updateAmount, updateType };
+      onMounted(focusAmount);
+
+      return {
+        amount,
+        cancel,
+        date,
+        done,
+        label,
+        labels,
+        periodicity,
+        sign,
+        type,
+        typeDefs,
+        refAmount,
+        updateAmount,
+        updateSign,
+        updateType,
+      };
 
       function cancel(): void {
         emit('cancel');
@@ -104,7 +129,7 @@
 
       function done(): void {
         emit('done', {
-          amount: -Number(amount.value),
+          amount: Number(amount.value) * (sign.value === '-' ? -1 : +1),
           periodicity: periodicity.value,
           date: date.value,
           type: type.value,
@@ -116,6 +141,11 @@
         type.value = typeDef.name;
       }
 
+      function updateSign(): void {
+        sign.value = sign.value === '-' ? '+' : '-';
+        focusAmount();
+      }
+
       function updateAmount(event: InputEvent): void {
         event.preventDefault();
 
@@ -123,6 +153,13 @@
           amount.value = addDigitToAmount(amount.value, null);
         } else if (event.inputType === 'insertText' && typeof event.data === 'string' && /^\d$/.test(event.data)) {
           amount.value = addDigitToAmount(amount.value, event.data);
+        }
+      }
+
+      function focusAmount() {
+        const el = refAmount.value as HTMLElement | null;
+        if (el) {
+          el.focus();
         }
       }
     },
@@ -150,7 +187,7 @@
     width: 100%;
     height: 50px;
     line-height: 50px;
-    font-size: 1.8em;
+    font-size: 1.6em;
     border: 1px solid black;
     border-radius: 6px;
     outline: none;
@@ -165,7 +202,40 @@
       background: #ffedcc;
       border: 3px solid #ffa500;
       padding: 0 8px;
-      line-height: 46px;
+    }
+  }
+
+  .amount-container {
+    display: flex;
+    border: 1px solid black;
+    border-radius: 6px;
+    height: 50px;
+
+    .amount-sign {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 60px;
+      font-size: 30px;
+      padding: 0 20px;
+    }
+
+    input {
+      border: 0;
+      height: 48px;
+    }
+
+    &:focus-within {
+      background: #ffedcc;
+      border: 3px solid #ffa500;
+
+      .amount-sign {
+        padding-left: 17px;
+      }
+
+      input {
+        height: 44px;
+      }
     }
   }
 
