@@ -58,7 +58,7 @@
 
   <ButtonsGroup class="buttons">
     <button v-ripple v-tap class="btn-secondary" @tap="cancel">ANNULER</button>
-    <button v-ripple v-tap class="btn-primary-2" @tap="done">AJOUTER</button>
+    <button v-ripple v-tap class="btn-primary" @tap="done">AJOUTER</button>
   </ButtonsGroup>
 </template>
 
@@ -193,12 +193,6 @@
   }
 
   .buttons {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    padding: 15px;
-    background: $accent1;
-    border-top: 1px solid black;
+    margin-top: 30px;
   }
 </style>
