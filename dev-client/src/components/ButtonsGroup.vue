@@ -26,7 +26,7 @@
   .container {
     text-align: right;
 
-    & > ::v-deep button:not(:last-of-type) {
+    & > :deep(button:not(:last-of-type)) {
       margin-right: 10px;
     }
   }
