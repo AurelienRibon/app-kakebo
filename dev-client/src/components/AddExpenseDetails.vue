@@ -44,7 +44,11 @@
 
   <section>
     <label>libellé</label>
-    <input v-model="label" type="text" />
+    <input v-model="label" type="text" list="labels" />
+
+    <datalist id="labels">
+      <option v-for="label of labels" :key="label" :value="label"></option>
+    </datalist>
   </section>
 
   <section>
@@ -66,17 +70,29 @@
   import { defineComponent, ref, watch } from 'vue';
   import { updateAmount } from '../lib/amounts';
   import { formatDateToDay, formatDateToMonth } from '../lib/dates';
-  import { getExpenseTypeDefs } from '../lib/expenses';
+  import { extractExpensesLabels } from '../lib/expenses';
+  import { getExpenseTypeDefs } from '../models/expense';
+  import { store } from '../models/store';
   import ButtonsGroup from './ButtonsGroup.vue';
 
   export default defineComponent({
     components: { ButtonsGroup },
+
+    props: {
+      category: {
+        type: String,
+        required: true,
+      },
+    },
+
     emits: ['cancel', 'done'],
 
     setup(props, { emit }) {
       const date = ref(formatDateToDay());
       const periodicity = ref('one-time');
       const label = ref('');
+      const labels = extractExpensesLabels(store.expenses, props.category);
+
       const comment = ref('');
       const amount = ref('0.00');
       const type = ref('card');
@@ -86,7 +102,7 @@
         date.value = value === 'monthly' ? formatDateToMonth() : formatDateToDay();
       });
 
-      return { date, periodicity, label, comment, amount, onAmountInput, type, typeDefs, cancel, done };
+      return { date, periodicity, label, labels, comment, amount, onAmountInput, type, typeDefs, cancel, done };
 
       function cancel(): void {
         emit('cancel');
