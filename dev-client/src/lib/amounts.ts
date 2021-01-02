@@ -2,7 +2,7 @@ export function formatAmount(amount: number): string {
   return amount.toFixed(2);
 }
 
-export function updateAmount(oldValue: string, newDigit: string | null): string {
+export function addDigitToAmount(oldValue: string, newDigit: string | null): string {
   const oldValueRaw = oldValue.replace('.', '');
   const newValueRaw = newDigit !== null ? oldValueRaw + newDigit : oldValueRaw.slice(0, -1);
   const integer = extractIntegerPart(newValueRaw);

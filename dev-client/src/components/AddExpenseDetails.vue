@@ -63,7 +63,7 @@
 
 <script lang="ts">
   import { defineComponent, ref, watch } from 'vue';
-  import { updateAmount } from '../lib/amounts';
+  import { addDigitToAmount } from '../lib/amounts';
   import { formatDateToDay, formatDateToMonth } from '../lib/dates';
   import { extractExpensesLabels } from '../lib/expenses';
   import { ExpenseTypeDef, getExpenseTypeDefs } from '../lib/expenses-types';
@@ -120,9 +120,9 @@
         event.preventDefault();
 
         if (event.inputType === 'deleteContentBackward') {
-          amount.value = updateAmount(amount.value, null);
+          amount.value = addDigitToAmount(amount.value, null);
         } else if (event.inputType === 'insertText' && typeof event.data === 'string' && /^\d$/.test(event.data)) {
-          amount.value = updateAmount(amount.value, event.data);
+          amount.value = addDigitToAmount(amount.value, event.data);
         }
       }
     },
