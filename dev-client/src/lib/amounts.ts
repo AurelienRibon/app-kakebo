@@ -1,5 +1,6 @@
 export function formatAmount(amount: number): string {
-  return amount.toFixed(2);
+  const sign = amount > 0 ? '+' : '-';
+  return sign + Math.abs(amount).toFixed(2);
 }
 
 export function addDigitToAmount(oldValue: string, newDigit: string | null): string {
