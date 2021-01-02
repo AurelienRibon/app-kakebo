@@ -32,6 +32,10 @@ export class Expense {
     this.periodicity = periodicity;
   }
 
+  get recurring(): boolean {
+    return this.periodicity !== 'one-time';
+  }
+
   serialize(): Record<string, unknown> {
     return {
       date: formatDateToDay(this.date),

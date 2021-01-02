@@ -10,7 +10,7 @@
       </div>
       <div v-for="expense of sameDayExpenses.expenses" :key="expense.date" class="expense-items">
         <div class="expense-item">
-          <div class="expense-item-category">
+          <div class="expense-item-category" :class="{ 'expense-item-recurring': expense.recurring }">
             <span class="mdi" :class="getExpenseIcon(expense)"></span>
             <span>{{ expense.category }}</span>
           </div>
@@ -128,10 +128,15 @@
   .expense-item-category {
     background: $accent1;
     padding: 2px 6px;
+    border: 1px solid black;
     border-radius: 20px;
 
     & > span:first-of-type {
       margin-right: 2px;
+    }
+
+    &.expense-item-recurring {
+      background: none;
     }
   }
 </style>
