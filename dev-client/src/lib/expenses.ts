@@ -1,4 +1,5 @@
 import { formatDateToDay } from './dates';
+import { isPeriodicityValid } from './expenses-periodicities';
 import { str } from './utils';
 import { Expense } from '../models/expense';
 
@@ -26,10 +27,11 @@ export function createExpenseFromSpec(spec: ExpenseSpec): Expense {
     throw new Error(`Invalid expense specification: ${str(spec)}`);
   }
 
-  const type = typeof spec.type === 'string' ? spec.type : '';
-  const label = typeof spec.label === 'string' ? spec.label : '';
+  const type = typeof spec.type === 'string' ? spec.type : undefined;
+  const label = typeof spec.label === 'string' ? spec.label : undefined;
+  const periodicity = isPeriodicityValid(spec.periodicity) ? spec.periodicity : undefined;
 
-  return new Expense(date, amount, category, type, label);
+  return new Expense(date, amount, category, type, label, periodicity);
 }
 
 export function createExpensesFromSpec(specs: ExpenseSpec[]): Expense[] {

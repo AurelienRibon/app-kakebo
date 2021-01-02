@@ -16,10 +16,6 @@ export function getExpenseTypeDefs(): ExpenseTypeDef[] {
   return expenseTypeDefs;
 }
 
-export function getExpenseDefaultCategory(): string {
-  return 'unknown';
-}
-
 export function getExpenseDefaultType(): string {
   return DEFAULT_TYPE;
 }
