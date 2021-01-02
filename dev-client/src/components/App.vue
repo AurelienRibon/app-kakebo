@@ -95,7 +95,7 @@
   }
 
   .menu-bar {
-    height: 60px;
+    height: 70px;
     position: fixed;
     bottom: 0;
     left: 0;
@@ -109,7 +109,7 @@
     $size: 80px;
 
     position: fixed;
-    bottom: 80px;
+    bottom: 90px;
     right: 20px;
     width: $size;
     height: $size;

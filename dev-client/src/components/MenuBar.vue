@@ -61,6 +61,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
 
     i {
       font-size: 34px;
