@@ -101,7 +101,8 @@
     left: 0;
     right: 0;
     background: #ffa500;
-    border-top: 2px solid #000;
+    border-top: 1px solid #000;
+    box-shadow: inset 0px 11px 16px -16px #000000;
   }
 
   .btn-add-expense {
@@ -119,7 +120,7 @@
     color: $app-bgcolor;
     background: $accent2;
     border-radius: $size;
-    box-shadow: 0px 4px 8px 0px #0009;
+    box-shadow: 0px 2px 10px 0px #0008;
   }
 
   .panel-add-expense {

@@ -78,8 +78,7 @@
   @import '../theme.scss';
 
   .container {
-    padding: 20px;
-    padding-right: 10px;
+    padding: 20px 10px 70px 10px;
   }
 
   .expense-group {
