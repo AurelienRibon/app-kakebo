@@ -5,7 +5,7 @@
 <template>
   <section>
     <label>montant</label>
-    <input v-autofocus :value="amount" type="number" inputmode="numeric" @beforeinput="onAmountInput" />
+    <input v-autofocus :value="amount" type="number" inputmode="numeric" @beforeinput="updateAmount" />
   </section>
 
   <section>
@@ -35,7 +35,7 @@
         v-ripple
         v-tap
         :class="{ selected: def.name === type }"
-        @tap="type = def.name"
+        @tap="updateType(def)"
       >
         <i class="mdi" :class="def.icon"></i>
       </div>
@@ -66,7 +66,7 @@
   import { updateAmount } from '../lib/amounts';
   import { formatDateToDay, formatDateToMonth } from '../lib/dates';
   import { extractExpensesLabels } from '../lib/expenses';
-  import { getExpenseTypeDefs } from '../lib/expenses-types';
+  import { ExpenseTypeDef, getExpenseTypeDefs } from '../lib/expenses-types';
   import { store } from '../store/store';
   import ButtonsGroup from './ButtonsGroup.vue';
 
@@ -96,7 +96,7 @@
         date.value = value === 'monthly' ? formatDateToMonth() : formatDateToDay();
       });
 
-      return { date, periodicity, label, labels, amount, onAmountInput, type, typeDefs, cancel, done };
+      return { date, periodicity, label, labels, amount, type, typeDefs, cancel, done, updateAmount, updateType };
 
       function cancel(): void {
         emit('cancel');
@@ -112,7 +112,11 @@
         });
       }
 
-      function onAmountInput(event: InputEvent): void {
+      function updateType(typeDef: ExpenseTypeDef): void {
+        type.value = typeDef.name;
+      }
+
+      function updateAmount(event: InputEvent): void {
         event.preventDefault();
 
         if (event.inputType === 'deleteContentBackward') {
