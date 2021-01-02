@@ -5,30 +5,36 @@
 <template>
   <section>
     <label>montant</label>
-    <div class="amount-container">
-      <div v-ripple v-tap class="amount-sign" @tap="updateSign">
+    <article class="input-amount">
+      <div v-ripple v-tap class="sign" @tap="updateSign">
         <span>{{ sign }}</span>
       </div>
       <input ref="refAmount" :value="amount" type="number" inputmode="numeric" @beforeinput="updateAmount" />
-    </div>
+    </article>
   </section>
 
   <section>
     <label>périodicité</label>
-    <select v-model="periodicity">
-      <option value="one-time">ponctuel</option>
-      <option value="monthly">une fois par mois</option>
-    </select>
+    <article>
+      <select v-model="periodicity">
+        <option value="one-time">ponctuel</option>
+        <option value="monthly">une fois par mois</option>
+      </select>
+    </article>
   </section>
 
   <section v-if="periodicity === 'one-time'">
     <label>date</label>
-    <input v-model="date" type="date" />
+    <article>
+      <input v-model="date" type="date" />
+    </article>
   </section>
 
   <section v-if="periodicity === 'monthly'">
     <label>date de début</label>
-    <input v-model="date" type="month" />
+    <article>
+      <input v-model="date" type="month" />
+    </article>
   </section>
 
   <section>
@@ -49,8 +55,9 @@
 
   <section>
     <label>libellé</label>
-    <input v-model="label" type="text" list="labels" />
-
+    <article>
+      <input v-model="label" type="text" list="labels" />
+    </article>
     <datalist id="labels">
       <option v-for="label of labels" :key="label" :value="label"></option>
     </datalist>
@@ -181,62 +188,43 @@
     display: block;
   }
 
-  input,
-  select {
-    display: block;
-    width: 100%;
+  article {
     height: 50px;
-    line-height: 50px;
-    font-size: 1.6em;
-    border: 1px solid black;
-    border-radius: 6px;
-    outline: none;
-    padding: 0 10px;
-
-    &[inputmode='numeric'] {
-      text-align: right;
-      caret-color: #0000;
-    }
-
-    &:focus {
-      background: #ffedcc;
-      border: 3px solid #ffa500;
-      padding: 0 8px;
-    }
-  }
-
-  .amount-container {
     display: flex;
+    justify-content: stretch;
     border: 1px solid black;
     border-radius: 6px;
-    height: 50px;
-
-    .amount-sign {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 60px;
-      font-size: 30px;
-      padding: 0 20px;
-    }
-
-    input {
-      border: 0;
-      height: 48px;
-    }
 
     &:focus-within {
       background: #ffedcc;
       border: 3px solid #ffa500;
+    }
 
-      .amount-sign {
-        padding-left: 17px;
-      }
+    input,
+    select {
+      display: block;
+      flex: 1;
+      width: 100%;
+      padding: 0 10px;
 
-      input {
-        height: 44px;
+      background: none;
+      border: 0;
+      outline: none;
+      font-size: 1.4em;
+
+      &[inputmode='numeric'] {
+        text-align: right;
+        caret-color: #0000;
       }
     }
+  }
+
+  .sign {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 60px;
+    font-size: 1.6em;
   }
 
   .type-container {
