@@ -1,5 +1,5 @@
 import { Expense } from '../models/expense';
-import { createExpenseFromSpec, createExpensesFromSpec, ExpenseSpec } from '../lib/expenses';
+import { createExpenseFromSpec, createExpensesFromSpec, ExpenseSpec, sortExpenses } from '../lib/expenses';
 import { readFile, writeFile } from '../lib/fs';
 
 class Store {
@@ -16,11 +16,12 @@ class Store {
 
   addExpense(expense: Expense) {
     this._expenses.push(expense);
+    sortExpenses(this._expenses);
   }
 
   addExpenseFromSpec(spec: ExpenseSpec): void {
     const expense = createExpenseFromSpec(spec);
-    this._expenses.push(expense);
+    this.addExpense(expense);
   }
 
   async load(): Promise<void> {

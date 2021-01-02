@@ -36,12 +36,13 @@ export function createExpenseFromSpec(spec: ExpenseSpec): Expense {
 
 export function createExpensesFromSpec(specs: ExpenseSpec[]): Expense[] {
   const expenses = specs.map(createExpenseFromSpec);
-  expenses.sort((a, b) => b.date.getTime() - a.date.getTime());
+  sortExpenses(expenses);
   return expenses;
 }
 
 export function splitExpensesByDay(expenses: Expense[]): SameDayExpenses[] {
   const expensesByDay: Map<string, Expense[]> = new Map();
+
   for (const expense of expenses) {
     const day = formatDateToDay(expense.date);
 
@@ -55,6 +56,7 @@ export function splitExpensesByDay(expenses: Expense[]): SameDayExpenses[] {
   }
 
   const result: SameDayExpenses[] = [];
+
   for (const [day, bucket] of expensesByDay.entries()) {
     const date = new Date(day);
     result.push({ date, expenses: bucket });
@@ -76,4 +78,8 @@ export function extractExpensesLabels(expenses: Expense[], category: string): st
   return Array.from(counts.entries())
     .sort((a, b) => a[1] - b[1])
     .map((it) => it[0]);
+}
+
+export function sortExpenses(expenses: Expense[]): void {
+  expenses.sort((a, b) => b.date.getTime() - a.date.getTime());
 }
