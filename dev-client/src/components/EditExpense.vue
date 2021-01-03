@@ -4,7 +4,7 @@
 
 <template>
   <div>
-    <ExpenseDetails ref="refDetails" autofocus :expense="expense"></ExpenseDetails>
+    <ExpenseDetails ref="refDetails" :expense="expense"></ExpenseDetails>
     <ButtonsGroup class="buttons">
       <button v-ripple v-tap class="btn-flat" @tap="cancel">ANNULER</button>
       <button v-ripple v-tap class="btn-danger" @tap="remove">SUPPRIMER</button>
