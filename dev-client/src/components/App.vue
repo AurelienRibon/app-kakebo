@@ -5,7 +5,7 @@
 <template>
   <main>
     <Home v-if="page === 'home'"></Home>
-    <ExpensesList v-if="page === 'list'" :expenses="expenses"></ExpensesList>
+    <ExpensesList v-if="page === 'list'" :expenses="expenses" @edit="onExpenseEdit"></ExpensesList>
 
     <MenuBar class="menu-bar" @select="onMenuSelect"></MenuBar>
 
@@ -18,10 +18,21 @@
     <transition name="slide">
       <AddExpense
         v-if="state === 'addExpense'"
-        class="panel-add-expense"
-        @cancel="onExpenseCancel"
-        @done="onExpenseDone"
+        class="panel"
+        @cancel="onAddExpenseCancel"
+        @done="onAddExpenseDone"
       ></AddExpense>
+    </transition>
+
+    <transition name="slide">
+      <EditExpense
+        v-if="state === 'editExpense'"
+        class="panel"
+        :expense="editedExpense"
+        @cancel="onEditExpenseCancel"
+        @remove="onEditExpenseRemove"
+        @done="onEditExpenseDone"
+      ></EditExpense>
     </transition>
   </main>
 </template>
@@ -37,36 +48,64 @@
   import { ExpenseSpec } from '../lib/expenses';
   import { store } from '../store/store';
   import AddExpense from './AddExpense.vue';
+  import EditExpense from './EditExpense.vue';
   import ExpensesList from './ExpensesList.vue';
   import Home from './Home.vue';
   import MenuBar from './MenuBar.vue';
 
-  type State = 'idle' | 'addExpense';
+  type State = 'idle' | 'addExpense' | 'editExpense';
 
   export default defineComponent({
-    components: { Home, MenuBar, AddExpense, ExpensesList },
+    components: { Home, MenuBar, AddExpense, EditExpense, ExpensesList },
 
     setup() {
-      const page = ref('home' as MainPage);
-      const state = ref('idle' as State);
-      const expenses = ref([] as Expense[]);
+      const page = ref<MainPage>('home');
+      const state = ref<State>('idle');
+      const expenses = ref<Expense[]>([]);
+      const editedExpense = ref<Expense>(new Expense());
 
       onMounted(async () => {
         await store.load();
         expenses.value = store.expenses.value;
       });
 
-      return { state, page, expenses, onBtnAddExpenseClick, onExpenseCancel, onExpenseDone, onMenuSelect };
+      return {
+        editedExpense,
+        expenses,
+        onAddExpenseCancel,
+        onAddExpenseDone,
+        onBtnAddExpenseClick,
+        onEditExpenseCancel,
+        onEditExpenseRemove,
+        onExpenseEdit,
+        onMenuSelect,
+        page,
+        state,
+      };
 
       function onBtnAddExpenseClick(): void {
         state.value = 'addExpense';
       }
 
-      function onExpenseCancel(): void {
+      function onAddExpenseCancel(): void {
         state.value = 'idle';
       }
 
-      async function onExpenseDone(spec: ExpenseSpec): Promise<void> {
+      function onExpenseEdit(expense: Expense): void {
+        editedExpense.value = expense;
+        state.value = 'editExpense';
+      }
+
+      function onEditExpenseCancel(): void {
+        state.value = 'idle';
+      }
+
+      function onEditExpenseRemove(): void {
+        store.removeExpense(editedExpense.value);
+        state.value = 'idle';
+      }
+
+      async function onAddExpenseDone(spec: ExpenseSpec): Promise<void> {
         store.addExpenseFromSpec(spec);
         await store.save();
         state.value = 'idle';
@@ -123,7 +162,7 @@
     box-shadow: 0px 2px 10px 0px #0008;
   }
 
-  .panel-add-expense {
+  .panel {
     @include modal;
     overflow-y: auto;
     padding: 20px;

@@ -3,12 +3,14 @@
 <!-- ----------------------------------------------------------------------- -->
 
 <template>
-  <ExpenseDetails ref="refDetails" autofocus :expense="expense"></ExpenseDetails>
-
-  <ButtonsGroup class="buttons">
-    <button v-ripple v-tap class="btn-flat" @tap="cancel">ANNULER</button>
-    <button v-ripple v-tap class="btn-primary" @tap="done">AJOUTER</button>
-  </ButtonsGroup>
+  <div>
+    <ExpenseDetails ref="refDetails" autofocus :expense="expense"></ExpenseDetails>
+    <ButtonsGroup class="buttons">
+      <button v-ripple v-tap class="btn-flat" @tap="cancel">ANNULER</button>
+      <button v-ripple v-tap class="btn-danger" @tap="remove">SUPPRIMER</button>
+      <button v-ripple v-tap class="btn-primary" @tap="done">MODIFIER</button>
+    </ButtonsGroup>
+  </div>
 </template>
 
 <!-- ----------------------------------------------------------------------- -->
@@ -25,22 +27,25 @@
     components: { ButtonsGroup, ExpenseDetails },
 
     props: {
-      category: {
-        type: String,
+      expense: {
+        type: Expense,
         required: true,
       },
     },
 
-    emits: ['cancel', 'done'],
+    emits: ['cancel', 'remove', 'done'],
 
     setup(props, { emit }) {
-      const expense = new Expense(undefined, undefined, props.category);
       const refDetails = ref(null);
 
-      return { cancel, done, expense, refDetails };
+      return { cancel, remove, done, refDetails };
 
       function cancel(): void {
         emit('cancel');
+      }
+
+      function remove(): void {
+        emit('remove');
       }
 
       function done(): void {

@@ -43,11 +43,6 @@ button {
   min-width: 100px;
   min-height: 50px;
 
-  &.btn-secondary {
-    background: #929292;
-    color: #fff;
-  }
-
   &.btn-primary {
     background: $accent1;
     color: #000;
@@ -56,6 +51,16 @@ button {
   &.btn-primary-2 {
     background: white;
     color: #000;
+  }
+
+  &.btn-secondary {
+    background: #929292;
+    color: #fff;
+  }
+
+  &.btn-danger {
+    background: #c30000;
+    color: #fff;
   }
 
   &.btn-flat {

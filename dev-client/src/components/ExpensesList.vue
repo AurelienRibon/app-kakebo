@@ -49,12 +49,12 @@
 
     emits: ['edit'],
 
-    setup(props) {
+    setup(props, { emit }) {
       const expensesByDay = computed(() => splitExpensesByDay(props.expenses));
       return { expensesByDay, edit, formatExpenseAmount, formatExpenseDate, getExpenseIcon };
 
       function edit(expense: Expense): void {
-        void expense; // TODO
+        emit('edit', expense);
       }
 
       function formatExpenseAmount(expense: Expense): string {
