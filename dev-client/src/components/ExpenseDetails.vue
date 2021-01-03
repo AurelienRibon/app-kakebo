@@ -91,7 +91,7 @@
 
     setup(props) {
       // Expense properties
-      const date = ref(formatDateToDay(props.expense.date));
+      const date = ref(formatDate(props.expense.date, props.expense.periodicity));
       const periodicity = ref(props.expense.periodicity);
       const label = ref(props.expense.label);
       const amount = ref(formatAmount(props.expense.amount, true));
@@ -104,7 +104,7 @@
       const refAmount = ref(null);
 
       watch(periodicity, (value) => {
-        date.value = value === 'monthly' ? formatDateToMonth() : formatDateToDay();
+        date.value = formatDate(new Date(date.value), value);
       });
 
       if (props.autofocus) {
@@ -150,6 +150,10 @@
         if (el) {
           el.focus();
         }
+      }
+
+      function formatDate(date: Date, periodicity: string) {
+        return periodicity === 'monthly' ? formatDateToMonth(date) : formatDateToDay(date);
       }
     },
 
