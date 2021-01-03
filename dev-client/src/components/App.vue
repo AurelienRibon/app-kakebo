@@ -84,6 +84,10 @@
         state,
       };
 
+      function onMenuSelect(choice: MainPage): void {
+        page.value = choice;
+      }
+
       function onBtnAddExpenseClick(): void {
         state.value = 'addExpense';
       }
@@ -101,13 +105,15 @@
         state.value = 'idle';
       }
 
-      function onEditExpenseDone(spec: ExpenseSpec): void {
+      async function onEditExpenseDone(spec: ExpenseSpec): Promise<void> {
         store.editExpense(editedExpense.value, spec);
+        await store.save();
         state.value = 'idle';
       }
 
-      function onEditExpenseRemove(): void {
+      async function onEditExpenseRemove(): Promise<void> {
         store.removeExpense(editedExpense.value);
+        await store.save();
         state.value = 'idle';
       }
 
@@ -115,10 +121,6 @@
         store.addExpenseFromSpec(spec);
         await store.save();
         state.value = 'idle';
-      }
-
-      function onMenuSelect(choice: MainPage): void {
-        page.value = choice;
       }
     },
   });
