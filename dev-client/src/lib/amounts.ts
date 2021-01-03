@@ -1,5 +1,5 @@
-export function formatAmount(amount: number): string {
-  const sign = amount > 0 ? '+' : '-';
+export function formatAmount(amount: number, noSign = false): string {
+  const sign = noSign ? '' : amount > 0 ? '+' : '-';
   return sign + Math.abs(amount).toFixed(2);
 }
 

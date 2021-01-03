@@ -41,6 +41,10 @@ export class Expense {
     return this.amount > 0;
   }
 
+  getSign(): string {
+    return this.isPositive() ? '+' : '-';
+  }
+
   serialize(): Record<string, unknown> {
     return {
       date: formatDateToDay(this.date),
