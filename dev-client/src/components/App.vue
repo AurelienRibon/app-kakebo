@@ -76,6 +76,7 @@
         onAddExpenseDone,
         onBtnAddExpenseClick,
         onEditExpenseCancel,
+        onEditExpenseDone,
         onEditExpenseRemove,
         onExpenseEdit,
         onMenuSelect,
@@ -97,6 +98,11 @@
       }
 
       function onEditExpenseCancel(): void {
+        state.value = 'idle';
+      }
+
+      function onEditExpenseDone(spec: ExpenseSpec): void {
+        store.editExpense(editedExpense.value, spec);
         state.value = 'idle';
       }
 

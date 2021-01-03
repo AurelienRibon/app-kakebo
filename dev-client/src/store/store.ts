@@ -26,11 +26,13 @@ class Store {
     this.addExpense(expense);
   }
 
+  editExpense(expense: Expense, spec: ExpenseSpec): void {
+    const index = this.getExpenseIndex(expense);
+    this._expenses.value.splice(index, 1, createExpenseFromSpec(spec));
+  }
+
   removeExpense(expense: Expense) {
-    const index = this._expenses.value.findIndex((it) => it.id === expense.id);
-    if (index === -1) {
-      throw new Error(`Expense not found: ${str(expense)}`);
-    }
+    const index = this.getExpenseIndex(expense);
     this._expenses.value.splice(index, 1);
   }
 
@@ -47,6 +49,14 @@ class Store {
       version: this._version,
     });
     await writeFile('data.json', content);
+  }
+
+  private getExpenseIndex(expense: Expense): number {
+    const index = this._expenses.value.findIndex((it) => it.id === expense.id);
+    if (index === -1) {
+      throw new Error(`Expense not found: ${str(expense)}`);
+    }
+    return index;
   }
 }
 
