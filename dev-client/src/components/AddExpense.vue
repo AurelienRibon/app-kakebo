@@ -39,8 +39,8 @@
         index.value += 1;
       }
 
-      function onDetailsDone(details: ExpenseSpec): void {
-        emit('done', { category: category.value, ...details });
+      function onDetailsDone(spec: ExpenseSpec): void {
+        emit('done', spec);
       }
 
       function onDetailsCancel(): void {

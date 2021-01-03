@@ -97,6 +97,7 @@
       const amount = ref(formatAmount(props.expense.amount, true));
       const sign = ref(props.expense.getSign());
       const type = ref(props.expense.type);
+      const category = ref(props.expense.category);
 
       // Misc values
       const labels = extractExpensesLabels(store.expenses.value, props.expense.category);
@@ -113,6 +114,7 @@
 
       return {
         amount,
+        category,
         date,
         label,
         labels,
@@ -160,6 +162,7 @@
     methods: {
       bundle() {
         return {
+          category: this.category,
           amount: Number(this.amount) * (this.sign === '-' ? -1 : +1),
           periodicity: this.periodicity,
           date: this.date,
