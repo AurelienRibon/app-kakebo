@@ -21,6 +21,10 @@ export interface CategoryDef {
 // API
 // -----------------------------------------------------------------------------
 
+export function getCategoryDefs(): CategoryDef[] {
+  return categories;
+}
+
 export function getCategoryDef(name: string): CategoryDef {
   return categoriesMap.get(name) || unknownCategory;
 }

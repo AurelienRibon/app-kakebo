@@ -3,6 +3,15 @@
 <!-- ----------------------------------------------------------------------- -->
 
 <template>
+  <section v-if="full">
+    <label>catégorie</label>
+    <article>
+      <select v-model="category">
+        <option v-for="it of categories" :key="it.name">{{ it.name }}</option>
+      </select>
+    </article>
+  </section>
+
   <section>
     <label>montant</label>
     <article class="input-amount">
@@ -72,6 +81,7 @@
   import { defineComponent, onMounted, ref, watch } from 'vue';
   import { addDigitToAmount, formatAmount } from '../lib/amounts';
   import { formatDateToDay, formatDateToMonth } from '../lib/dates';
+  import { getCategoryDefs } from '../lib/categories';
   import { extractExpensesLabels } from '../lib/expenses';
   import { ExpenseTypeDef, getExpenseTypeDefs } from '../lib/expenses-types';
   import { Expense } from '../models/expense';
@@ -85,7 +95,9 @@
       },
       autofocus: {
         type: Boolean,
-        required: true,
+      },
+      full: {
+        type: Boolean,
       },
     },
 
@@ -100,6 +112,7 @@
       const category = ref(props.expense.category);
 
       // Misc values
+      const categories = getCategoryDefs();
       const labels = extractExpensesLabels(store.expenses.value, props.expense.category);
       const typeDefs = getExpenseTypeDefs();
       const refAmount = ref(null);
@@ -114,6 +127,7 @@
 
       return {
         amount,
+        categories,
         category,
         date,
         label,
