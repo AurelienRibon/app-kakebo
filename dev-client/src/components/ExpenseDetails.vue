@@ -99,7 +99,7 @@
       const type = ref(props.expense.type);
 
       // Misc values
-      const labels = extractExpensesLabels(store.expenses, props.expense.category);
+      const labels = extractExpensesLabels(store.expenses.value, props.expense.category);
       const typeDefs = getExpenseTypeDefs();
       const refAmount = ref(null);
 

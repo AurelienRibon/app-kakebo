@@ -53,7 +53,7 @@
 
       onMounted(async () => {
         await store.load();
-        expenses.value = store.expenses;
+        expenses.value = store.expenses.value;
       });
 
       return { state, page, expenses, onBtnAddExpenseClick, onExpenseCancel, onExpenseDone, onMenuSelect };
