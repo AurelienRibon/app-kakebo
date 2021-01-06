@@ -118,7 +118,7 @@
       }
 
       async function onAddExpenseDone(spec: ExpenseSpec): Promise<void> {
-        store.addExpenseFromSpec(spec);
+        store.addExpense(spec);
         await store.save();
         state.value = 'idle';
       }

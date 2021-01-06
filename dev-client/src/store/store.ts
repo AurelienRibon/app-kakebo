@@ -16,14 +16,10 @@ class Store {
     return this._version;
   }
 
-  addExpense(expense: Expense) {
+  addExpense(spec: ExpenseSpec): void {
+    const expense = createExpenseFromSpec(spec);
     this._expenses.value.push(expense);
     sortExpenses(this._expenses.value);
-  }
-
-  addExpenseFromSpec(spec: ExpenseSpec): void {
-    const expense = createExpenseFromSpec(spec);
-    this.addExpense(expense);
   }
 
   editExpense(expense: Expense, spec: ExpenseSpec): void {
