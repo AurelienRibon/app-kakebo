@@ -7,6 +7,16 @@ import { guid } from '../lib/utils';
 const DEFAULT_TYPE = getExpenseDefaultType();
 const DEFAULT_PERIODICITY = getExpenseDefaultPeriodicity();
 
+export interface ExpenseSpec {
+  id?: string;
+  date?: Date;
+  amount?: number;
+  category?: string;
+  type?: string;
+  label?: string;
+  periodicity?: ExpensePeriodicity;
+}
+
 export class Expense {
   public readonly id: string;
   public readonly date: Date;
@@ -16,21 +26,14 @@ export class Expense {
   public readonly label: string;
   public readonly periodicity: ExpensePeriodicity;
 
-  constructor(
-    date = new Date(),
-    amount = 0,
-    category = 'unknown',
-    type = DEFAULT_TYPE,
-    label = '',
-    periodicity = DEFAULT_PERIODICITY
-  ) {
-    this.id = guid();
-    this.date = date;
-    this.amount = amount;
-    this.category = category;
-    this.type = type;
-    this.label = label;
-    this.periodicity = periodicity;
+  constructor(spec: ExpenseSpec = {}) {
+    this.id = spec.id || guid();
+    this.date = spec.date || new Date();
+    this.amount = spec.amount || 0;
+    this.category = spec.category || 'unknown';
+    this.type = spec.type || DEFAULT_TYPE;
+    this.label = spec.label || '';
+    this.periodicity = spec.periodicity || DEFAULT_PERIODICITY;
   }
 
   isExtra(): boolean {
