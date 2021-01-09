@@ -47,6 +47,7 @@ export class Expense {
 
   serialize(): Record<string, unknown> {
     return {
+      id: this.id,
       date: formatDateToDay(this.date),
       amount: this.amount,
       category: this.category,
