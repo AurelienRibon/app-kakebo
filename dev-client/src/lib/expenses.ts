@@ -12,13 +12,14 @@ export interface SameDayExpenses {
   expenses: Expense[];
 }
 
-export type ExpenseSpec = Record<string, unknown>;
+export type ExpenseJSON = Record<string, unknown>;
 
 // -----------------------------------------------------------------------------
 // API
 // -----------------------------------------------------------------------------
 
-export function createExpenseFromSpec(spec: ExpenseSpec): Expense {
+export function createExpenseFromJSON(spec: ExpenseJSON): Expense {
+  const id = typeof spec.id === 'string' ? spec.id : undefined;
   const date = typeof spec.date === 'string' ? new Date(spec.date) : undefined;
   const amount = typeof spec.amount === 'number' ? spec.amount : undefined;
   const category = typeof spec.category === 'string' ? spec.category : undefined;
@@ -31,11 +32,11 @@ export function createExpenseFromSpec(spec: ExpenseSpec): Expense {
   const label = typeof spec.label === 'string' ? spec.label : undefined;
   const periodicity = isPeriodicityValid(spec.periodicity) ? spec.periodicity : undefined;
 
-  return new Expense(date, amount, category, type, label, periodicity);
+  return new Expense({ id, date, amount, category, type, label, periodicity });
 }
 
-export function createExpensesFromSpec(specs: ExpenseSpec[]): Expense[] {
-  const expenses = specs.map(createExpenseFromSpec);
+export function createExpensesFromJSON(specs: ExpenseJSON[]): Expense[] {
+  const expenses = specs.map(createExpenseFromJSON);
   sortExpenses(expenses);
   return expenses;
 }

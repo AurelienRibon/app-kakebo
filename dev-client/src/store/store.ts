@@ -1,6 +1,6 @@
 import { Ref, ref } from 'vue';
 import { Expense } from '../models/expense';
-import { createExpenseFromSpec, createExpensesFromSpec, ExpenseSpec, sortExpenses } from '../lib/expenses';
+import { createExpenseFromJSON, createExpensesFromJSON, ExpenseJSON, sortExpenses } from '../lib/expenses';
 import { readFile, writeFile } from '../lib/fs';
 import { str } from '../lib/utils';
 
@@ -16,15 +16,15 @@ class Store {
     return this._version;
   }
 
-  addExpense(spec: ExpenseSpec): void {
-    const expense = createExpenseFromSpec(spec);
+  addExpense(spec: ExpenseJSON): void {
+    const expense = createExpenseFromJSON(spec);
     this._expenses.value.push(expense);
     sortExpenses(this._expenses.value);
   }
 
-  editExpense(expense: Expense, spec: ExpenseSpec): void {
+  editExpense(expense: Expense, spec: ExpenseJSON): void {
     const index = this.getExpenseIndex(expense);
-    this._expenses.value.splice(index, 1, createExpenseFromSpec(spec));
+    this._expenses.value.splice(index, 1, createExpenseFromJSON(spec));
   }
 
   removeExpense(expense: Expense) {
@@ -35,8 +35,8 @@ class Store {
   async load(): Promise<void> {
     const content = await readFile('data.json');
     const spec = JSON.parse(content);
-    const specExpenses = spec.expenses as ExpenseSpec[];
-    this._expenses.value = createExpensesFromSpec(specExpenses);
+    const specExpenses = spec.expenses as ExpenseJSON[];
+    this._expenses.value = createExpensesFromJSON(specExpenses);
   }
 
   async save(): Promise<void> {

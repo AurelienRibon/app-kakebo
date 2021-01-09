@@ -34,7 +34,7 @@
     emits: ['cancel', 'done'],
 
     setup(props, { emit }) {
-      const expense = new Expense(undefined, undefined, props.category);
+      const expense = new Expense({ category: props.category });
       const refDetails = ref(null);
 
       return { cancel, done, expense, refDetails };

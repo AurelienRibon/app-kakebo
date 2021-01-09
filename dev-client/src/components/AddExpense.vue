@@ -20,7 +20,7 @@
 
 <script lang="ts">
   import { defineComponent, ref } from 'vue';
-  import { ExpenseSpec } from '../lib/expenses';
+  import { ExpenseJSON } from '../lib/expenses';
   import AddExpenseCategory from './AddExpenseCategory.vue';
   import AddExpenseDetails from './AddExpenseDetails.vue';
 
@@ -39,7 +39,7 @@
         index.value += 1;
       }
 
-      function onDetailsDone(spec: ExpenseSpec): void {
+      function onDetailsDone(spec: ExpenseJSON): void {
         emit('done', spec);
       }
 

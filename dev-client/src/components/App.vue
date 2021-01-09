@@ -45,7 +45,7 @@
   import { defineComponent, onMounted, ref } from 'vue';
   import { Expense } from '../models/expense';
   import { MainPage } from '../models/page';
-  import { ExpenseSpec } from '../lib/expenses';
+  import { ExpenseJSON } from '../lib/expenses';
   import { store } from '../store/store';
   import AddExpense from './AddExpense.vue';
   import EditExpense from './EditExpense.vue';
@@ -105,7 +105,7 @@
         state.value = 'idle';
       }
 
-      async function onEditExpenseDone(spec: ExpenseSpec): Promise<void> {
+      async function onEditExpenseDone(spec: ExpenseJSON): Promise<void> {
         store.editExpense(editedExpense.value, spec);
         await store.save();
         state.value = 'idle';
@@ -117,7 +117,7 @@
         state.value = 'idle';
       }
 
-      async function onAddExpenseDone(spec: ExpenseSpec): Promise<void> {
+      async function onAddExpenseDone(spec: ExpenseJSON): Promise<void> {
         store.addExpense(spec);
         await store.save();
         state.value = 'idle';
