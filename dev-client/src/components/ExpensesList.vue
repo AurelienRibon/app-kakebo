@@ -6,7 +6,9 @@
   <div class="container">
     <div v-for="sameDayExpenses of expensesByDay" :key="sameDayExpenses.date" class="expense-group">
       <div class="expense-group-title">
-        {{ formatExpenseDate(sameDayExpenses) }}
+        <span>{{ formatExpenseDate(sameDayExpenses) }}</span>
+        <span class="spacer"></span>
+        <span class="sum">{{ sumDebits(sameDayExpenses.expenses) }}€</span>
       </div>
       <div v-for="expense of sameDayExpenses.expenses" :key="expense.date" class="expense-items">
         <div class="expense-item">
@@ -57,7 +59,7 @@
 
     setup(props, { emit }) {
       const expensesByDay = computed(() => splitExpensesByDay(props.expenses));
-      return { expensesByDay, edit, formatExpenseAmount, formatExpenseDate, getExpenseIcon };
+      return { expensesByDay, edit, formatExpenseAmount, formatExpenseDate, getExpenseIcon, sumDebits };
 
       function edit(expense: Expense): void {
         emit('edit', expense);
@@ -73,6 +75,10 @@
 
       function getExpenseIcon(expense: Expense): string {
         return getCategoryDef(expense.category).icon;
+      }
+
+      function sumDebits(expenses: Expense[]): number {
+        return expenses.reduce((acc, it) => (it.amount < 0 ? acc + it.amount : acc), 0);
       }
     },
   });
@@ -101,9 +107,21 @@
   }
 
   .expense-group-title {
+    display: flex;
+    align-items: baseline;
+
     margin-bottom: 10px;
     font-size: 1.8em;
     font-weight: 100;
+
+    .spacer {
+      flex: 1;
+    }
+
+    .sum {
+      font-size: 0.5em;
+      color: #6b6b6b;
+    }
   }
 
   .expense-item {
