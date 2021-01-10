@@ -40,6 +40,10 @@ export class Expense {
     return getCategoryDef(this.category).extra === true;
   }
 
+  isRecurring(): boolean {
+    return this.periodicity !== 'one-time';
+  }
+
   isPositive(): boolean {
     return this.amount > 0;
   }

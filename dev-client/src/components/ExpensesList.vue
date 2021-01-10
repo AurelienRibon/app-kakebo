@@ -10,7 +10,13 @@
       </div>
       <div v-for="expense of sameDayExpenses.expenses" :key="expense.date" class="expense-items">
         <div class="expense-item">
-          <div class="expense-item-category" :class="{ 'expense-item-extra': expense.isExtra() }">
+          <div
+            class="expense-item-category"
+            :class="{
+              'expense-item-extra': expense.isExtra(),
+              'expense-item-recurring': expense.isRecurring(),
+            }"
+          >
             <span class="mdi" :class="getExpenseIcon(expense)"></span>
             <span>{{ expense.category }}</span>
           </div>
@@ -142,6 +148,10 @@
 
     &.expense-item-extra {
       background: $accent1;
+    }
+
+    &.expense-item-recurring {
+      border-style: dashed;
     }
   }
 </style>
