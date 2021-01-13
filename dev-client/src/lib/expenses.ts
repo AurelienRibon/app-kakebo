@@ -19,7 +19,7 @@ export type ExpenseJSON = Record<string, unknown>;
 // -----------------------------------------------------------------------------
 
 export function createExpenseFromJSON(spec: ExpenseJSON): Expense {
-  const id = typeof spec.id === 'string' ? spec.id : undefined;
+  const _id = typeof spec._id === 'string' ? spec._id : undefined;
   const date = typeof spec.date === 'string' ? new Date(spec.date) : undefined;
   const amount = typeof spec.amount === 'number' ? spec.amount : undefined;
   const category = typeof spec.category === 'string' ? spec.category : undefined;
@@ -32,7 +32,7 @@ export function createExpenseFromJSON(spec: ExpenseJSON): Expense {
   const label = typeof spec.label === 'string' ? spec.label : undefined;
   const periodicity = isPeriodicityValid(spec.periodicity) ? spec.periodicity : undefined;
 
-  return new Expense({ id, date, amount, category, type, label, periodicity });
+  return new Expense({ _id, date, amount, category, type, label, periodicity });
 }
 
 export function createExpensesFromJSON(specs: ExpenseJSON[]): Expense[] {

@@ -52,7 +52,7 @@ class Store {
   }
 
   private getExpenseIndex(expense: Expense): number {
-    const index = this._expenses.value.findIndex((it) => it.id === expense.id);
+    const index = this._expenses.value.findIndex((it) => it._id === expense._id);
     if (index === -1) {
       throw new Error(`Expense not found: ${str(expense)}`);
     }

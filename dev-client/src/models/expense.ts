@@ -8,7 +8,7 @@ const DEFAULT_TYPE = getExpenseDefaultType();
 const DEFAULT_PERIODICITY = getExpenseDefaultPeriodicity();
 
 export interface ExpenseSpec {
-  id?: string;
+  _id?: string;
   date?: Date;
   amount?: number;
   category?: string;
@@ -18,7 +18,7 @@ export interface ExpenseSpec {
 }
 
 export class Expense {
-  public readonly id: string;
+  public readonly _id: string;
   public readonly date: Date;
   public readonly amount: number;
   public readonly category: string;
@@ -27,7 +27,7 @@ export class Expense {
   public readonly periodicity: ExpensePeriodicity;
 
   constructor(spec: ExpenseSpec = {}) {
-    this.id = spec.id || guid();
+    this._id = spec._id || guid();
     this.date = spec.date || new Date();
     this.amount = spec.amount || 0;
     this.category = spec.category || 'unknown';
@@ -54,7 +54,7 @@ export class Expense {
 
   serialize(): Record<string, unknown> {
     return {
-      id: this.id,
+      _id: this._id,
       date: formatDateToDay(this.date),
       amount: this.amount,
       category: this.category,
