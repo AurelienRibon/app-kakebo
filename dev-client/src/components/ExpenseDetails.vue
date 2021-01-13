@@ -23,13 +23,13 @@
   </section>
 
   <section>
-    <label>périodicité</label>
+    <label>libellé</label>
     <article>
-      <select v-model="periodicity">
-        <option value="one-time">ponctuel</option>
-        <option value="monthly">une fois par mois</option>
-      </select>
+      <input v-model="label" type="text" list="labels" />
     </article>
+    <datalist id="labels">
+      <option v-for="label of labels" :key="label" :value="label"></option>
+    </datalist>
   </section>
 
   <section v-if="periodicity === 'one-time'">
@@ -47,6 +47,16 @@
   </section>
 
   <section>
+    <label>périodicité</label>
+    <article>
+      <select v-model="periodicity">
+        <option value="one-time">ponctuel</option>
+        <option value="monthly">une fois par mois</option>
+      </select>
+    </article>
+  </section>
+
+  <section>
     <label>type</label>
     <div class="type-container">
       <div
@@ -60,16 +70,6 @@
         <i class="mdi" :class="def.icon"></i>
       </div>
     </div>
-  </section>
-
-  <section>
-    <label>libellé</label>
-    <article>
-      <input v-model="label" type="text" list="labels" />
-    </article>
-    <datalist id="labels">
-      <option v-for="label of labels" :key="label" :value="label"></option>
-    </datalist>
   </section>
 </template>
 
