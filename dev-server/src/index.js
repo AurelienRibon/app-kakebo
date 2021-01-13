@@ -2,6 +2,8 @@
 
 const fastify = require('fastify')({ logger: true });
 
+const PORT = process.env.PORT || 4000;
+
 // -----------------------------------------------------------------------------
 // ROUTES
 // -----------------------------------------------------------------------------
@@ -16,7 +18,7 @@ fastify.get('/hello', async (request, reply) => {
 
 async function start() {
   try {
-    await fastify.listen(4000);
+    await fastify.listen(PORT);
   } catch (err) {
     fastify.log.error(err);
     process.exit(1);
