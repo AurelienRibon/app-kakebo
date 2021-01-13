@@ -3,7 +3,12 @@
 <!-- ----------------------------------------------------------------------- -->
 
 <template>
-  <div class="container">
+  <div class="container" :class="{ flex: empty }">
+    <div v-if="empty" class="panel-empty">
+      <div class="label">Aucune dépense enregistrée</div>
+      <div class="symbol mdi mdi-piggy-bank"></div>
+    </div>
+
     <div v-for="sameDayExpenses of expensesByDay" :key="sameDayExpenses.date" class="expense-group">
       <div class="expense-group-title">
         <span>{{ formatExpenseDate(sameDayExpenses) }}</span>
@@ -59,7 +64,8 @@
 
     setup(props, { emit }) {
       const expensesByDay = computed(() => splitExpensesByDay(props.expenses));
-      return { expensesByDay, edit, formatExpenseAmount, formatExpenseDate, getExpenseIcon, sumDebits };
+      const empty = computed(() => props.expenses.length === 0);
+      return { expensesByDay, empty, edit, formatExpenseAmount, formatExpenseDate, getExpenseIcon, sumDebits };
 
       function edit(expense: Expense): void {
         emit('edit', expense);
@@ -93,6 +99,29 @@
 
   .container {
     padding: 20px 10px 70px 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    &.flex {
+      flex: 1;
+    }
+  }
+
+  .panel-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #909090;
+
+    .label {
+      font-size: 2em;
+      text-align: center;
+    }
+
+    .symbol {
+      font-size: 8em;
+    }
   }
 
   .expense-group {
