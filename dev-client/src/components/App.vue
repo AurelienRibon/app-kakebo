@@ -4,7 +4,7 @@
 
 <template>
   <main>
-    <Home v-if="page === 'home'"></Home>
+    <Home v-if="page === 'home'" :expenses="expenses"></Home>
     <ExpensesList v-if="page === 'list'" :expenses="expenses" @edit="onExpenseEdit"></ExpensesList>
 
     <MenuBar class="menu-bar" @select="onMenuSelect"></MenuBar>

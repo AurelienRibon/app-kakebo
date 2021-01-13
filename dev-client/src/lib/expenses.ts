@@ -84,3 +84,21 @@ export function extractExpensesLabels(expenses: Expense[], category: string): st
 export function sortExpenses(expenses: Expense[]): void {
   expenses.sort((a, b) => b.date.getTime() - a.date.getTime());
 }
+
+export function computeMonthExpenses(expenses: Expense[], date: Date): number {
+  const year = date.getFullYear();
+  const month = date.getMonth();
+
+  return expenses
+    .filter((it) => it.date.getFullYear() === year && it.date.getMonth() === month)
+    .reduce((acc, it) => acc + Math.min(it.amount, 0), 0);
+}
+
+export function computeMonthBalance(expenses: Expense[], date: Date): number {
+  const year = date.getFullYear();
+  const month = date.getMonth();
+
+  return expenses
+    .filter((it) => it.date.getFullYear() === year && it.date.getMonth() === month)
+    .reduce((acc, it) => acc + it.amount, 0);
+}
