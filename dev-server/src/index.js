@@ -3,7 +3,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const compression = require('compression');
-const moment = require('moment');
 
 const PORT = process.env.PORT || 4000;
 
@@ -14,16 +13,6 @@ app.use(compression());
 app.post('*', bodyParser.json());
 
 setupAndStart();
-
-// -----------------------------------------------------------------------------
-// LOGS
-// -----------------------------------------------------------------------------
-
-app.use((req, res, next) => {
-  const date = moment.utc().format('YYYY-MM-DDTHH:mm:ss');
-  console.log(`${date} [${req.ip}] ${req.method} ${req.originalUrl}`);
-  return next();
-});
 
 // -----------------------------------------------------------------------------
 // ROUTES
