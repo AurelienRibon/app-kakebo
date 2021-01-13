@@ -3,6 +3,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const compression = require('compression');
+const { MongoClient } = require('mongodb');
+const db = require('./db');
 
 const PORT = process.env.PORT || 4000;
 
@@ -18,9 +20,9 @@ setupAndStart();
 // ROUTES
 // -----------------------------------------------------------------------------
 
-app.get('/hello', (req, res) => {
-  const id = req.params.id;
-  return res.send('Hello!');
+app.get('/hello', async (req, res) => {
+  const expenses = await db.getExpenses();
+  return res.send(expenses);
 });
 
 // -----------------------------------------------------------------------------
@@ -28,10 +30,11 @@ app.get('/hello', (req, res) => {
 // -----------------------------------------------------------------------------
 
 async function setupAndStart() {
-  process.stdout.write('Starting server...');
+  console.log('Connecting to database...');
+  await db.connect();
 
+  console.log('Starting server...');
   app.listen(PORT, () => {
-    process.stdout.write(' OK!\n');
-    process.stdout.write(`Server is listening on port ${PORT}.\n`);
+    console.log(`Server is listening on port ${PORT}.\n`);
   });
 }
