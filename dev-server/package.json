@@ -1,0 +1,14 @@
+{
+  "name": "kakebo-server",
+  "version": "1.0.0",
+  "private": true,
+  "main": "src/index.js",
+  "scripts": {
+    "deploy": "cd .. && git subtree push --prefix dev-server heroku master"
+  },
+  "author": "Aurelien Ribon <aurelien.ribon@gmail.com>",
+  "license": "ISC",
+  "dependencies": {
+    "fastify": "^3.9.2"
+  }
+}
