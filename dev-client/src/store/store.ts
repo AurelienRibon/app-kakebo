@@ -33,10 +33,14 @@ class Store {
   }
 
   async load(): Promise<void> {
-    const content = await readFile('data.json');
-    const spec = JSON.parse(content);
-    const specExpenses = spec.expenses as ExpenseJSON[];
-    this._expenses.value = createExpensesFromJSON(specExpenses);
+    try {
+      const content = await readFile('data.json');
+      const spec = JSON.parse(content);
+      const specExpenses = spec.expenses as ExpenseJSON[];
+      this._expenses.value = createExpensesFromJSON(specExpenses);
+    } catch (err) {
+      this._expenses.value = [];
+    }
   }
 
   async save(): Promise<void> {
