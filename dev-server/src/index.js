@@ -1,9 +1,7 @@
 'use strict';
 
 const express = require('express');
-const bodyParser = require('body-parser');
 const compression = require('compression');
-const { MongoClient } = require('mongodb');
 const db = require('./db');
 
 const PORT = process.env.PORT || 4000;
@@ -12,7 +10,7 @@ const app = express();
 
 app.set('json spaces', 2);
 app.use(compression());
-app.post('*', bodyParser.json());
+app.use(express.json());
 
 setupAndStart();
 
