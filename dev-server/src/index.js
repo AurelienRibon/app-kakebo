@@ -20,9 +20,9 @@ setupAndStart();
 // ROUTES
 // -----------------------------------------------------------------------------
 
-app.get('/hello', async (req, res) => {
+app.get('/expenses', async (req, res) => {
   const expenses = await db.getExpenses();
-  return res.send(expenses);
+  res.send(expenses);
 });
 
 // -----------------------------------------------------------------------------
