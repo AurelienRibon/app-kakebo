@@ -1,8 +1,13 @@
+import { Plugins } from '@capacitor/core';
 import { Ref, ref } from 'vue';
 import { Expense } from '../models/expense';
 import { createExpenseFromJSON, createExpensesFromJSON, ExpenseJSON, sortExpenses } from '../lib/expenses';
 import { readFile, writeFile } from '../lib/fs';
-import { str } from '../lib/utils';
+
+interface DbExpensesSyncResult {
+  expensesToAdd: ExpenseJSON[];
+  expensesToDelete: ExpenseJSON[];
+}
 
 class Store {
   private _expensesFull = ref([]) as Ref<Expense[]>;
@@ -17,21 +22,30 @@ class Store {
     return this._version;
   }
 
-  addExpense(spec: ExpenseJSON): void {
-    const expense = createExpenseFromJSON(spec);
+  addExpense(json: ExpenseJSON): void {
+    const expense = createExpenseFromJSON(json);
     this._expenses.value.push(expense);
     this._expensesFull.value.push(expense);
     sortExpenses(this._expenses.value);
   }
 
-  editExpense(expense: Expense, spec: ExpenseJSON): void {
-    this.removeExpense(expense);
-    this.addExpense(spec);
+  addExpenses(jsons: ExpenseJSON[]): void {
+    for (const json of jsons) {
+      const expense = createExpenseFromJSON(json);
+      this._expenses.value.push(expense);
+      this._expensesFull.value.push(expense);
+    }
+    sortExpenses(this._expenses.value);
   }
 
-  removeExpense(expense: Expense) {
+  editExpense(expense: Expense, josn: ExpenseJSON): void {
+    this.deleteExpense(expense);
+    this.addExpense(josn);
+  }
+
+  deleteExpense(expense: Expense) {
     expense.delete();
-    const index = this.getExpenseIndex(expense);
+    const index = this._expenses.value.findIndex((it) => it.id === expense.id);
     this._expenses.value.splice(index, 1);
   }
 
@@ -46,6 +60,23 @@ class Store {
       this._expensesFull.value = [];
       this._expenses.value = [];
     }
+
+    const syncResult = await this.fetchExpensesFromDB();
+    if (!syncResult) {
+      return;
+    }
+
+    if (syncResult.expensesToAdd.length > 0) {
+      this.addExpenses(syncResult.expensesToAdd);
+    }
+
+    if (syncResult.expensesToDelete.length > 0) {
+      for (const json of syncResult.expensesToDelete) {
+        const index = this._expenses.value.findIndex((it) => it.id === json._id);
+        this._expenses.value[index].delete();
+        this._expenses.value.splice(index, 1);
+      }
+    }
   }
 
   async save(): Promise<void> {
@@ -56,12 +87,15 @@ class Store {
     await writeFile('data.json', content);
   }
 
-  private getExpenseIndex(expense: Expense): number {
-    const index = this._expenses.value.findIndex((it) => it.id === expense.id);
-    if (index === -1) {
-      throw new Error(`Expense not found: ${str(expense)}`);
-    }
-    return index;
+  private async fetchExpensesFromDB(): Promise<DbExpensesSyncResult | undefined> {
+    const jsons = this._expensesFull.value.map((it) => it.serialize());
+    const result = await Plugins.Http.request({
+      method: 'POST',
+      url: 'http://localhost:5000/expenses/sync',
+      headers: { 'Content-Type': 'application/json' },
+      data: jsons,
+    });
+    return result.status === 200 ? result.data : undefined;
   }
 }
 

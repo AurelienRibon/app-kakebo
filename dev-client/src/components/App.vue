@@ -112,7 +112,7 @@
       }
 
       async function onEditExpenseRemove(): Promise<void> {
-        store.removeExpense(editedExpense.value);
+        store.deleteExpense(editedExpense.value);
         await store.save();
         state.value = 'idle';
       }
