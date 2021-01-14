@@ -42,7 +42,7 @@
 <!-- ----------------------------------------------------------------------- -->
 
 <script lang="ts">
-  import { defineComponent, onMounted, ref } from 'vue';
+  import { defineComponent, onMounted, Ref, ref } from 'vue';
   import { Expense } from '../models/expense';
   import { MainPage } from '../models/page';
   import { ExpenseJSON } from '../lib/expenses';
@@ -59,10 +59,10 @@
     components: { Home, MenuBar, AddExpense, EditExpense, ExpensesList },
 
     setup() {
-      const page = ref<MainPage>('home');
-      const state = ref<State>('idle');
-      const expenses = ref<Expense[]>([]);
-      const editedExpense = ref<Expense>(new Expense());
+      const page = ref('home') as Ref<MainPage>;
+      const state = ref('idle') as Ref<State>;
+      const expenses = ref([]) as Ref<Expense[]>;
+      const editedExpense = ref(new Expense()) as Ref<Expense>;
 
       onMounted(async () => {
         await store.load();

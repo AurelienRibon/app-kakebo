@@ -5,7 +5,7 @@ import { readFile, writeFile } from '../lib/fs';
 import { str } from '../lib/utils';
 
 class Store {
-  private _expenses = ref<Expense[]>([]);
+  private _expenses = ref([]) as Ref<Expense[]>;
   private _version = 1;
 
   get expenses(): Ref<Expense[]> {
