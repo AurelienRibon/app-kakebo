@@ -85,6 +85,7 @@
       };
 
       function onMenuSelect(choice: MainPage): void {
+        choice = choice === 'setup' || choice === 'stats' ? 'home' : choice;
         page.value = choice;
       }
 
