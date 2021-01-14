@@ -24,17 +24,28 @@ app.get('/expenses', async (req, res) => {
   res.send(expenses);
 });
 
-app.post('/expenses/update', async (req, res) => {
-  const newExpenses = req.body;
-  const oldExpenses = await db.getExpenses();
-  const { expensesToAdd, expensesToDelete } = diffExpenses(newExpenses, oldExpenses);
+app.post('/expenses/sync', async (req, res) => {
+  const userExpenses = req.body;
+  const knownExpenses = await db.getExpenses();
 
-  await db.addExpenses(expensesToAdd);
-  await db.deleteExpenses(expensesToDelete);
+  const [userExpensesToAdd, userExpensesToDelete] = diffExpenses(knownExpenses, userExpenses);
+  const [knownExpensesToAdd, knownExpensesToDelete] = diffExpenses(userExpenses, knownExpenses);
+
+  const nbAdded = knownExpensesToAdd.length;
+  const nbDeleted = knownExpensesToDelete.length;
+  const nbToAdd = userExpensesToAdd.length;
+  const nbToDelete = userExpensesToDelete.length;
+
+  console.log(`nbAdded:${nbAdded}, nbDeleted:${nbDeleted}, nbToAdd:${nbToAdd}, nbToDelete:${nbToDelete}`);
+
+  await db.addExpenses(knownExpensesToAdd);
+  await db.deleteExpenses(knownExpensesToDelete);
 
   res.send({
-    expensesAdded: expensesToAdd.length,
-    expensesDeleted: expensesToDelete.length,
+    expensesAdded: nbAdded,
+    expensesDeleted: nbDeleted,
+    expensesToAdd: userExpensesToAdd,
+    expensesToDelete: userExpensesToDelete,
   });
 });
 

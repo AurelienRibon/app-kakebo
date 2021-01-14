@@ -15,5 +15,5 @@ exports.diffExpenses = function (newExpenses, oldExpenses) {
     }
   }
 
-  return { expensesToAdd, expensesToDelete };
+  return [expensesToAdd, expensesToDelete];
 };
