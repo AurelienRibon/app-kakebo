@@ -22,6 +22,18 @@ exports.connect = async function () {
   }
 };
 
-exports.getExpenses = async function (offset, limit) {
+exports.getExpenses = async function () {
   return db.expenses.find().toArray();
+};
+
+exports.addExpenses = async function (newExpenses) {
+  if (newExpenses.length > 0) {
+    await db.expenses.insertMany(newExpenses);
+  }
+};
+
+exports.deleteExpenses = async function (expenses) {
+  for (const expense of expenses) {
+    await db.expenses.updateOne({ _id: expense._id }, { $set: { deleted: true } });
+  }
 };
