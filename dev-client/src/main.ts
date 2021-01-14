@@ -1,3 +1,4 @@
+import '@capacitor-community/http';
 import { createApp } from 'vue';
 import { Plugins } from '@capacitor/core';
 import { getVRippleDirective } from './directives/v-ripple';
