@@ -3,7 +3,7 @@
 <!-- ----------------------------------------------------------------------- -->
 
 <template>
-  <div class="container" :class="{ flex: empty }">
+  <div class="container" :class="{ centered: empty }">
     <div v-if="empty" class="panel-empty">
       <div class="label">Aucune dépense enregistrée</div>
       <div class="symbol mdi mdi-piggy-bank"></div>
@@ -99,12 +99,12 @@
 
   .container {
     padding: 20px 10px 70px 10px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
 
-    &.flex {
+    &.centered {
       flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
     }
   }
 
