@@ -15,6 +15,7 @@ export interface ExpenseSpec {
   type?: string;
   label?: string;
   periodicity?: ExpensePeriodicity;
+  deleted?: boolean;
 }
 
 export class Expense {
@@ -25,6 +26,7 @@ export class Expense {
   private _type: string;
   private _label: string;
   private _periodicity: ExpensePeriodicity;
+  private _deleted: boolean;
 
   constructor(spec: ExpenseSpec = {}) {
     this._id = spec._id || guid();
@@ -34,6 +36,7 @@ export class Expense {
     this._type = spec.type || DEFAULT_TYPE;
     this._label = spec.label || '';
     this._periodicity = spec.periodicity || DEFAULT_PERIODICITY;
+    this._deleted = spec.deleted || false;
   }
 
   get id(): string {
@@ -64,6 +67,10 @@ export class Expense {
     return this._periodicity;
   }
 
+  get deleted(): boolean {
+    return this._deleted;
+  }
+
   isExtra(): boolean {
     return getCategoryDef(this.category).extra === true;
   }
@@ -80,6 +87,10 @@ export class Expense {
     return this.isPositive() ? '+' : '-';
   }
 
+  delete(): void {
+    this._deleted = true;
+  }
+
   serialize(): Record<string, unknown> {
     return {
       _id: this._id,
@@ -89,6 +100,7 @@ export class Expense {
       type: this.type,
       label: this.label,
       periodicity: this.periodicity,
+      deleted: this.deleted,
     };
   }
 }
