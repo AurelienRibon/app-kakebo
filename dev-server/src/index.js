@@ -31,7 +31,7 @@ app.get('/expenses', async (req, res) => {
 });
 
 app.post('/expenses/sync', async (req, res) => {
-  const userExpenses = req.body;
+  const userExpenses = req.body.expenses;
   const knownExpenses = await db.getExpenses();
 
   const [userExpensesToAdd, userExpensesToDelete] = diffExpenses(knownExpenses, userExpenses);

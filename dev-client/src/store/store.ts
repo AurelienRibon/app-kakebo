@@ -4,6 +4,9 @@ import { Expense } from '../models/expense';
 import { createExpenseFromJSON, createExpensesFromJSON, ExpenseJSON, sortExpenses } from '../lib/expenses';
 import { readFile, writeFile } from '../lib/fs';
 
+const IS_PROD = process.env.NODE_ENV === 'production';
+const SERVER_URL = IS_PROD ? 'https://kakebo-server.herokuapp.com' : 'http://192.168.1.42:5000';
+
 interface DbExpensesSyncResult {
   expensesToAdd: ExpenseJSON[];
   expensesToDelete: ExpenseJSON[];
@@ -61,7 +64,7 @@ class Store {
       this._expenses.value = [];
     }
 
-    const syncResult = await this.fetchExpensesFromDB();
+    const syncResult = await this._syncExpensesWithDB();
     if (!syncResult) {
       return;
     }
@@ -87,14 +90,11 @@ class Store {
     await writeFile('data.json', content);
   }
 
-  private async fetchExpensesFromDB(): Promise<DbExpensesSyncResult | undefined> {
-    const jsons = this._expensesFull.value.map((it) => it.serialize());
-    const result = await Plugins.Http.request({
-      method: 'POST',
-      url: 'http://localhost:5000/expenses/sync',
-      headers: { 'Content-Type': 'application/json' },
-      data: jsons,
-    });
+  private async _syncExpensesWithDB(): Promise<DbExpensesSyncResult | undefined> {
+    const expenses = this._expensesFull.value.map((it) => it.serialize());
+    const headers = { 'Content-Type': 'application/json' };
+    const url = `${SERVER_URL}/expenses/sync`;
+    const result = await Plugins.Http.request({ method: 'POST', url, headers, data: { expenses } });
     return result.status === 200 ? result.data : undefined;
   }
 }
