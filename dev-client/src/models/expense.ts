@@ -18,22 +18,50 @@ export interface ExpenseSpec {
 }
 
 export class Expense {
-  public readonly _id: string;
-  public readonly date: Date;
-  public readonly amount: number;
-  public readonly category: string;
-  public readonly type: string;
-  public readonly label: string;
-  public readonly periodicity: ExpensePeriodicity;
+  private _id: string;
+  private _date: Date;
+  private _amount: number;
+  private _category: string;
+  private _type: string;
+  private _label: string;
+  private _periodicity: ExpensePeriodicity;
 
   constructor(spec: ExpenseSpec = {}) {
     this._id = spec._id || guid();
-    this.date = spec.date || new Date();
-    this.amount = spec.amount || 0;
-    this.category = spec.category || 'unknown';
-    this.type = spec.type || DEFAULT_TYPE;
-    this.label = spec.label || '';
-    this.periodicity = spec.periodicity || DEFAULT_PERIODICITY;
+    this._date = spec.date || new Date();
+    this._amount = spec.amount || 0;
+    this._category = spec.category || 'unknown';
+    this._type = spec.type || DEFAULT_TYPE;
+    this._label = spec.label || '';
+    this._periodicity = spec.periodicity || DEFAULT_PERIODICITY;
+  }
+
+  get id(): string {
+    return this._id;
+  }
+
+  get date(): Date {
+    return this._date;
+  }
+
+  get amount(): number {
+    return this._amount;
+  }
+
+  get category(): string {
+    return this._category;
+  }
+
+  get type(): string {
+    return this._type;
+  }
+
+  get label(): string {
+    return this._label;
+  }
+
+  get periodicity(): ExpensePeriodicity {
+    return this._periodicity;
   }
 
   isExtra(): boolean {
