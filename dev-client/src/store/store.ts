@@ -32,16 +32,20 @@ class Store {
 
   addExpense(json: ExpenseJSON): void {
     const expense = createExpenseFromJSON(json);
-    this._expenses.value.push(expense);
     this._expensesFull.value.push(expense);
-    sortExpenses(this._expenses.value);
+    if (!expense.deleted) {
+      this._expenses.value.push(expense);
+      sortExpenses(this._expenses.value);
+    }
   }
 
   addExpenses(jsons: ExpenseJSON[]): void {
     for (const json of jsons) {
       const expense = createExpenseFromJSON(json);
-      this._expenses.value.push(expense);
       this._expensesFull.value.push(expense);
+      if (!expense.deleted) {
+        this._expenses.value.push(expense);
+      }
     }
     sortExpenses(this._expenses.value);
   }
@@ -51,7 +55,7 @@ class Store {
     this.addExpense(josn);
   }
 
-  deleteExpense(expense: Expense) {
+  deleteExpense(expense: Expense): void {
     expense.delete();
     const index = this._expenses.value.findIndex((it) => it.id === expense.id);
     this._expenses.value.splice(index, 1);
