@@ -31,39 +31,19 @@ class Store {
   }
 
   addExpense(json: ExpenseJSON): void {
-    const expense = createExpenseFromJSON(json);
-    this._expensesFull.value.push(expense);
-    if (!expense.deleted) {
-      this._expenses.value.push(expense);
-      sortExpenses(this._expenses.value);
-    }
-  }
-
-  addExpenses(jsons: ExpenseJSON[]): void {
-    for (const json of jsons) {
-      const expense = createExpenseFromJSON(json);
-      this._expensesFull.value.push(expense);
-      if (!expense.deleted) {
-        this._expenses.value.push(expense);
-      }
-    }
-    sortExpenses(this._expenses.value);
-  }
-
-  editExpense(expense: Expense, josn: ExpenseJSON): void {
-    this.deleteExpense(expense);
-    this.addExpense(josn);
+    this._registerExpenses([json]);
   }
 
   deleteExpense(expense: Expense): void {
-    expense.delete();
-    const index = this._expenses.value.findIndex((it) => it.id === expense.id);
-    this._expenses.value.splice(index, 1);
+    this._deleteExpenses([expense.serialize()]);
+  }
+
+  editExpense(expense: Expense, json: ExpenseJSON): void {
+    this.deleteExpense(expense);
+    this.addExpense(json);
   }
 
   async load(): Promise<void> {
-    this._loading.value = true;
-
     try {
       const content = await readFile('data.json');
       const spec = JSON.parse(content);
@@ -76,32 +56,7 @@ class Store {
       this._expenses.value = [];
     }
 
-    try {
-      await this.sync();
-    } catch (err) {
-      console.error(err); // eslint-disable-line no-console
-    }
-
-    this._loading.value = false;
-  }
-
-  async sync() {
-    const syncResult = await syncExpensesWithDB(this._expensesFull.value);
-    if (!syncResult) {
-      return;
-    }
-
-    if (syncResult.expensesToAdd.length > 0) {
-      this.addExpenses(syncResult.expensesToAdd);
-    }
-
-    if (syncResult.expensesToDelete.length > 0) {
-      for (const json of syncResult.expensesToDelete) {
-        const index = this._expenses.value.findIndex((it) => it.id === json._id);
-        this._expenses.value[index].delete();
-        this._expenses.value.splice(index, 1);
-      }
-    }
+    await this.sync();
   }
 
   async save(): Promise<void> {
@@ -109,7 +64,60 @@ class Store {
       expenses: this._expensesFull.value.map((it) => it.serialize()),
       version: this._version,
     });
+
     await writeFile('data.json', content);
+    await this.sync();
+  }
+
+  async sync() {
+    this._loading.value = true;
+
+    try {
+      await this._syncImpl();
+    } catch (err) {
+      console.error(err); // eslint-disable-line no-console
+    }
+
+    this._loading.value = false;
+  }
+
+  // Internal API
+  // ---------------------------------------------------------------------------
+
+  private async _syncImpl() {
+    const syncResult = await syncExpensesWithDB(this._expensesFull.value);
+    if (!syncResult) {
+      return;
+    }
+
+    if (syncResult.expensesToAdd.length > 0) {
+      this._registerExpenses(syncResult.expensesToAdd);
+    }
+
+    if (syncResult.expensesToDelete.length > 0) {
+      this._deleteExpenses(syncResult.expensesToDelete);
+    }
+  }
+
+  private _registerExpenses(jsons: ExpenseJSON[]): void {
+    for (const json of jsons) {
+      const expense = createExpenseFromJSON(json);
+      this._expensesFull.value.push(expense);
+
+      if (!expense.deleted) {
+        this._expenses.value.push(expense);
+      }
+    }
+
+    sortExpenses(this._expenses.value);
+  }
+
+  private _deleteExpenses(jsons: ExpenseJSON[]): void {
+    for (const json of jsons) {
+      const index = this._expenses.value.findIndex((it) => it.id === json._id);
+      this._expenses.value[index].delete();
+      this._expenses.value.splice(index, 1);
+    }
   }
 }
 
