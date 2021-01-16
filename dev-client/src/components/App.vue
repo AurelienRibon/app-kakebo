@@ -65,14 +65,9 @@
     setup() {
       const page = ref('home') as Ref<MainPage>;
       const state = ref('idle') as Ref<State>;
-      const expenses = ref([]) as Ref<Expense[]>;
       const editedExpense = ref(new Expense()) as Ref<Expense>;
+      const expenses = store.expenses;
       const loading = store.loading;
-
-      onMounted(async () => {
-        await store.load();
-        expenses.value = store.expenses.value;
-      });
 
       return {
         editedExpense,
