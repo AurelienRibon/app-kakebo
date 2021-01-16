@@ -9,6 +9,10 @@
 
     <MenuBar class="menu-bar" @select="onMenuSelect"></MenuBar>
 
+    <transition name="fade">
+      <div v-if="loading" class="loading mdi mdi-loading"></div>
+    </transition>
+
     <transition name="zoom">
       <div v-if="page === 'home'" v-ripple v-tap class="btn-add-expense" @tap="onBtnAddExpenseClick">
         <i class="mdi mdi-plus"></i>
@@ -63,6 +67,7 @@
       const state = ref('idle') as Ref<State>;
       const expenses = ref([]) as Ref<Expense[]>;
       const editedExpense = ref(new Expense()) as Ref<Expense>;
+      const loading = store.loading;
 
       onMounted(async () => {
         await store.load();
@@ -72,6 +77,7 @@
       return {
         editedExpense,
         expenses,
+        loading,
         onAddExpenseCancel,
         onAddExpenseDone,
         onBtnAddExpenseClick,
@@ -178,6 +184,26 @@
 
     background: $app-bgcolor;
     border-top: 4px solid $accent1;
+  }
+
+  .loading {
+    position: fixed;
+    top: 0;
+    right: 10px;
+    font-size: 40px;
+    color: #8a8a8a;
+    animation: spin-617ab0be 0.6s linear infinite;
+  }
+
+  // Animations
+
+  @keyframes spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
   }
 
   // Transitions

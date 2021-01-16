@@ -15,10 +15,15 @@ interface DbExpensesSyncResult {
 class Store {
   private _expensesFull = ref([]) as Ref<Expense[]>;
   private _expenses = ref([]) as Ref<Expense[]>;
+  private _loading = ref(false);
   private _version = 1;
 
   get expenses(): Ref<Expense[]> {
     return this._expenses;
+  }
+
+  get loading(): Ref<boolean> {
+    return this._loading;
   }
 
   get version(): number {
@@ -53,6 +58,8 @@ class Store {
   }
 
   async load(): Promise<void> {
+    this._loading.value = true;
+
     try {
       const content = await readFile('data.json');
       const spec = JSON.parse(content);
@@ -60,11 +67,22 @@ class Store {
       this._expensesFull.value = createExpensesFromJSON(specExpenses);
       this._expenses.value = this._expensesFull.value.filter((it) => !it.deleted);
     } catch (err) {
+      console.error(err); // eslint-disable-line no-console
       this._expensesFull.value = [];
       this._expenses.value = [];
     }
 
-    const syncResult = await this._syncExpensesWithDB();
+    try {
+      await this.sync();
+    } catch (err) {
+      console.error(err); // eslint-disable-line no-console
+    }
+
+    this._loading.value = false;
+  }
+
+  async sync() {
+    const syncResult = await syncExpensesWithDB(this._expensesFull.value);
     if (!syncResult) {
       return;
     }
@@ -89,14 +107,18 @@ class Store {
     });
     await writeFile('data.json', content);
   }
-
-  private async _syncExpensesWithDB(): Promise<DbExpensesSyncResult | undefined> {
-    const expenses = this._expensesFull.value.map((it) => it.serialize());
-    const headers = { 'Content-Type': 'application/json' };
-    const url = `${SERVER_URL}/expenses/sync`;
-    const result = await Plugins.Http.request({ method: 'POST', url, headers, data: { expenses } });
-    return result.status === 200 ? result.data : undefined;
-  }
 }
 
 export const store = new Store();
+
+// -----------------------------------------------------------------------------
+// DB SYNC
+// -----------------------------------------------------------------------------
+
+async function syncExpensesWithDB(expenses: Expense[]): Promise<DbExpensesSyncResult | undefined> {
+  const jsons = expenses.map((it) => it.serialize());
+  const headers = { 'Content-Type': 'application/json' };
+  const url = `${SERVER_URL}/expenses/sync`;
+  const result = await Plugins.Http.request({ method: 'POST', url, headers, data: { expenses: jsons } });
+  return result.status === 200 ? result.data : undefined;
+}
