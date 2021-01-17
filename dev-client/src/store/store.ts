@@ -2,7 +2,6 @@ import { Plugins } from '@capacitor/core';
 import { Ref, ref } from 'vue';
 import { Expense } from '../models/expense';
 import { createExpenseFromJSON, createExpensesFromJSON, ExpenseJSON, sortExpenses } from '../lib/expenses';
-import { readFile, writeFile } from '../lib/fs';
 
 const IS_PROD = process.env.NODE_ENV === 'production';
 const SERVER_URL = IS_PROD ? 'https://kakebo-server.herokuapp.com' : 'http://192.168.1.42:5000';
@@ -45,8 +44,8 @@ class Store {
 
   async load(): Promise<void> {
     try {
-      const content = await readFile('data.json');
-      const spec = JSON.parse(content);
+      const { value } = await Plugins.Storage.get({ key: 'data' });
+      const spec = value ? JSON.parse(value) : { expenses: [] };
       const specExpenses = spec.expenses as ExpenseJSON[];
       this._expensesFull.value = createExpensesFromJSON(specExpenses);
       this._expenses.value = this._expensesFull.value.filter((it) => !it.deleted);
@@ -60,12 +59,12 @@ class Store {
   }
 
   async save(): Promise<void> {
-    const content = JSON.stringify({
+    const value = JSON.stringify({
       expenses: this._expensesFull.value.map((it) => it.serialize()),
       version: this._version,
     });
 
-    await writeFile('data.json', content);
+    await Plugins.Storage.set({ key: 'data', value });
     await this.sync();
   }
 
