@@ -187,7 +187,7 @@
     right: 10px;
     font-size: 40px;
     color: #8a8a8a;
-    animation: spin-617ab0be 0.6s linear infinite;
+    animation: spin 0.6s linear infinite;
   }
 
   // Animations
