@@ -5,7 +5,13 @@
 <template>
   <div ref="refRoot" class="container">
     <h1>dépenses par catégorie</h1>
-    <div id="sumByCategory" class="chart"></div>
+
+    <div v-if="!loaded" class="loading">
+      <div class="label">Calcul en cours...</div>
+      <div class="mdi mdi-coffee"></div>
+    </div>
+
+    <div v-show="loaded" id="sumByCategory" class="chart"></div>
   </div>
 </template>
 
@@ -27,6 +33,7 @@
 
     setup(props) {
       const refRoot = ref(null);
+      const loaded = ref(false);
 
       onMounted(async () => {
         const el = refRoot.value as HTMLElement | null;
@@ -51,9 +58,11 @@
           },
           { actions: false }
         );
+
+        loaded.value = true;
       });
 
-      return { refRoot };
+      return { refRoot, loaded };
     },
   });
 </script>
@@ -80,5 +89,23 @@
   .chart {
     box-shadow: 0px 4px 10px 0px #00000036;
     padding: 10px;
+  }
+
+  .loading {
+    @extend .chart;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 0;
+
+    & > .label {
+      color: $text-faint-color;
+    }
+
+    & > .mdi {
+      color: $text-faint-color;
+      font-size: 6em;
+    }
   }
 </style>
