@@ -5,6 +5,7 @@
 <template>
   <main>
     <Home v-if="page === 'home'" :expenses="expenses"></Home>
+    <Stats v-if="page === 'stats'" :expenses="expenses"></Stats>
     <ExpensesList v-if="page === 'list'" :expenses="expenses" @edit="onExpenseEdit"></ExpensesList>
 
     <MenuBar class="menu-bar" @select="onMenuSelect"></MenuBar>
@@ -46,7 +47,7 @@
 <!-- ----------------------------------------------------------------------- -->
 
 <script lang="ts">
-  import { defineComponent, onMounted, Ref, ref } from 'vue';
+  import { defineComponent, Ref, ref } from 'vue';
   import { Expense } from '../models/expense';
   import { MainPage } from '../models/page';
   import { ExpenseJSON } from '../lib/expenses';
@@ -56,11 +57,12 @@
   import ExpensesList from './ExpensesList.vue';
   import Home from './Home.vue';
   import MenuBar from './MenuBar.vue';
+  import Stats from './Stats.vue';
 
   type State = 'idle' | 'addExpense' | 'editExpense';
 
   export default defineComponent({
-    components: { Home, MenuBar, AddExpense, EditExpense, ExpensesList },
+    components: { Home, Stats, MenuBar, AddExpense, EditExpense, ExpensesList },
 
     setup() {
       const page = ref('home') as Ref<MainPage>;
@@ -86,7 +88,7 @@
       };
 
       function onMenuSelect(choice: MainPage): void {
-        choice = choice === 'setup' || choice === 'stats' ? 'home' : choice;
+        choice = choice === 'setup' ? 'home' : choice;
         page.value = choice;
       }
 
