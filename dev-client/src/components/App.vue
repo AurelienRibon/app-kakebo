@@ -179,6 +179,10 @@
 
     background: $app-bgcolor;
     border-top: 4px solid $accent1;
+
+    @media #{$media-phone-small} {
+      padding: 10px;
+    }
   }
 
   .loading {

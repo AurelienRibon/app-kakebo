@@ -6,6 +6,9 @@ $accent2: #506e9e;
 
 $text-accent1: #212121;
 
+$media-phone-small: "(max-width: 320px)";
+$media-phone-medium: "(max-width: 375px)";
+
 @mixin modal {
   position: fixed;
   top: 0px;

@@ -27,7 +27,7 @@
     text-align: right;
 
     & > :deep(button:not(:last-of-type)) {
-      margin-right: 10px;
+      margin-right: 8px;
     }
   }
 </style>

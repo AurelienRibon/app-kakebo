@@ -92,6 +92,11 @@
 
     margin-top: 15px;
     margin-bottom: 30px;
+
+    @media #{$media-phone-small} {
+      grid-template-columns: repeat(3, 90px);
+      grid-gap: 10px;
+    }
   }
 
   .item {
@@ -110,6 +115,11 @@
 
     &.item-extra {
       background: $accent1;
+    }
+
+    @media #{$media-phone-small} {
+      width: 90px;
+      height: 90px;
     }
   }
 
