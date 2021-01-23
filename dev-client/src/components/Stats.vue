@@ -4,7 +4,7 @@
 
 <template>
   <div ref="refRoot" class="container">
-    <h1>Dépenses par catégorie</h1>
+    <h1>dépenses par catégorie</h1>
     <div id="sumByCategory" class="chart"></div>
   </div>
 </template>
@@ -40,12 +40,13 @@
             width,
             height: 300,
             autosize: { type: 'fit', contains: 'padding' },
-            data: { values: props.expenses.filter((it) => !it.isPositive()) },
-            transform: [{ calculate: '-datum._amount', as: 'amount' }],
+            data: { values: props.expenses.map((it) => it.toVisualObject()).filter((it) => !it.positive) },
+            transform: [{ calculate: '-datum.amount', as: 'amount' }],
             mark: 'bar',
             encoding: {
               x: { aggregate: 'sum', field: 'amount', title: null, axis: { labelFontSize: 14 } },
-              y: { field: '_category', type: 'nominal', sort: '-x', title: null, axis: { labelFontSize: 14 } },
+              y: { field: 'category', type: 'nominal', sort: '-x', title: null, axis: { labelFontSize: 14 } },
+              color: { field: 'extra', legend: null },
             },
           },
           { actions: false }

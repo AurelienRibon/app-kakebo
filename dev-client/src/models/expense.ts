@@ -91,6 +91,23 @@ export class Expense {
     this._deleted = true;
   }
 
+  toVisualObject(): Record<string, unknown> {
+    return {
+      // Static properties
+      date: formatDateToDay(this.date),
+      amount: this.amount,
+      category: this.category,
+      type: this.type,
+      label: this.label,
+      periodicity: this.periodicity,
+      deleted: this.deleted,
+      // Computed properties
+      extra: this.isExtra(),
+      recurring: this.isRecurring(),
+      positive: this.isPositive(),
+    };
+  }
+
   serialize(): Record<string, unknown> {
     return {
       _id: this._id,
