@@ -108,6 +108,7 @@
 
   .container {
     padding: 20px 10px 70px 10px;
+    background: $app-front-bgcolor;
 
     &.centered {
       flex: 1;

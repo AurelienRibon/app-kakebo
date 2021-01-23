@@ -57,7 +57,6 @@
     display: flex;
     flex-direction: column;
     flex: 1;
-    background: #ececec;
   }
 
   h1 {
@@ -70,7 +69,7 @@
   .summary {
     flex: 1;
     padding-top: 40px;
-    background: #fcfcfc;
+    background: $app-front-bgcolor;
     box-shadow: 0px -1px 10px 0px #00000036;
 
     .summary-item {
@@ -78,7 +77,7 @@
       flex-direction: column;
       align-items: center;
       font-size: 1.6em;
-      border-bottom: 1px solid #8e8e8e88;
+      border-bottom: 1px solid $border-light-color;
       padding-bottom: 30px;
 
       &:first-of-type {
@@ -87,7 +86,7 @@
     }
 
     .label {
-      color: #8e8e8e;
+      color: $text-faint-color;
     }
 
     .value {

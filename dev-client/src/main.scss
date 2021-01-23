@@ -27,7 +27,7 @@ html {
   font-family: sans-serif;
   font-size: 17px;
 
-  background: $app-bgcolor;
+  background: $app-back-bgcolor;
   color: $text-color;
 
   -webkit-tap-highlight-color: transparent;
@@ -45,22 +45,22 @@ button {
 
   &.btn-primary {
     background: $accent1;
-    color: #000;
+    color: $text-color;
   }
 
   &.btn-primary-2 {
     background: white;
-    color: #000;
+    color: $text-color;
   }
 
   &.btn-secondary {
     background: #929292;
-    color: #fff;
+    color: $text-inverse-color;
   }
 
   &.btn-danger {
     background: #c30000;
-    color: #fff;
+    color: $text-inverse-color;
   }
 
   &.btn-flat {

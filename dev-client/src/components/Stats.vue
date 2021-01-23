@@ -63,10 +63,12 @@
 <!-- ----------------------------------------------------------------------- -->
 
 <style lang="scss" scoped>
+  @import '../theme.scss';
+
   .container {
     padding: 20px 0 70px 0;
-    background: #ececec;
     flex: 1;
+    background: $app-front-bgcolor;
   }
 
   h1 {
@@ -78,6 +80,5 @@
   .chart {
     box-shadow: 0px 4px 10px 0px #00000036;
     padding: 10px;
-    background: white;
   }
 </style>

@@ -168,7 +168,7 @@
 
     font-size: $size - 10px;
     text-align: center;
-    color: $app-bgcolor;
+    color: $app-front-bgcolor;
     background: $accent2;
     border-radius: $size;
     box-shadow: 0px 2px 10px 0px #0008;
@@ -179,7 +179,7 @@
     overflow-y: auto;
     padding: 20px;
 
-    background: $app-bgcolor;
+    background: $app-front-bgcolor;
     border-top: 4px solid $accent1;
 
     @media #{$media-phone-small} {
