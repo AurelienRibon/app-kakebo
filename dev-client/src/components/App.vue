@@ -177,15 +177,10 @@
 
   .panel {
     @include modal;
+    @include padded;
     overflow-y: auto;
-    padding: 20px;
-
     background: $app-front-bgcolor;
     border-top: 4px solid $accent1;
-
-    @media #{$media-phone-small} {
-      padding: 10px;
-    }
   }
 
   .loading {

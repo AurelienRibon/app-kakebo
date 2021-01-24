@@ -207,7 +207,7 @@
     height: 50px;
     display: flex;
     justify-content: stretch;
-    border: 1px solid black;
+    border: 1px solid $border-dark-color;
     border-radius: 6px;
 
     &:focus-within {
@@ -247,7 +247,7 @@
   .type-container {
     display: flex;
     height: 45px;
-    border: 1px solid black;
+    border: 1px solid $border-dark-color;
     border-radius: 6px;
 
     & > div {

@@ -107,7 +107,7 @@
   @import '../theme.scss';
 
   .container {
-    padding: 20px 10px 70px 10px;
+    @include padded;
     background: $app-front-bgcolor;
 
     &.centered {
@@ -137,7 +137,7 @@
   .expense-group {
     margin-bottom: 30px;
     padding-top: 20px;
-    border-top: 1px solid #adadad;
+    border-top: 1px solid $border-light-color;
 
     &:first-of-type {
       padding-top: 0;

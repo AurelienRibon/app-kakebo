@@ -75,7 +75,7 @@
   @import '../theme.scss';
 
   .container {
-    padding: 20px 0 70px 0;
+    @include padded;
     flex: 1;
     background: $app-front-bgcolor;
   }

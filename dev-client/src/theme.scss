@@ -1,10 +1,11 @@
 $app-back-bgcolor: #ececec;
 $app-front-bgcolor: #fefefe;
 
-$border-light-color: #8e8e8e88;
+$border-light-color: #d0d0d0;
+$border-dark-color: #868686;
 
 $text-color: #212121;
-$text-faint-color: #8e8e8e;
+$text-faint-color: #afafaf;
 $text-inverse-color: #fefefe;
 
 $accent1: #ffa500;
@@ -21,4 +22,12 @@ $media-phone-medium: "(max-width: 375px)";
   left: 0px;
   right: 0px;
   bottom: 0px;
+}
+
+@mixin padded {
+  padding: 20px 14px 90px 14px;
+
+  @media #{$media-phone-small} {
+    padding: 20px 8px 90px 8px;
+  }
 }

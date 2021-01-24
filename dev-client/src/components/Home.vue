@@ -67,6 +67,7 @@
   }
 
   .summary {
+    @include padded;
     flex: 1;
     padding-top: 40px;
     background: $app-front-bgcolor;
