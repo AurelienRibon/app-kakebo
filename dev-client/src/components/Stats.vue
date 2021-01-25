@@ -11,7 +11,7 @@
 
     <div class="stat">
       <h1>évolution sur le mois</h1>
-      <canvas id="amountsByDay" height="260"></canvas>
+      <canvas id="balanceByDay" height="260"></canvas>
     </div>
   </div>
 </template>
@@ -23,7 +23,7 @@
 <script lang="ts">
   import { defineComponent, onMounted, PropType } from 'vue';
   import { Expense } from '../models/expense';
-  import { computeBalanceByDay, sumExpensesByCategory } from '../lib/expenses-stats';
+  import { computeBalanceByDay, sumExpensesByCategory, sumExpensesByDay } from '../lib/expenses-stats';
   import Chart from 'chart.js';
 
   export default defineComponent({
@@ -39,6 +39,7 @@
       const negExpenses = allExpenses.filter((it) => !it.isPositive());
 
       const amountsByCategory = sumExpensesByCategory(negExpenses, 5);
+      const amountsByDay = sumExpensesByDay(negExpenses);
       const balanceByDay = computeBalanceByDay(allExpenses);
 
       onMounted(() => {
@@ -56,16 +57,23 @@
           },
         });
 
-        new Chart('amountsByDay', {
+        new Chart('balanceByDay', {
           type: 'line',
           data: {
             datasets: [
               {
                 label: 'Balance',
                 data: balanceByDay.map((it) => ({ t: it[0], y: it[1] })),
-                backgroundColor: '#ff6384',
+                backgroundColor: '#ff638488',
+                borderColor: '#ff6384',
+                borderWidth: 2,
                 pointRadius: 0,
-                borderWidth: 0,
+              },
+              {
+                label: 'Dépenses',
+                type: 'bar',
+                data: amountsByDay.map((it) => ({ t: it[0], y: -it[1] })),
+                backgroundColor: '#ff6384',
               },
             ],
           },
