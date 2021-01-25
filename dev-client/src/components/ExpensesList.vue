@@ -9,13 +9,13 @@
       <div class="symbol mdi mdi-piggy-bank"></div>
     </div>
 
-    <div v-for="sameDayExpenses of expensesByDay" :key="sameDayExpenses.date" class="expense-group">
+    <div v-for="group of expensesByDay" :key="group[0]" class="expense-group">
       <div class="expense-group-title">
-        <span>{{ formatExpenseDate(sameDayExpenses) }}</span>
+        <span>{{ formatGroupDate(group[0]) }}</span>
         <span class="spacer"></span>
-        <span class="sum">{{ formatExpensesSum(sameDayExpenses.expenses) }}€</span>
+        <span class="sum">{{ formatExpensesSum(group[1]) }}€</span>
       </div>
-      <div v-for="expense of sameDayExpenses.expenses" :key="expense.date" class="expense-items">
+      <div v-for="expense of group[1]" :key="expense.date" class="expense-items">
         <div class="expense-item">
           <div
             class="expense-item-category"
@@ -48,8 +48,8 @@
   import { computed, defineComponent, PropType } from 'vue';
   import { formatAmount } from '../lib/amounts';
   import { getCategoryDef } from '../lib/categories';
-  import { formatDate } from '../lib/dates';
-  import { splitExpensesByDay } from '../lib/expenses';
+  import { formatDateToDayHuman } from '../lib/dates';
+  import { groupExpensesByDay } from '../lib/expenses';
   import { Expense } from '../models/expense';
 
   export default defineComponent({
@@ -63,7 +63,7 @@
     emits: ['edit'],
 
     setup(props, { emit }) {
-      const expensesByDay = computed(() => splitExpensesByDay(props.expenses));
+      const expensesByDay = computed(() => groupExpensesByDay(props.expenses));
       const empty = computed(() => props.expenses.length === 0);
 
       return {
@@ -71,8 +71,8 @@
         empty,
         edit,
         formatExpenseAmount,
-        formatExpenseDate,
         formatExpensesSum,
+        formatGroupDate,
         getExpenseIcon,
       };
 
@@ -84,12 +84,12 @@
         return formatAmount(expense.amount);
       }
 
-      function formatExpenseDate(expense: Expense): string {
-        return formatDate(expense.date);
-      }
-
       function formatExpensesSum(expenses: Expense[]): string {
         return formatAmount(expenses.reduce((acc, it) => (it.amount < 0 ? acc + it.amount : acc), 0));
+      }
+
+      function formatGroupDate(date: string): string {
+        return formatDateToDayHuman(new Date(date));
       }
 
       function getExpenseIcon(expense: Expense): string {

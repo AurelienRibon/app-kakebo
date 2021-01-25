@@ -11,7 +11,7 @@ export function formatDateToMonth(date = new Date()): string {
   return `${year}-${month}`;
 }
 
-export function formatDate(date: Date): string {
+export function formatDateToDayHuman(date: Date): string {
   const rtf = new Intl.RelativeTimeFormat('fr', { numeric: 'auto' });
   const dtf = new Intl.DateTimeFormat('fr');
   const daysDiff = computeDaysDiff(new Date(), date);

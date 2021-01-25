@@ -7,15 +7,10 @@ import { Expense } from '../models/expense';
 // TYPES
 // -----------------------------------------------------------------------------
 
-export interface SameDayExpenses {
-  date: Date;
-  expenses: Expense[];
-}
-
 export type ExpenseJSON = Record<string, unknown>;
 
 // -----------------------------------------------------------------------------
-// API
+// CRUD
 // -----------------------------------------------------------------------------
 
 export function createExpenseFromJSON(spec: ExpenseJSON): Expense {
@@ -42,30 +37,39 @@ export function createExpensesFromJSON(specs: ExpenseJSON[]): Expense[] {
   return expenses;
 }
 
-export function splitExpensesByDay(expenses: Expense[]): SameDayExpenses[] {
-  const expensesByDay: Map<string, Expense[]> = new Map();
+// -----------------------------------------------------------------------------
+// GROUPBY
+// -----------------------------------------------------------------------------
+
+export function groupExpensesBy<T>(expenses: Expense[], fn: (exp: Expense) => T): [T, Expense[]][] {
+  const map = new Map<T, Expense[]>();
 
   for (const expense of expenses) {
-    const day = formatDateToDay(expense.date);
+    const key = fn(expense);
+    let bucket = map.get(key);
 
-    let bucket = expensesByDay.get(day);
     if (!bucket) {
       bucket = [];
-      expensesByDay.set(day, bucket);
+      map.set(key, bucket);
     }
 
     bucket.push(expense);
   }
 
-  const result: SameDayExpenses[] = [];
-
-  for (const [day, bucket] of expensesByDay.entries()) {
-    const date = new Date(day);
-    result.push({ date, expenses: bucket });
-  }
-
-  return result;
+  return Array.from(map.entries());
 }
+
+export function groupExpensesByCategory(expenses: Expense[]): [string, Expense[]][] {
+  return groupExpensesBy(expenses, (it) => it.category);
+}
+
+export function groupExpensesByDay(expenses: Expense[]): [string, Expense[]][] {
+  return groupExpensesBy(expenses, (it) => formatDateToDay(it.date));
+}
+
+// -----------------------------------------------------------------------------
+// MISC
+// -----------------------------------------------------------------------------
 
 export function extractExpensesLabels(expenses: Expense[], category: string): string[] {
   const counts = new Map() as Map<string, number>;
@@ -82,9 +86,19 @@ export function extractExpensesLabels(expenses: Expense[], category: string): st
     .map((it) => it[0]);
 }
 
-export function sortExpenses(expenses: Expense[]): void {
-  expenses.sort((a, b) => b.date.getTime() - a.date.getTime());
+type SortOrder = 'ascending' | 'descending';
+
+export function sortExpenses(expenses: Expense[], order: SortOrder = 'descending'): void {
+  expenses.sort(
+    order === 'ascending'
+      ? (a, b) => a.date.getTime() - b.date.getTime()
+      : (a, b) => b.date.getTime() - a.date.getTime()
+  );
 }
+
+// -----------------------------------------------------------------------------
+// COMPUTINGS
+// -----------------------------------------------------------------------------
 
 export function computeMonthExpenses(expenses: Expense[], date: Date): number {
   const year = date.getFullYear();
