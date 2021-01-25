@@ -127,9 +127,9 @@ export const store = new Store();
 // -----------------------------------------------------------------------------
 
 async function syncExpensesWithDB(expenses: Expense[]): Promise<DbExpensesSyncResult | undefined> {
-  const jsons = expenses.map((it) => it.serialize());
+  const body = JSON.stringify({ expenses: expenses.map((it) => it.serialize()) });
   const headers = { 'Content-Type': 'application/json' };
   const url = `${SERVER_URL}/expenses/sync`;
-  const result = await Plugins.Http.request({ method: 'POST', url, headers, data: { expenses: jsons } });
-  return result.status === 200 ? result.data : undefined;
+  const res = await fetch(url, { method: 'POST', mode: 'cors', headers, body });
+  return res.status === 200 ? res.json() : undefined;
 }

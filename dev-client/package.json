@@ -15,7 +15,6 @@
     "last 1 Chrome version"
   ],
   "dependencies": {
-    "@capacitor-community/http": "^0.2.1",
     "@fontsource/montserrat": "^4.0.1",
     "@fontsource/nunito": "^4.0.1",
     "@fontsource/open-sans": "^4.0.1",
