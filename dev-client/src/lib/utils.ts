@@ -23,3 +23,11 @@ export function px(value: number): string {
 export function str(value: unknown): string {
   return JSON.stringify(value);
 }
+
+export function sum(items: number[]): number {
+  return items.reduce((acc, it) => acc + it, 0);
+}
+
+export function mapGroups<T, K, J>(groups: [T, K][], fn: (key: T, val: K) => J): [T, J][] {
+  return groups.map((it) => [it[0], fn(it[0], it[1])]);
+}
