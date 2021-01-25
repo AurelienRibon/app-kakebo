@@ -25,7 +25,7 @@ $media-phone-medium: "(max-width: 375px)";
 }
 
 @mixin padded {
-  padding: 20px 14px 90px 14px;
+  padding: 40px 14px 90px 14px;
 
   @media #{$media-phone-small} {
     padding: 20px 8px 90px 8px;
