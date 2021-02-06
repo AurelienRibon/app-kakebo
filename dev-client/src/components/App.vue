@@ -158,20 +158,26 @@
   }
 
   .btn-add-expense {
-    $size: 80px;
+    --btn-size: 80px;
+
+    @media #{$media-phone-small} {
+      --btn-size: 70px;
+      bottom: 80px;
+      right: 10px;
+    }
 
     position: fixed;
     bottom: 90px;
     right: 20px;
-    width: $size;
-    height: $size;
-    line-height: $size;
+    width: var(--btn-size);
+    height: var(--btn-size);
+    line-height: var(--btn-size);
 
-    font-size: $size - 10px;
+    font-size: calc(var(--btn-size) - 10px);
     text-align: center;
     color: $app-front-bgcolor;
     background: $accent2;
-    border-radius: $size;
+    border-radius: var(--btn-size);
     box-shadow: 0px 2px 10px 0px #0008;
   }
 
