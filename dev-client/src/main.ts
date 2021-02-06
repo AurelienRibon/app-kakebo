@@ -1,4 +1,3 @@
-import '@capacitor-community/http';
 import { createApp } from 'vue';
 import { Plugins } from '@capacitor/core';
 import { store } from './store/store';
