@@ -110,22 +110,22 @@
         state.value = 'idle';
       }
 
-      async function onEditExpenseDone(spec: ExpenseJSON): Promise<void> {
+      function onEditExpenseDone(spec: ExpenseJSON): void {
+        state.value = 'idle';
         store.editExpense(editedExpense.value, spec);
-        await store.save();
-        state.value = 'idle';
+        store.saveAndSync();
       }
 
-      async function onEditExpenseRemove(): Promise<void> {
+      function onEditExpenseRemove(): void {
+        state.value = 'idle';
         store.deleteExpense(editedExpense.value);
-        await store.save();
-        state.value = 'idle';
+        store.saveAndSync();
       }
 
-      async function onAddExpenseDone(spec: ExpenseJSON): Promise<void> {
-        store.addExpense(spec);
-        await store.save();
+      function onAddExpenseDone(spec: ExpenseJSON): void {
         state.value = 'idle';
+        store.addExpense(spec);
+        store.saveAndSync();
       }
     },
   });

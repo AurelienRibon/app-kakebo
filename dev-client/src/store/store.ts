@@ -42,6 +42,16 @@ class Store {
     this.addExpense(json);
   }
 
+  async loadAndSync(): Promise<void> {
+    await this.load();
+    this.sync();
+  }
+
+  async saveAndSync(): Promise<void> {
+    await this.save();
+    this.sync();
+  }
+
   async load(): Promise<void> {
     try {
       const { value } = await Plugins.Storage.get({ key: 'data' });
@@ -54,8 +64,6 @@ class Store {
       this._expensesFull.value = [];
       this._expenses.value = [];
     }
-
-    await this.sync();
   }
 
   async save(): Promise<void> {
@@ -65,7 +73,6 @@ class Store {
     });
 
     await Plugins.Storage.set({ key: 'data', value });
-    await this.sync();
   }
 
   async sync() {

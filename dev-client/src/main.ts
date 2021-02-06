@@ -24,17 +24,17 @@ async function setup() {
 }
 
 function setupPlatformWeb() {
-  store.load();
+  store.loadAndSync();
 }
 
 function setupPlatformMobile() {
-  store.load();
+  store.loadAndSync();
 
   Plugins.Keyboard.setAccessoryBarVisible({ isVisible: true });
 
   Plugins.App.addListener('appStateChange', (state) => {
     if (state.isActive) {
-      store.load();
+      store.loadAndSync();
     }
   });
 }
