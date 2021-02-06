@@ -7,13 +7,24 @@
     <h1>Kakeibo</h1>
 
     <div class="summary">
-      <div class="summary-item debits">
-        <div class="label">dépenses du mois</div>
-        <div class="value">{{ monthDebit }}€</div>
-      </div>
       <div class="summary-item balance">
         <div class="label">balance</div>
         <div class="value" :class="{ positive: monthBalance > 0 }">{{ monthBalance }}€</div>
+      </div>
+
+      <div class="summary-item debits">
+        <div class="label">dépenses du mois</div>
+        <div class="value">{{ monthBalanceOfDebits }}€</div>
+        <div class="details">
+          <div>
+            <div class="label">ponctuelles</div>
+            <div class="value">{{ monthBalanceOfOneTimeDebits }}€</div>
+          </div>
+          <div>
+            <div class="label">récurrentes</div>
+            <div class="value">{{ monthBalanceOfRecurringDebits }}€</div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -27,7 +38,13 @@
   import { computed, defineComponent, PropType } from 'vue';
   import { Expense } from '../models/expense';
   import { formatAmount } from '../lib/amounts';
-  import { computeMonthBalance, computeMonthExpenses } from '../lib/expenses';
+  import {
+    computeBalance,
+    computeBalanceOfDebits,
+    computeBalanceOfOneTimeDebits,
+    computeBalanceOfRecurringDebits,
+    filterExpensesOfCurrentMonth,
+  } from '../lib/expenses-stats';
 
   export default defineComponent({
     props: {
@@ -38,10 +55,22 @@
     },
 
     setup(props) {
-      const today = new Date();
-      const monthDebit = computed(() => formatAmount(computeMonthExpenses(props.expenses, today)));
-      const monthBalance = computed(() => formatAmount(computeMonthBalance(props.expenses, today)));
-      return { monthDebit, monthBalance };
+      const currentExpenses = computed(() => filterExpensesOfCurrentMonth(props.expenses));
+      const monthBalance = computed(() => formatAmount(computeBalance(currentExpenses.value)));
+      const monthBalanceOfDebits = computed(() => formatAmount(computeBalanceOfDebits(currentExpenses.value)));
+      const monthBalanceOfOneTimeDebits = computed(() =>
+        formatAmount(computeBalanceOfOneTimeDebits(currentExpenses.value))
+      );
+      const monthBalanceOfRecurringDebits = computed(() =>
+        formatAmount(computeBalanceOfRecurringDebits(currentExpenses.value))
+      );
+
+      return {
+        monthBalance,
+        monthBalanceOfDebits,
+        monthBalanceOfOneTimeDebits,
+        monthBalanceOfRecurringDebits,
+      };
     },
   });
 </script>
@@ -64,12 +93,17 @@
     font-weight: 200;
     margin: 30px 20px 10px 20px;
     color: #8e8e8e;
+
+    @media #{$media-phone-small} {
+      font-size: 2.4em;
+      margin-top: 20px;
+    }
   }
 
   .summary {
     @include padded;
     flex: 1;
-    padding-top: 40px;
+    padding-top: 30px;
     background: $app-front-bgcolor;
     box-shadow: 0px -1px 10px 0px #00000036;
 
@@ -84,6 +118,10 @@
       &:first-of-type {
         margin-bottom: 30px;
       }
+
+      @media #{$media-phone-small} {
+        font-size: 1.4em;
+      }
     }
 
     .label {
@@ -96,6 +134,25 @@
 
       &.positive {
         color: $accent1;
+      }
+    }
+
+    .details {
+      width: 100%;
+      margin-top: 20px;
+      display: grid;
+      grid-template-columns: 50% 50%;
+
+      & > div {
+        text-align: center;
+      }
+
+      .label {
+        font-size: 0.7em;
+      }
+
+      .value {
+        font-size: 0.9em;
       }
     }
   }
