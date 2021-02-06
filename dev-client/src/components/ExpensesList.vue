@@ -49,7 +49,7 @@
   import { formatAmount } from '../lib/amounts';
   import { getCategoryDef } from '../lib/categories';
   import { formatDateToDayHuman } from '../lib/dates';
-  import { groupExpensesByDay } from '../lib/expenses';
+  import { groupExpensesByDay } from '../lib/expenses-stats';
   import { Expense } from '../models/expense';
 
   export default defineComponent({

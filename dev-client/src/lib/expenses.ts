@@ -1,4 +1,3 @@
-import { formatDateToDay } from './dates';
 import { isPeriodicityValid } from './expenses-periodicities';
 import { str } from './utils';
 import { Expense } from '../models/expense';
@@ -38,36 +37,6 @@ export function createExpensesFromJSON(specs: ExpenseJSON[]): Expense[] {
 }
 
 // -----------------------------------------------------------------------------
-// GROUPBY
-// -----------------------------------------------------------------------------
-
-export function groupExpensesBy<T>(expenses: Expense[], fn: (exp: Expense) => T): [T, Expense[]][] {
-  const map = new Map<T, Expense[]>();
-
-  for (const expense of expenses) {
-    const key = fn(expense);
-    let bucket = map.get(key);
-
-    if (!bucket) {
-      bucket = [];
-      map.set(key, bucket);
-    }
-
-    bucket.push(expense);
-  }
-
-  return Array.from(map.entries());
-}
-
-export function groupExpensesByCategory(expenses: Expense[]): [string, Expense[]][] {
-  return groupExpensesBy(expenses, (it) => it.category);
-}
-
-export function groupExpensesByDay(expenses: Expense[]): [string, Expense[]][] {
-  return groupExpensesBy(expenses, (it) => formatDateToDay(it.date));
-}
-
-// -----------------------------------------------------------------------------
 // MISC
 // -----------------------------------------------------------------------------
 
@@ -94,26 +63,4 @@ export function sortExpenses(expenses: Expense[], order: SortOrder = 'descending
       ? (a, b) => a.date.getTime() - b.date.getTime()
       : (a, b) => b.date.getTime() - a.date.getTime()
   );
-}
-
-// -----------------------------------------------------------------------------
-// COMPUTINGS
-// -----------------------------------------------------------------------------
-
-export function computeMonthExpenses(expenses: Expense[], date: Date): number {
-  const year = date.getFullYear();
-  const month = date.getMonth();
-
-  return expenses
-    .filter((it) => it.date.getFullYear() === year && it.date.getMonth() === month)
-    .reduce((acc, it) => acc + Math.min(it.amount, 0), 0);
-}
-
-export function computeMonthBalance(expenses: Expense[], date: Date): number {
-  const year = date.getFullYear();
-  const month = date.getMonth();
-
-  return expenses
-    .filter((it) => it.date.getFullYear() === year && it.date.getMonth() === month)
-    .reduce((acc, it) => acc + it.amount, 0);
 }

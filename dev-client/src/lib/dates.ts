@@ -18,6 +18,11 @@ export function formatDateToDayHuman(date: Date): string {
   return daysDiff >= -1 && daysDiff <= 0 ? rtf.format(daysDiff, 'day') : dtf.format(date);
 }
 
+export function getCurrentDateComponents(): { year: number; month: number; day: number } {
+  const today = new Date();
+  return { year: today.getFullYear(), month: today.getMonth(), day: today.getDate() };
+}
+
 // -----------------------------------------------------------------------------
 // HELPERS
 // -----------------------------------------------------------------------------

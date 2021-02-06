@@ -21,10 +21,15 @@
 <!-- ----------------------------------------------------------------------- -->
 
 <script lang="ts">
+  import Chart from 'chart.js';
   import { defineComponent, onMounted, PropType } from 'vue';
   import { Expense } from '../models/expense';
-  import { computeBalanceByDay, sumExpensesByCategory, sumExpensesByDay } from '../lib/expenses-stats';
-  import Chart from 'chart.js';
+  import {
+    computeBalanceByDay,
+    filterExpensesOfCurrentMonth,
+    sumExpensesByCategory,
+    sumExpensesByDay,
+  } from '../lib/expenses-stats';
 
   export default defineComponent({
     props: {
@@ -35,7 +40,7 @@
     },
 
     setup(props) {
-      const allExpenses = props.expenses; // eslint-disable-line vue/no-setup-props-destructure
+      const allExpenses = filterExpensesOfCurrentMonth(props.expenses);
       const negExpenses = allExpenses.filter((it) => !it.isPositive());
 
       const amountsByCategory = sumExpensesByCategory(negExpenses, 5);
