@@ -1,10 +1,14 @@
 import { createApp } from 'vue';
-import { Plugins } from '@capacitor/core';
+import * as PluginApp from '@capacitor/app';
+import * as PluginKeyboard from '@capacitor/keyboard';
+import * as PluginDevice from '@capacitor/device';
 import { store } from './store/store';
 import { getVRippleDirective } from './directives/v-ripple';
 import { getVTapDirective } from './directives/v-tap';
 import App from './components/App.vue';
 import './main.scss';
+
+let lastSyncTime = 0;
 
 setup();
 updateCSSViewportHeight();
@@ -19,7 +23,7 @@ app.mount('#app');
 // -----------------------------------------------------------------------------
 
 async function setup() {
-  const info = await Plugins.Device.getInfo();
+  const info = await PluginDevice.Device.getInfo();
   return info.platform === 'web' ? setupPlatformWeb() : setupPlatformMobile();
 }
 
@@ -29,12 +33,15 @@ function setupPlatformWeb() {
 
 function setupPlatformMobile() {
   store.loadAndSync();
+  lastSyncTime = Date.now();
 
-  Plugins.Keyboard.setAccessoryBarVisible({ isVisible: true });
+  PluginKeyboard.Keyboard.setAccessoryBarVisible({ isVisible: true });
 
-  Plugins.App.addListener('appStateChange', (state) => {
-    if (state.isActive) {
-      store.loadAndSync();
+  PluginApp.App.addListener('appStateChange', (state) => {
+    const time = Date.now();
+    if (state.isActive && time - lastSyncTime > 60 * 1000) {
+      lastSyncTime = time;
+      store.sync();
     }
   });
 }

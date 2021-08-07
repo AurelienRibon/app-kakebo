@@ -1,5 +1,5 @@
-import { Plugins } from '@capacitor/core';
 import { Ref, ref } from 'vue';
+import { Storage } from '@capacitor/storage';
 import { Expense } from '../models/expense';
 import { createExpenseFromJSON, createExpensesFromJSON, ExpenseJSON, sortExpenses } from '../lib/expenses';
 
@@ -54,7 +54,7 @@ class Store {
 
   async load(): Promise<void> {
     try {
-      const { value } = await Plugins.Storage.get({ key: 'data' });
+      const { value } = await Storage.get({ key: 'data' });
       const spec = value ? JSON.parse(value) : { expenses: [] };
       const specExpenses = spec.expenses as ExpenseJSON[];
       this._expensesFull.value = createExpensesFromJSON(specExpenses);
@@ -72,7 +72,7 @@ class Store {
       version: this._version,
     });
 
-    await Plugins.Storage.set({ key: 'data', value });
+    await Storage.set({ key: 'data', value });
   }
 
   async sync() {
