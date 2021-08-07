@@ -1,3 +1,12 @@
+import dayjs from 'dayjs';
+import duration from 'dayjs/plugin/duration';
+
+dayjs.extend(duration);
+
+// -----------------------------------------------------------------------------
+// FORMAT
+// -----------------------------------------------------------------------------
+
 export function formatDateToDay(date = new Date()): string {
   const year = date.getUTCFullYear();
   const month = pad(date.getUTCMonth() + 1);
@@ -14,24 +23,29 @@ export function formatDateToMonth(date = new Date()): string {
 export function formatDateToDayHuman(date: Date): string {
   const rtf = new Intl.RelativeTimeFormat('fr', { numeric: 'auto' });
   const dtf = new Intl.DateTimeFormat('fr');
-  const daysDiff = computeDaysDiff(new Date(), date);
+  const daysDiff = dayjs(date).diff(dayjs(), 'days');
   return daysDiff >= -1 && daysDiff <= 0 ? rtf.format(daysDiff, 'day') : dtf.format(date);
 }
 
-export function getCurrentDateComponents(): { year: number; month: number; day: number } {
-  const today = new Date();
-  return { year: today.getFullYear(), month: today.getMonth(), day: today.getDate() };
+// -----------------------------------------------------------------------------
+// MUTATION
+// -----------------------------------------------------------------------------
+
+export function addMonthsToDate(date: Date, monthsDiff: number): Date {
+  return dayjs(date).add(monthsDiff, 'months').toDate();
+}
+
+export function getStartOfMonthDate(date: Date): Date {
+  return dayjs(date).startOf('month').toDate();
+}
+
+export function getEndOfMonthDate(date: Date): Date {
+  return dayjs(date).endOf('month').toDate();
 }
 
 // -----------------------------------------------------------------------------
 // HELPERS
 // -----------------------------------------------------------------------------
-
-function computeDaysDiff(date1: Date, date2: Date) {
-  const millisDiff = date2.getTime() - date1.getTime();
-  const daysDiff = millisDiff / 1000 / 60 / 60 / 24;
-  return daysDiff >= 0 ? Math.floor(daysDiff) : Math.ceil(daysDiff);
-}
 
 function pad(value: number) {
   return String(value).padStart(2, '0');

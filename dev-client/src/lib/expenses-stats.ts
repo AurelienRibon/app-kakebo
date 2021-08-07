@@ -1,4 +1,4 @@
-import { formatDateToDay, getCurrentDateComponents } from './dates';
+import { addMonthsToDate, formatDateToDay, formatDateToMonth, getEndOfMonthDate, getStartOfMonthDate } from './dates';
 import { mapGroups, sum } from './utils';
 import { Expense } from '../models/expense';
 
@@ -32,6 +32,10 @@ export function groupExpensesByDay(expenses: Expense[]): [string, Expense[]][] {
   return groupExpensesBy(expenses, (it) => formatDateToDay(it.date));
 }
 
+export function groupExpensesByMonth(expenses: Expense[]): [string, Expense[]][] {
+  return groupExpensesBy(expenses, (it) => formatDateToMonth(it.date));
+}
+
 // -----------------------------------------------------------------------------
 // FILTER
 // -----------------------------------------------------------------------------
@@ -43,15 +47,20 @@ export function filterExpensesByDate(expenses: Expense[], fromDate: Date, toDate
   });
 }
 
-export function filterExpensesOfMonth(expenses: Expense[], year: number, month: number): Expense[] {
-  const fromDate = new Date(year, month);
-  const toDate = month === 11 ? new Date(year + 1, 0) : new Date(year, month + 1);
+export function filterExpensesOfMonth(expenses: Expense[], date: Date): Expense[] {
+  const fromDate = getStartOfMonthDate(date);
+  const toDate = getEndOfMonthDate(date);
   return filterExpensesByDate(expenses, fromDate, toDate);
 }
 
 export function filterExpensesOfCurrentMonth(expenses: Expense[]): Expense[] {
-  const { year, month } = getCurrentDateComponents();
-  return filterExpensesOfMonth(expenses, year, month);
+  return filterExpensesOfMonth(expenses, new Date());
+}
+
+export function filterExpensesOfLastMonths(expenses: Expense[], months: number): Expense[] {
+  const startDate = getStartOfMonthDate(new Date());
+  const pastDate = addMonthsToDate(startDate, -months);
+  return filterExpensesByDate(expenses, pastDate, new Date());
 }
 
 // -----------------------------------------------------------------------------
