@@ -39,7 +39,7 @@ class Store {
 
   editExpense(expense: Expense, json: ExpenseJSON): void {
     this.deleteExpense(expense);
-    this.addExpense(json);
+    this.addExpense({ ...json, _id: undefined });
   }
 
   async loadAndSync(): Promise<void> {
