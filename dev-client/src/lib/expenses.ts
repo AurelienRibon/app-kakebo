@@ -22,13 +22,12 @@ export function createExpenseFromJSON(spec: ExpenseJSON): Expense {
     throw new Error(`Invalid expense specification: ${str(spec)}`);
   }
 
-  const type = typeof spec.type === 'string' ? spec.type : undefined;
   const label = typeof spec.label === 'string' ? spec.label : undefined;
   const periodicity = isPeriodicityValid(spec.periodicity) ? spec.periodicity : undefined;
   const deleted = typeof spec.deleted === 'boolean' ? spec.deleted : undefined;
   const checked = typeof spec.checked === 'boolean' ? spec.checked : undefined;
 
-  return new Expense({ _id, date, amount, category, type, label, periodicity, deleted, checked });
+  return new Expense({ _id, date, amount, category, label, periodicity, deleted, checked });
 }
 
 export function createExpensesFromJSON(specs: ExpenseJSON[]): Expense[] {

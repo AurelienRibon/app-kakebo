@@ -55,22 +55,6 @@
       </select>
     </article>
   </section>
-
-  <section>
-    <label>type</label>
-    <div class="type-container">
-      <div
-        v-for="def of typeDefs"
-        :key="def.name"
-        v-ripple
-        v-tap
-        :class="{ selected: def.name === type }"
-        @tap="updateType(def)"
-      >
-        <i class="mdi" :class="def.icon"></i>
-      </div>
-    </div>
-  </section>
 </template>
 
 <!-- ----------------------------------------------------------------------- -->
@@ -78,12 +62,11 @@
 <!-- ----------------------------------------------------------------------- -->
 
 <script lang="ts">
-  import { defineComponent, onMounted, ref, watch } from 'vue';
+  import { defineComponent, onMounted, ref, computed, watch } from 'vue';
   import { addDigitToAmount, formatAmount } from '../lib/amounts';
   import { formatDateToDay, formatDateToMonth } from '../lib/dates';
   import { getCategoryDefs } from '../lib/categories';
   import { extractExpensesLabels } from '../lib/expenses';
-  import { ExpenseTypeDef, getExpenseTypeDefs } from '../lib/expenses-types';
   import { Expense } from '../models/expense';
   import { store } from '../store/store';
 
@@ -108,13 +91,11 @@
       const label = ref(props.expense.label);
       const amount = ref(formatAmount(props.expense.amount, true));
       const sign = ref(props.expense.getSign());
-      const type = ref(props.expense.type);
       const category = ref(props.expense.category);
 
       // Misc values
       const categories = getCategoryDefs();
-      const labels = extractExpensesLabels(store.expenses.value, props.expense.category);
-      const typeDefs = getExpenseTypeDefs();
+      const labels = computed(() => extractExpensesLabels(store.expenses.value, category.value));
       const refAmount = ref(null);
 
       watch(periodicity, (value) => {
@@ -134,17 +115,10 @@
         labels,
         periodicity,
         sign,
-        type,
-        typeDefs,
         refAmount,
         updateAmount,
         updateSign,
-        updateType,
       };
-
-      function updateType(typeDef: ExpenseTypeDef): void {
-        type.value = typeDef.name;
-      }
 
       function updateSign(): void {
         sign.value = sign.value === '-' ? '+' : '-';
@@ -180,7 +154,6 @@
           amount: Number(this.amount) * (this.sign === '-' ? -1 : +1),
           periodicity: this.periodicity,
           date: this.date,
-          type: this.type,
           label: this.label,
         };
       },
@@ -242,29 +215,5 @@
     justify-content: center;
     width: 60px;
     font-size: 1.6em;
-  }
-
-  .type-container {
-    display: flex;
-    height: 45px;
-    border: 1px solid $border-dark-color;
-    border-radius: 6px;
-
-    & > div {
-      flex: 1;
-      text-align: center;
-      line-height: 45px;
-      font-size: 2em;
-      border-radius: 6px;
-      transition: background 0.3s ease;
-
-      &.selected {
-        background: $accent1;
-      }
-    }
-  }
-
-  .buttons {
-    margin-top: 30px;
   }
 </style>
