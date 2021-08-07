@@ -15,25 +15,32 @@
         <span class="spacer"></span>
         <span class="sum">{{ formatExpensesSum(group[1]) }}€</span>
       </div>
-      <div v-for="expense of group[1]" :key="expense.date" class="expense-items">
-        <div class="expense-item">
-          <div
-            class="expense-item-category"
-            :class="{
-              'expense-item-extra': expense.isExtra(),
-              'expense-item-recurring': expense.isRecurring(),
-            }"
-          >
-            <span class="mdi" :class="getExpenseIcon(expense)"></span>
-            <span>{{ expense.category }}</span>
-          </div>
-          <div class="expense-item-label">{{ expense.label }}</div>
-          <div class="expense-item-amount" :class="{ 'expense-item-positive': expense.isPositive() }">
-            {{ formatExpenseAmount(expense) }}€
-          </div>
-          <div v-ripple v-tap class="expense-item-edit" @tap="edit(expense)">
-            <i class="mdi mdi-pencil"></i>
-          </div>
+
+      <div
+        v-for="expense of group[1]"
+        :key="expense.date"
+        class="expense-item"
+        :class="{ 'expense-item-checked': expense.checked }"
+      >
+        <div
+          class="expense-item-category"
+          :class="{
+            'expense-item-extra': expense.isExtra(),
+            'expense-item-recurring': expense.isRecurring(),
+          }"
+        >
+          <span class="mdi" :class="getExpenseIcon(expense)"></span>
+          <span>{{ expense.category }}</span>
+        </div>
+        <div class="expense-item-label">{{ expense.label }}</div>
+        <div class="expense-item-amount" :class="{ 'expense-item-positive': expense.isPositive() }">
+          {{ formatExpenseAmount(expense) }}€
+        </div>
+        <div v-ripple v-tap class="expense-item-action" @tap="edit(expense)">
+          <i class="mdi mdi-pencil"></i>
+        </div>
+        <div v-ripple v-tap class="expense-item-action" @tap="check(expense)">
+          <i class="mdi mdi-check-bold"></i>
         </div>
       </div>
     </div>
@@ -60,7 +67,7 @@
       },
     },
 
-    emits: ['edit'],
+    emits: ['edit', 'check'],
 
     setup(props, { emit }) {
       const lastMonthsExpenses = computed(() => filterExpensesOfLastMonths(props.expenses, 3));
@@ -71,6 +78,7 @@
         expensesByDay,
         empty,
         edit,
+        check,
         formatExpenseAmount,
         formatExpensesSum,
         formatGroupDate,
@@ -79,6 +87,10 @@
 
       function edit(expense: Expense): void {
         emit('edit', expense);
+      }
+
+      function check(expense: Expense): void {
+        emit('check', expense);
       }
 
       function formatExpenseAmount(expense: Expense): string {
@@ -170,6 +182,17 @@
     margin: 6px 0px;
   }
 
+  .expense-item-data {
+    display: flex;
+    align-items: center;
+    flex: 1;
+  }
+
+  .expense-item-actions {
+    display: flex;
+    align-items: center;
+  }
+
   .expense-item-label {
     flex: 1;
     margin: 0 10px;
@@ -186,11 +209,10 @@
     }
   }
 
-  .expense-item-edit {
+  .expense-item-action {
     padding: 6px 8px;
     margin: -6px -8px;
     margin-left: 0px;
-    border-radius: 100px;
     color: #a5a5a5;
   }
 
@@ -211,5 +233,9 @@
     &.expense-item-recurring {
       border-style: dashed;
     }
+  }
+
+  .expense-item-checked {
+    background-image: repeating-linear-gradient(45deg, #ccc, #ccc 30px, #dbdbdb 30px, #dbdbdb 60px);
   }
 </style>

@@ -16,6 +16,7 @@ export interface ExpenseSpec {
   label?: string;
   periodicity?: ExpensePeriodicity;
   deleted?: boolean;
+  checked?: boolean;
 }
 
 export class Expense {
@@ -27,6 +28,7 @@ export class Expense {
   private _label: string;
   private _periodicity: ExpensePeriodicity;
   private _deleted: boolean;
+  private _checked: boolean;
 
   constructor(spec: ExpenseSpec = {}) {
     this._id = spec._id || guid();
@@ -37,6 +39,7 @@ export class Expense {
     this._label = spec.label || '';
     this._periodicity = spec.periodicity || DEFAULT_PERIODICITY;
     this._deleted = spec.deleted || false;
+    this._checked = spec.checked || false;
   }
 
   get id(): string {
@@ -71,6 +74,10 @@ export class Expense {
     return this._deleted;
   }
 
+  get checked(): boolean {
+    return this._checked;
+  }
+
   isExtra(): boolean {
     return getCategoryDef(this.category).extra === true;
   }
@@ -101,6 +108,7 @@ export class Expense {
       label: this.label,
       periodicity: this.periodicity,
       deleted: this.deleted,
+      checked: this.checked,
     };
   }
 }

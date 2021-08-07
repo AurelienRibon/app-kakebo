@@ -7,7 +7,12 @@
     <Home v-if="page === 'home'" :expenses="expenses"></Home>
     <Stats v-if="page === 'stats'" :expenses="expenses"></Stats>
     <Setup v-if="page === 'setup'" :expenses="expenses"></Setup>
-    <ExpensesList v-if="page === 'list'" :expenses="expenses" @edit="onExpenseEdit"></ExpensesList>
+    <ExpensesList
+      v-if="page === 'list'"
+      :expenses="expenses"
+      @check="onExpenseCheck"
+      @edit="onExpenseEdit"
+    ></ExpensesList>
 
     <MenuBar class="menu-bar" @select="onMenuSelect"></MenuBar>
 
@@ -83,6 +88,7 @@
         onEditExpenseCancel,
         onEditExpenseDone,
         onEditExpenseRemove,
+        onExpenseCheck,
         onExpenseEdit,
         onMenuSelect,
         page,
@@ -99,6 +105,11 @@
 
       function onAddExpenseCancel(): void {
         state.value = 'idle';
+      }
+
+      function onExpenseCheck(expense: Expense): void {
+        store.editExpense(expense, { ...expense.serialize(), checked: !expense.checked });
+        store.saveAndSync();
       }
 
       function onExpenseEdit(expense: Expense): void {
