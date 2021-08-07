@@ -92,6 +92,7 @@
       const amount = ref(formatAmount(props.expense.amount, true));
       const sign = ref(props.expense.getSign());
       const category = ref(props.expense.category);
+      const checked = ref(props.expense.checked);
 
       // Misc values
       const categories = getCategoryDefs();
@@ -110,6 +111,7 @@
         amount,
         categories,
         category,
+        checked,
         date,
         label,
         labels,
@@ -155,6 +157,7 @@
           periodicity: this.periodicity,
           date: this.date,
           label: this.label,
+          checked: this.checked,
         };
       },
     },
