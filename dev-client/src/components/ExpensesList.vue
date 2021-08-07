@@ -49,7 +49,7 @@
   import { formatAmount } from '../lib/amounts';
   import { getCategoryDef } from '../lib/categories';
   import { formatDateToDayHuman } from '../lib/dates';
-  import { groupExpensesByDay } from '../lib/expenses-stats';
+  import { filterExpensesOfLastMonths, groupExpensesByDay } from '../lib/expenses-stats';
   import { Expense } from '../models/expense';
 
   export default defineComponent({
@@ -63,8 +63,9 @@
     emits: ['edit'],
 
     setup(props, { emit }) {
-      const expensesByDay = computed(() => groupExpensesByDay(props.expenses));
-      const empty = computed(() => props.expenses.length === 0);
+      const lastMonthsExpenses = computed(() => filterExpensesOfLastMonths(props.expenses, 3));
+      const expensesByDay = computed(() => groupExpensesByDay(lastMonthsExpenses.value));
+      const empty = computed(() => lastMonthsExpenses.value.length === 0);
 
       return {
         expensesByDay,
