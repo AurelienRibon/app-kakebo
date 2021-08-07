@@ -28,7 +28,7 @@
       <input v-model="label" type="text" list="labels" />
     </article>
     <datalist id="labels">
-      <option v-for="label of labels" :key="label" :value="label"></option>
+      <option v-for="it of labels" :key="it" :value="it"></option>
     </datalist>
   </section>
 
