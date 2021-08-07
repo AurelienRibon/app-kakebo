@@ -79,7 +79,10 @@ class Store {
     this._loading.value = true;
 
     try {
-      await this._syncImpl();
+      const changed = await this._syncImpl();
+      if (changed) {
+        await this.save();
+      }
     } catch (err) {
       console.error(err); // eslint-disable-line no-console
     }
@@ -96,13 +99,19 @@ class Store {
       return;
     }
 
+    let changed = false;
+
     if (syncResult.expensesToAdd.length > 0) {
       this._registerExpenses(syncResult.expensesToAdd);
+      changed = true;
     }
 
     if (syncResult.expensesToDelete.length > 0) {
       this._deleteExpenses(syncResult.expensesToDelete);
+      changed = true;
     }
+
+    return changed;
   }
 
   private _registerExpenses(jsons: ExpenseJSON[]): void {
