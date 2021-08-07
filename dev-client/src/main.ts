@@ -12,6 +12,7 @@ let lastSyncTime = 0;
 
 setup();
 updateCSSViewportHeight();
+setTimeout(updateCSSViewportHeight, 1000);
 
 const app = createApp(App);
 app.directive('ripple', getVRippleDirective());
