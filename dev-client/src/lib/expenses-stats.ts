@@ -111,6 +111,18 @@ export function computeBalanceOfRecurringDebits(expenses: Expense[]): number {
 }
 
 // -----------------------------------------------------------------------------
+// MONTH ANALYSIS
+// -----------------------------------------------------------------------------
+
+export function computeBalanceByMonth(expenses: Expense[]): [string, number][] {
+  return sumGroups(groupExpensesByMonth(expenses)).sort((a, b) => a[0].localeCompare(b[0]));
+}
+
+export function computeDebitsByMonth(expenses: Expense[]): [string, number][] {
+  return computeBalanceByMonth(expenses.filter((it) => it.amount < 0));
+}
+
+// -----------------------------------------------------------------------------
 // HELPERS
 // -----------------------------------------------------------------------------
 

@@ -13,6 +13,11 @@
       <h1>évolution sur le mois</h1>
       <canvas id="balanceByDay" height="260"></canvas>
     </div>
+
+    <div class="stat">
+      <h1>évolution sur l'année</h1>
+      <canvas id="balanceByMonth" height="260"></canvas>
+    </div>
   </div>
 </template>
 
@@ -26,6 +31,8 @@
   import { Expense } from '../models/expense';
   import {
     computeBalanceByDay,
+    computeBalanceByMonth,
+    computeDebitsByMonth,
     filterExpensesOfCurrentMonth,
     sumExpensesByCategory,
     sumExpensesByDay,
@@ -40,12 +47,14 @@
     },
 
     setup(props) {
-      const allExpenses = filterExpensesOfCurrentMonth(props.expenses);
-      const negExpenses = allExpenses.filter((it) => !it.isPositive());
+      const monthExpenses = filterExpensesOfCurrentMonth(props.expenses);
+      const monthNegativeExpenses = monthExpenses.filter((it) => !it.isPositive());
 
-      const amountsByCategory = sumExpensesByCategory(negExpenses, 5);
-      const amountsByDay = sumExpensesByDay(negExpenses);
-      const balanceByDay = computeBalanceByDay(allExpenses);
+      const amountsByCategory = sumExpensesByCategory(monthNegativeExpenses, 5);
+      const amountsByDay = sumExpensesByDay(monthNegativeExpenses);
+      const balanceByDay = computeBalanceByDay(monthExpenses);
+      const balanceByMonth = computeBalanceByMonth(props.expenses);
+      const debitsByMonth = computeDebitsByMonth(props.expenses);
 
       onMounted(() => {
         new Chart('amountsByCategory', {
@@ -86,6 +95,31 @@
             scales: {
               xAxes: [{ type: 'time', time: { round: 'day' } }],
               yAxes: [{ type: 'linear', ticks: { beginAtZero: true } }],
+            },
+          },
+        });
+
+        new Chart('balanceByMonth', {
+          type: 'bar',
+          data: {
+            labels: balanceByMonth.map((it) => it[0]),
+            datasets: [
+              {
+                label: 'Économies',
+                data: balanceByMonth.map((it) => it[1]),
+                backgroundColor: '#4bc0c0',
+              },
+              {
+                label: 'Dépenses',
+                data: debitsByMonth.map((it) => it[1]),
+                backgroundColor: '#ff6384',
+              },
+            ],
+          },
+          options: {
+            scales: {
+              xAxes: [{ stacked: true }],
+              yAxes: [{ ticks: { beginAtZero: true } }],
             },
           },
         });
