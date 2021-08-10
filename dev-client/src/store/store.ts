@@ -1,15 +1,12 @@
 import { Ref, ref } from 'vue';
 import { Storage } from '@capacitor/storage';
-import { Expense } from '../models/expense';
-import { createExpenseFromJSON, createExpensesFromJSON, ExpenseJSON, sortExpenses } from '../lib/expenses';
+import { Expense, ExpenseSpec } from '../models/expense';
+import { createExpenseFromJSON, createExpensesFromJSONs, ExpenseJSON, sortExpenses } from '../lib/expenses';
 
 const IS_PROD = process.env.NODE_ENV === 'production';
 const SERVER_URL = IS_PROD ? 'https://kakebo-server.herokuapp.com' : 'http://192.168.1.42:5000';
 
-interface DbExpensesSyncResult {
-  expensesToAdd: ExpenseJSON[];
-  expensesToDelete: ExpenseJSON[];
-}
+type DbExpensesSyncResult = ExpenseJSON[];
 
 class Store {
   private _expensesFull = ref([]) as Ref<Expense[]>;
@@ -29,17 +26,10 @@ class Store {
     return this._version;
   }
 
-  addExpense(json: ExpenseJSON): void {
-    this._registerExpenses([json]);
-  }
-
-  deleteExpense(expense: Expense): void {
-    this._deleteExpenses([expense.serialize()]);
-  }
-
-  editExpense(expense: Expense, json: ExpenseJSON): void {
-    this.deleteExpense(expense);
-    this.addExpense({ ...json, _id: undefined });
+  addExpense(spec: ExpenseSpec): void {
+    const expense = new Expense(spec);
+    this._expensesFull.value.push(expense);
+    this._refreshExpenses();
   }
 
   async loadAndSync(): Promise<void> {
@@ -57,12 +47,10 @@ class Store {
       const { value } = await Storage.get({ key: 'data' });
       const spec = value ? JSON.parse(value) : { expenses: [] };
       const specExpenses = spec.expenses as ExpenseJSON[];
-      this._expensesFull.value = createExpensesFromJSON(specExpenses);
-      this._expenses.value = this._expensesFull.value.filter((it) => !it.deleted);
+      this._setExpenses(createExpensesFromJSONs(specExpenses));
     } catch (err) {
       console.error(err); // eslint-disable-line no-console
-      this._expensesFull.value = [];
-      this._expenses.value = [];
+      this._setExpenses([]);
     }
   }
 
@@ -79,7 +67,7 @@ class Store {
     this._loading.value = true;
 
     try {
-      const changed = await this._syncImpl();
+      const changed = await this._syncExpenses();
       if (changed) {
         await this.save();
       }
@@ -93,7 +81,7 @@ class Store {
   // Internal API
   // ---------------------------------------------------------------------------
 
-  private async _syncImpl() {
+  private async _syncExpenses() {
     const syncResult = await syncExpensesWithDB(this._expensesFull.value);
     if (!syncResult) {
       return;
@@ -101,38 +89,33 @@ class Store {
 
     let changed = false;
 
-    if (syncResult.expensesToAdd.length > 0) {
-      this._registerExpenses(syncResult.expensesToAdd);
-      changed = true;
-    }
-
-    if (syncResult.expensesToDelete.length > 0) {
-      this._deleteExpenses(syncResult.expensesToDelete);
+    if (syncResult.length > 0) {
+      this._upsertExpenseJSONs(syncResult);
       changed = true;
     }
 
     return changed;
   }
 
-  private _registerExpenses(jsons: ExpenseJSON[]): void {
+  private _upsertExpenseJSONs(jsons: ExpenseJSON[]): void {
+    const knownExpensesById = new Map(this._expensesFull.value.map((it) => [it.id, it]));
+
     for (const json of jsons) {
       const expense = createExpenseFromJSON(json);
-      this._expensesFull.value.push(expense);
-
-      if (!expense.deleted) {
-        this._expenses.value.push(expense);
-      }
+      knownExpensesById.set(expense.id, expense);
     }
 
-    sortExpenses(this._expenses.value);
+    this._setExpenses(Array.from(knownExpensesById.values()));
   }
 
-  private _deleteExpenses(jsons: ExpenseJSON[]): void {
-    for (const json of jsons) {
-      const index = this._expenses.value.findIndex((it) => it.id === json._id);
-      this._expenses.value[index].delete();
-      this._expenses.value.splice(index, 1);
-    }
+  private _setExpenses(expenses: Expense[]): void {
+    this._expensesFull.value = expenses;
+    this._refreshExpenses();
+  }
+
+  private _refreshExpenses(): void {
+    this._expenses.value = this._expensesFull.value.filter((it) => !it.deleted);
+    sortExpenses(this._expenses.value);
   }
 }
 

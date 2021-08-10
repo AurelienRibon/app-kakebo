@@ -31,7 +31,7 @@ export function createExpenseFromJSON(spec: ExpenseJSON): Expense {
   return new Expense({ _id, date, amount, category, label, periodicity, deleted, checked, updatedAt });
 }
 
-export function createExpensesFromJSON(specs: ExpenseJSON[]): Expense[] {
+export function createExpensesFromJSONs(specs: ExpenseJSON[]): Expense[] {
   const expenses = specs.map(createExpenseFromJSON);
   sortExpenses(expenses);
   return expenses;
