@@ -10,11 +10,11 @@ export interface ExpenseSpec {
   date?: Date;
   amount?: number;
   category?: string;
-  type?: string;
   label?: string;
   periodicity?: ExpensePeriodicity;
   deleted?: boolean;
   checked?: boolean;
+  updatedAt?: Date;
 }
 
 export class Expense {
@@ -26,6 +26,7 @@ export class Expense {
   private _periodicity: ExpensePeriodicity;
   private _deleted: boolean;
   private _checked: boolean;
+  private _updatedAt: Date;
 
   constructor(spec: ExpenseSpec = {}) {
     this._id = spec._id || guid();
@@ -36,6 +37,7 @@ export class Expense {
     this._periodicity = spec.periodicity || DEFAULT_PERIODICITY;
     this._deleted = spec.deleted || false;
     this._checked = spec.checked || false;
+    this._updatedAt = spec.updatedAt || new Date();
   }
 
   get id(): string {
@@ -70,6 +72,10 @@ export class Expense {
     return this._checked;
   }
 
+  get updatedAt(): Date {
+    return this._updatedAt;
+  }
+
   isExtra(): boolean {
     return getCategoryDef(this.category).extra === true;
   }
@@ -100,6 +106,7 @@ export class Expense {
       periodicity: this.periodicity,
       deleted: this.deleted,
       checked: this.checked,
+      updatedAt: this.updatedAt.toISOString(),
     };
   }
 }
