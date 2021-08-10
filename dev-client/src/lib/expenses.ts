@@ -56,12 +56,10 @@ export function extractExpensesLabels(expenses: Expense[], category: string): st
     .map((it) => it[0]);
 }
 
-type SortOrder = 'ascending' | 'descending';
+export function sortExpenses(expenses: Expense[]): void {
+  expenses.sort(compareExpenses);
+}
 
-export function sortExpenses(expenses: Expense[], order: SortOrder = 'descending'): void {
-  expenses.sort(
-    order === 'ascending'
-      ? (a, b) => a.date.getTime() - b.date.getTime()
-      : (a, b) => b.date.getTime() - a.date.getTime()
-  );
+function compareExpenses(e1: Expense, e2: Expense): number {
+  return e2.date.getTime() - e1.date.getTime();
 }
