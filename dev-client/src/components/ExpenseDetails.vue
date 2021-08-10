@@ -155,7 +155,7 @@
           category: this.category,
           amount: Number(this.amount) * (this.sign === '-' ? -1 : +1),
           periodicity: this.periodicity,
-          date: this.date,
+          date: new Date(this.date),
           label: this.label,
           checked: this.checked,
         };
