@@ -4,19 +4,28 @@
 
 <template>
   <div ref="refRoot" class="container">
+    <h1>A propos du mois</h1>
+
     <div class="stat">
-      <h1>dépenses par catégorie</h1>
+      <h2>dépenses par catégorie</h2>
       <canvas id="amountsByCategory" height="260"></canvas>
     </div>
 
     <div class="stat">
-      <h1>évolution sur le mois</h1>
+      <h2>solde sur le mois</h2>
       <canvas id="balanceByDay" height="260"></canvas>
     </div>
 
+    <h1>A propos de l'année</h1>
+
     <div class="stat">
-      <h1>évolution sur l'année</h1>
-      <canvas id="balanceByMonth" height="260"></canvas>
+      <h2>dépenses par mois</h2>
+      <canvas id="balanceByMonth" height="360"></canvas>
+    </div>
+
+    <div class="stat">
+      <h2>solde sur l'année</h2>
+      <canvas id="aggregatedBalanceByMonth" height="260"></canvas>
     </div>
   </div>
 </template>
@@ -30,9 +39,10 @@
   import { defineComponent, onMounted, PropType } from 'vue';
   import { Expense } from '../models/expense';
   import {
-    computeBalanceByDay,
+    computeAggregatedBalanceByDay,
+    computeAggregatedBalanceByMonth,
     computeBalanceByMonth,
-    computeDebitsByMonth,
+    computeBalanceOfDebitsByMonth,
     filterExpensesOfCurrentMonth,
     sumExpensesByCategory,
     sumExpensesByDay,
@@ -52,9 +62,12 @@
 
       const amountsByCategory = sumExpensesByCategory(monthNegativeExpenses, 5);
       const amountsByDay = sumExpensesByDay(monthNegativeExpenses);
-      const balanceByDay = computeBalanceByDay(monthExpenses);
+
+      const aggregatedBalanceByDay = computeAggregatedBalanceByDay(monthExpenses);
+      const aggregatedBalanceByMonth = computeAggregatedBalanceByMonth(props.expenses);
+
       const balanceByMonth = computeBalanceByMonth(props.expenses);
-      const debitsByMonth = computeDebitsByMonth(props.expenses);
+      const balanceOfDebitsByMonth = computeBalanceOfDebitsByMonth(props.expenses);
 
       onMounted(() => {
         new Chart('amountsByCategory', {
@@ -76,10 +89,11 @@
           data: {
             datasets: [
               {
-                label: 'Balance',
-                data: balanceByDay.map((it) => ({ t: it[0], y: it[1] })),
-                backgroundColor: '#ff638488',
-                borderColor: '#ff6384',
+                label: 'Solde',
+                type: 'line',
+                data: aggregatedBalanceByDay.map((it) => ({ t: it[0], y: it[1] })),
+                backgroundColor: '#4bc0c088',
+                borderColor: '#4bc0c0',
                 borderWidth: 2,
                 pointRadius: 0,
               },
@@ -111,8 +125,31 @@
               },
               {
                 label: 'Dépenses',
-                data: debitsByMonth.map((it) => it[1]),
+                data: balanceOfDebitsByMonth.map((it) => it[1]),
                 backgroundColor: '#ff6384',
+              },
+            ],
+          },
+          options: {
+            scales: {
+              xAxes: [{ stacked: true }],
+              yAxes: [{ ticks: { beginAtZero: true } }],
+            },
+          },
+        });
+
+        new Chart('aggregatedBalanceByMonth', {
+          type: 'line',
+          data: {
+            labels: balanceByMonth.map((it) => it[0]),
+            datasets: [
+              {
+                label: 'Solde',
+                data: aggregatedBalanceByMonth.map((it) => ({ t: it[0], y: it[1] })),
+                backgroundColor: '#4bc0c088',
+                borderColor: '#4bc0c0',
+                borderWidth: 2,
+                pointRadius: 0,
               },
             ],
           },
@@ -150,6 +187,16 @@
   }
 
   h1 {
+    font-weight: 100;
+    font-size: 1.6em;
+    color: #8c8c8c;
+    padding-bottom: 10px;
+    margin-bottom: 30px;
+    margin-right: 10px;
+    text-align: right;
+  }
+
+  h2 {
     font-weight: 100;
     font-size: 1.6em;
     border-bottom: 1px solid $border-light-color;

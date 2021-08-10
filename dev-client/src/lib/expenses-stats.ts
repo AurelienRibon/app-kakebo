@@ -93,15 +93,8 @@ export function sumExpensesByDay(expenses: Expense[]): [string, number][] {
 }
 
 // -----------------------------------------------------------------------------
-// COMPUTINGS
+// BALANCE
 // -----------------------------------------------------------------------------
-
-export function computeBalanceByDay(expenses: Expense[]): [string, number][] {
-  let balance = 0;
-  return sumGroups(groupExpensesByDay(expenses))
-    .sort((a, b) => a[0].localeCompare(b[0]))
-    .map((it) => [it[0], (balance += it[1])]);
-}
 
 export function computeBalance(expenses: Expense[]): number {
   return sumExpenses(expenses);
@@ -119,16 +112,26 @@ export function computeBalanceOfRecurringDebits(expenses: Expense[]): number {
   return sumExpenses(expenses.filter((it) => it.amount < 0 && it.isRecurring()));
 }
 
-// -----------------------------------------------------------------------------
-// MONTH ANALYSIS
-// -----------------------------------------------------------------------------
-
 export function computeBalanceByMonth(expenses: Expense[]): [string, number][] {
   return sumGroups(groupExpensesByMonth(expenses)).sort((a, b) => a[0].localeCompare(b[0]));
 }
 
-export function computeDebitsByMonth(expenses: Expense[]): [string, number][] {
+export function computeBalanceOfDebitsByMonth(expenses: Expense[]): [string, number][] {
   return computeBalanceByMonth(expenses.filter((it) => it.amount < 0));
+}
+
+export function computeAggregatedBalanceByDay(expenses: Expense[]): [string, number][] {
+  let balance = 0;
+  return sumGroups(groupExpensesByDay(expenses))
+    .sort((a, b) => a[0].localeCompare(b[0]))
+    .map((it) => [it[0], (balance += it[1])]);
+}
+
+export function computeAggregatedBalanceByMonth(expenses: Expense[]): [string, number][] {
+  let balance = 0;
+  return sumGroups(groupExpensesByMonth(expenses))
+    .sort((a, b) => a[0].localeCompare(b[0]))
+    .map((it) => [it[0], (balance += it[1])]);
 }
 
 // -----------------------------------------------------------------------------
