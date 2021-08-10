@@ -26,14 +26,18 @@ exports.getExpenses = async function () {
   return db.expenses.find().toArray();
 };
 
-exports.addExpenses = async function (newExpenses) {
-  if (newExpenses.length > 0) {
-    await db.expenses.insertMany(newExpenses);
+exports.upsertExpenses = async function (expenses) {
+  if (expenses.length === 0) {
+    return;
   }
-};
 
-exports.deleteExpenses = async function (expenses) {
-  for (const expense of expenses) {
-    await db.expenses.updateOne({ _id: expense._id }, { $set: { deleted: true } });
-  }
+  const operations = expenses.map((it) => ({
+    replaceOne: {
+      filter: { _id: it._id },
+      replacement: it,
+      upsert: true,
+    },
+  }));
+
+  await db.expenses.bulkWrite(operations);
 };

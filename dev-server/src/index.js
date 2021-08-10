@@ -3,7 +3,7 @@
 const express = require('express');
 const compression = require('compression');
 const db = require('./db');
-const { diffExpenses } = require('./lib/expenses');
+const { convertExpensesForDB, diffExpenses } = require('./lib/expenses');
 
 const PORT = process.env.PORT || 5000;
 
@@ -31,28 +31,29 @@ app.get('/expenses', async (req, res) => {
 });
 
 app.post('/expenses/sync', async (req, res) => {
-  const userExpenses = req.body.expenses;
+  const t1 = Date.now();
+
+  const userExpenses = convertExpensesForDB(req.body.expenses);
   const knownExpenses = await db.getExpenses();
 
-  const [userExpensesToAdd, userExpensesToDelete] = diffExpenses(knownExpenses, userExpenses);
-  const [knownExpensesToAdd, knownExpensesToDelete] = diffExpenses(userExpenses, knownExpenses);
+  const t2 = Date.now();
 
-  const nbAdded = knownExpensesToAdd.length;
-  const nbDeleted = knownExpensesToDelete.length;
-  const nbToAdd = userExpensesToAdd.length;
-  const nbToDelete = userExpensesToDelete.length;
+  const expensesToUpsertForServer = diffExpenses(userExpenses, knownExpenses);
+  const expensesToUpsertForUser = diffExpenses(knownExpenses, userExpenses);
 
-  console.log(`nbAdded:${nbAdded}, nbDeleted:${nbDeleted}, nbToAdd:${nbToAdd}, nbToDelete:${nbToDelete}`);
+  const t3 = Date.now();
 
-  await db.addExpenses(knownExpensesToAdd);
-  await db.deleteExpenses(knownExpensesToDelete);
+  const nbServer = expensesToUpsertForServer.length;
+  const nbUser = expensesToUpsertForUser.length;
+  const d1 = (t2 - t1).toFixed(2);
+  const d2 = (t3 - t2).toFixed(2);
 
-  res.send({
-    expensesAdded: nbAdded,
-    expensesDeleted: nbDeleted,
-    expensesToAdd: userExpensesToAdd,
-    expensesToDelete: userExpensesToDelete,
-  });
+  console.log(`fetch:${d1}ms, diff:${d2}ms`);
+  console.log(`expensesToUpsertForServer:${nbServer}, expensesToUpsertForUser:${nbUser}`);
+
+  await db.upsertExpenses(expensesToUpsertForServer);
+
+  res.send(expensesToUpsertForUser);
 });
 
 // -----------------------------------------------------------------------------
