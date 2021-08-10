@@ -67,7 +67,7 @@
   import { formatDateToDay, formatDateToMonth } from '../lib/dates';
   import { getCategoryDefs } from '../lib/categories';
   import { extractExpensesLabels } from '../lib/expenses';
-  import { Expense } from '../models/expense';
+  import { Expense, ExpenseSpec } from '../models/expense';
   import { store } from '../store/store';
 
   export default defineComponent({
@@ -150,7 +150,7 @@
     },
 
     methods: {
-      bundle() {
+      bundle(): ExpenseSpec {
         return {
           category: this.category,
           amount: Number(this.amount) * (this.sign === '-' ? -1 : +1),
