@@ -108,7 +108,7 @@
       }
 
       function onExpenseCheck(expense: Expense): void {
-        store.editExpense(expense, { ...expense.serialize(), checked: !expense.checked });
+        expense.edit({ checked: !expense.checked });
         store.saveAndSync();
       }
 
@@ -123,13 +123,13 @@
 
       function onEditExpenseDone(spec: ExpenseJSON): void {
         state.value = 'idle';
-        store.editExpense(editedExpense.value, spec);
+        editedExpense.value.edit(spec);
         store.saveAndSync();
       }
 
       function onEditExpenseRemove(): void {
         state.value = 'idle';
-        store.deleteExpense(editedExpense.value);
+        editedExpense.value.edit({ deleted: true });
         store.saveAndSync();
       }
 
