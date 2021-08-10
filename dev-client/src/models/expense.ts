@@ -92,8 +92,34 @@ export class Expense {
     return this.isPositive() ? '+' : '-';
   }
 
-  delete(): void {
-    this._deleted = true;
+  edit(changes: ExpenseSpec): void {
+    for (const [key, value] of Object.entries(changes)) {
+      switch (key) {
+        case 'date':
+          this._date = value;
+          break;
+        case 'amount':
+          this._amount = value;
+          break;
+        case 'category':
+          this._category = value;
+          break;
+        case 'label':
+          this._label = value;
+          break;
+        case 'periodicity':
+          this._periodicity = value;
+          break;
+        case 'deleted':
+          this._deleted = value;
+          break;
+        case 'checked':
+          this._checked = value;
+          break;
+      }
+
+      this._updatedAt = new Date();
+    }
   }
 
   serialize(): Record<string, unknown> {
