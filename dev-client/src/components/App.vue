@@ -6,7 +6,6 @@
   <main>
     <Home v-if="page === 'home'" :expenses="expenses"></Home>
     <Stats v-if="page === 'stats'" :expenses="expenses"></Stats>
-    <Setup v-if="page === 'setup'" :expenses="expenses"></Setup>
     <ExpensesList
       v-if="page === 'list'"
       :expenses="expenses"
@@ -64,12 +63,11 @@
   import Home from './Home.vue';
   import MenuBar from './MenuBar.vue';
   import Stats from './Stats.vue';
-  import Setup from './Setup.vue';
 
   type State = 'idle' | 'addExpense' | 'editExpense';
 
   export default defineComponent({
-    components: { Home, Stats, Setup, MenuBar, AddExpense, EditExpense, ExpensesList },
+    components: { Home, Stats, MenuBar, AddExpense, EditExpense, ExpensesList },
 
     setup() {
       const page = ref('home') as Ref<MainPage>;

@@ -1,1 +1,1 @@
-export type MainPage = 'home' | 'setup' | 'stats' | 'list';
+export type MainPage = 'home' | 'stats' | 'list';
