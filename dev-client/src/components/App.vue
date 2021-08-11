@@ -19,11 +19,9 @@
       <div v-if="loading" class="loading mdi mdi-loading"></div>
     </transition>
 
-    <transition name="zoom">
-      <div v-if="page === 'home'" v-ripple v-tap class="btn-add-expense" @tap="onBtnAddExpenseClick">
-        <i class="mdi mdi-plus"></i>
-      </div>
-    </transition>
+    <div v-ripple v-tap class="btn-add-expense" @tap="onBtnAddExpenseClick">
+      <i class="mdi mdi-plus"></i>
+    </div>
 
     <transition name="slide">
       <AddExpense
@@ -161,9 +159,8 @@
     bottom: 0;
     left: 0;
     right: 0;
-    background: #ffa500;
-    border-top: 1px solid #000;
-    box-shadow: inset 0px 11px 16px -16px #000000;
+    background: $accent1;
+    border-top: 1px solid #404040;
   }
 
   .btn-add-expense {
@@ -171,23 +168,21 @@
 
     @media #{$media-phone-small} {
       --btn-size: 70px;
-      bottom: 80px;
-      right: 10px;
     }
 
     position: fixed;
-    bottom: 90px;
-    right: 20px;
+    bottom: 15px;
+    right: 15px;
     width: var(--btn-size);
     height: var(--btn-size);
     line-height: var(--btn-size);
 
     font-size: calc(var(--btn-size) - 10px);
     text-align: center;
-    color: $app-front-bgcolor;
-    background: $accent2;
+    color: #404040;
+    background: #fafafa;
+    border: 2px solid $accent1;
     border-radius: var(--btn-size);
-    box-shadow: 0px 2px 10px 0px #0008;
   }
 
   .panel {
