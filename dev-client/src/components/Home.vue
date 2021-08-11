@@ -3,27 +3,25 @@
 <!-- ----------------------------------------------------------------------- -->
 
 <template>
-  <div class="container">
+  <div class="home-container">
     <h1>Kakeibo</h1>
 
-    <div class="summary">
-      <div class="summary-item balance">
-        <div class="label">balance</div>
-        <div class="value" :class="{ positive: monthBalance > 0 }">{{ monthBalance }}€</div>
-      </div>
+    <div class="card summary balance">
+      <div class="label">mon solde</div>
+      <div class="value" :class="{ positive: monthBalance > 0 }">{{ monthBalance }}€</div>
+    </div>
 
-      <div class="summary-item debits">
-        <div class="label">dépenses du mois</div>
-        <div class="value">{{ monthBalanceOfDebits }}€</div>
-        <div class="details">
-          <div>
-            <div class="label">ponctuelles</div>
-            <div class="value">{{ monthBalanceOfOneTimeDebits }}€</div>
-          </div>
-          <div>
-            <div class="label">récurrentes</div>
-            <div class="value">{{ monthBalanceOfRecurringDebits }}€</div>
-          </div>
+    <div class="card summary debits">
+      <div class="label">dépenses du mois</div>
+      <div class="value">{{ monthBalanceOfDebits }}€</div>
+      <div class="details">
+        <div>
+          <div class="label">ponctuelles</div>
+          <div class="value">{{ monthBalanceOfOneTimeDebits }}€</div>
+        </div>
+        <div>
+          <div class="label">récurrentes</div>
+          <div class="value">{{ monthBalanceOfRecurringDebits }}€</div>
         </div>
       </div>
     </div>
@@ -82,7 +80,7 @@
 <style lang="scss" scoped>
   @import '../theme.scss';
 
-  .container {
+  .home-container {
     display: flex;
     flex-direction: column;
     flex: 1;
@@ -101,27 +99,19 @@
   }
 
   .summary {
-    @include padded;
-    flex: 1;
     padding-top: 30px;
-    background: $app-front-bgcolor;
-    box-shadow: 0px -1px 10px 0px #00000036;
 
-    .summary-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      font-size: 1.6em;
-      border-bottom: 1px solid $border-light-color;
-      padding-bottom: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 1.6em;
 
-      &:first-of-type {
-        margin-bottom: 30px;
-      }
+    &:first-of-type {
+      margin-bottom: 30px;
+    }
 
-      @media #{$media-phone-small} {
-        font-size: 1.4em;
-      }
+    @media #{$media-phone-small} {
+      font-size: 1.4em;
     }
 
     .label {

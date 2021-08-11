@@ -3,18 +3,18 @@
 <!-- ----------------------------------------------------------------------- -->
 
 <template>
-  <div class="container">
-    <div v-ripple v-tap class="item" @tap="select('home')">
+  <div class="menu-container">
+    <div v-ripple v-tap class="menu-item" @tap="select('home')">
       <i class="mdi mdi-home"></i>
       <span>acceuil</span>
     </div>
 
-    <div v-ripple v-tap class="item" @tap="select('stats')">
+    <div v-ripple v-tap class="menu-item" @tap="select('stats')">
       <i class="mdi mdi-chart-bar"></i>
       <span>stats</span>
     </div>
 
-    <div v-ripple v-tap class="item" @tap="select('list')">
+    <div v-ripple v-tap class="menu-item" @tap="select('list')">
       <i class="mdi mdi-format-list-bulleted-square"></i>
       <span>liste</span>
     </div>
@@ -47,11 +47,12 @@
 <!-- ----------------------------------------------------------------------- -->
 
 <style lang="scss" scoped>
-  .container {
+  .menu-container {
     display: flex;
+    padding-right: 100px;
   }
 
-  .item {
+  .menu-item {
     flex: 1;
     display: flex;
     flex-direction: column;

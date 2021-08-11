@@ -3,27 +3,27 @@
 <!-- ----------------------------------------------------------------------- -->
 
 <template>
-  <div ref="refRoot" class="container">
+  <div ref="refRoot" class="stats-container">
     <h1>A propos du mois</h1>
 
-    <div class="stat">
+    <div class="card stat">
       <h2>dépenses par catégorie</h2>
       <canvas id="amountsByCategory" height="260"></canvas>
     </div>
 
-    <div class="stat">
+    <div class="card stat">
       <h2>solde sur le mois</h2>
       <canvas id="balanceByDay" height="260"></canvas>
     </div>
 
     <h1>A propos de l'année</h1>
 
-    <div class="stat">
+    <div class="card stat">
       <h2>dépenses par mois</h2>
       <canvas id="balanceByMonth" height="360"></canvas>
     </div>
 
-    <div class="stat">
+    <div class="card stat">
       <h2>solde sur l'année</h2>
       <canvas id="aggregatedBalanceByMonth" height="260"></canvas>
     </div>
@@ -172,35 +172,36 @@
 <style lang="scss" scoped>
   @import '../theme.scss';
 
-  .container {
+  .stats-container {
     @include padded;
-    padding-left: 0;
-    padding-right: 0;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
     flex: 1;
-  }
 
-  .stat {
-    background: $app-front-bgcolor;
-    box-shadow: 0px 2px 10px 0px #00000036;
-    padding: 20px 10px;
-    margin-bottom: 50px;
-  }
+    .stat {
+      margin-bottom: 50px;
+    }
 
-  h1 {
-    font-weight: 100;
-    font-size: 1.6em;
-    color: #8c8c8c;
-    padding-bottom: 10px;
-    margin-bottom: 30px;
-    margin-right: 10px;
-    text-align: right;
-  }
+    h1 {
+      font-weight: 100;
+      font-size: 1.6em;
+      color: #8c8c8c;
+      padding-bottom: 10px;
+      margin-bottom: 30px;
+      margin-right: 10px;
+      text-align: right;
 
-  h2 {
-    font-weight: 100;
-    font-size: 1.6em;
-    border-bottom: 1px solid $border-light-color;
-    padding-bottom: 10px;
-    margin-bottom: 10px;
+      &:not(:first-of-type) {
+        margin-top: 150px;
+      }
+    }
+
+    h2 {
+      font-weight: 100;
+      font-size: 1.6em;
+      border-bottom: 1px solid $border-light-color;
+      padding-bottom: 10px;
+      margin-bottom: 10px;
+    }
   }
 </style>

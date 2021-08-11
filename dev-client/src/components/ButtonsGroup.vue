@@ -3,7 +3,7 @@
 <!-- ----------------------------------------------------------------------- -->
 
 <template>
-  <div class="container">
+  <div class="buttons-container">
     <slot></slot>
   </div>
 </template>
@@ -23,7 +23,7 @@
 <!-- ----------------------------------------------------------------------- -->
 
 <style lang="scss" scoped>
-  .container {
+  .buttons-container {
     text-align: right;
 
     & > :deep(button:not(:last-of-type)) {

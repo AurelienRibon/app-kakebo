@@ -78,3 +78,9 @@ select {
     background: repeating-linear-gradient(45deg, #fefefe, #fefefe 10px, #d8d8d8 10px, #d8d8d8 20px);
   }
 }
+
+.card {
+  background: $app-front-bgcolor;
+  box-shadow: 0px 2px 10px 0px #00000036;
+  padding: 20px 10px;
+}

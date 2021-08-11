@@ -3,7 +3,7 @@
 <!-- ----------------------------------------------------------------------- -->
 
 <template>
-  <div class="container" :class="{ centered: empty }">
+  <div class="list-container" :class="{ centered: empty }">
     <div v-if="empty" class="panel-empty">
       <div class="label">Aucune dépense enregistrée</div>
       <div class="symbol mdi mdi-piggy-bank"></div>
@@ -119,7 +119,7 @@
 <style lang="scss" scoped>
   @import '../theme.scss';
 
-  .container {
+  .list-container {
     @include padded;
     background: $app-front-bgcolor;
 
