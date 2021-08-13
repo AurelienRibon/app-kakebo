@@ -46,7 +46,7 @@
     filterExpensesOfCurrentMonth,
     sumExpensesByCategory,
     sumExpensesByDay,
-  } from '../lib/expenses-stats';
+  } from '../lib/stats';
 
   const CHART_TEXT_COLOR = '#ededed';
   const CHART_GRID_COLOR = '#555';

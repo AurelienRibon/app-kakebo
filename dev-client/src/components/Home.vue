@@ -43,7 +43,7 @@
     computeBalanceOfOneTimeDebits,
     computeBalanceOfRecurringDebits,
     filterExpensesOfCurrentMonth,
-  } from '../lib/expenses-stats';
+  } from '../lib/stats';
 
   export default defineComponent({
     props: {

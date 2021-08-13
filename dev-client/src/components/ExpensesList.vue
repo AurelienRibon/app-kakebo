@@ -56,7 +56,7 @@
   import { formatAmount } from '../lib/amounts';
   import { getCategoryDef } from '../lib/categories';
   import { formatDateToDayHuman } from '../lib/dates';
-  import { filterExpensesOfLastMonths, groupExpensesByDay } from '../lib/expenses-stats';
+  import { filterExpensesOfLastMonths, groupExpensesByDay } from '../lib/stats';
   import { Expense } from '../models/expense';
 
   export default defineComponent({
