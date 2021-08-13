@@ -15,6 +15,6 @@ export function getExpenseDefaultPeriodicity(): ExpensePeriodicity {
   return DEFAULT_PERIODICITY;
 }
 
-export function isPeriodicityValid(value: unknown): value is ExpensePeriodicity {
+export function isExpensePeriodicityValid(value: unknown): value is ExpensePeriodicity {
   return typeof value === 'string' && (PERIODICITIES as readonly string[]).includes(value);
 }

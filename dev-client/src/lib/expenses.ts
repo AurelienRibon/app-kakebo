@@ -1,4 +1,4 @@
-import { isPeriodicityValid } from './expenses-periodicities';
+import { isExpensePeriodicityValid } from './expense-periodicities';
 import { str } from './utils';
 import { Expense } from '../models/expense';
 
@@ -23,7 +23,7 @@ export function createExpenseFromJSON(spec: ExpenseJSON): Expense {
   }
 
   const label = typeof spec.label === 'string' ? spec.label : undefined;
-  const periodicity = isPeriodicityValid(spec.periodicity) ? spec.periodicity : undefined;
+  const periodicity = isExpensePeriodicityValid(spec.periodicity) ? spec.periodicity : undefined;
   const deleted = typeof spec.deleted === 'boolean' ? spec.deleted : undefined;
   const checked = typeof spec.checked === 'boolean' ? spec.checked : undefined;
   const updatedAt = typeof spec.updatedAt === 'string' ? new Date(spec.updatedAt) : undefined;

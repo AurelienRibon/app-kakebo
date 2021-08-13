@@ -1,6 +1,6 @@
 import { getCategoryDef } from '../lib/categories';
 import { formatDateToDay } from '../lib/dates';
-import { ExpensePeriodicity, getExpenseDefaultPeriodicity } from '../lib/expenses-periodicities';
+import { ExpensePeriodicity, getExpenseDefaultPeriodicity } from '../lib/expense-periodicities';
 import { guid } from '../lib/utils';
 
 const DEFAULT_PERIODICITY = getExpenseDefaultPeriodicity();
