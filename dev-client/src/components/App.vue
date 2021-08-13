@@ -127,6 +127,7 @@
         state.value = 'idle';
         editedExpense.value.edit({ deleted: true });
         store.saveAndSync();
+        store.refreshExpenses();
       }
 
       function onAddExpenseDone(spec: ExpenseJSON): void {

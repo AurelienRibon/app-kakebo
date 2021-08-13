@@ -29,7 +29,12 @@ class Store {
   addExpense(spec: ExpenseSpec): void {
     const expense = new Expense(spec);
     this._expensesFull.value.push(expense);
-    this._refreshExpenses();
+    this.refreshExpenses();
+  }
+
+  refreshExpenses(): void {
+    this._expenses.value = this._expensesFull.value.filter((it) => !it.deleted);
+    sortExpenses(this._expenses.value);
   }
 
   async loadAndSync(): Promise<void> {
@@ -110,12 +115,7 @@ class Store {
 
   private _setExpenses(expenses: Expense[]): void {
     this._expensesFull.value = expenses;
-    this._refreshExpenses();
-  }
-
-  private _refreshExpenses(): void {
-    this._expenses.value = this._expensesFull.value.filter((it) => !it.deleted);
-    sortExpenses(this._expenses.value);
+    this.refreshExpenses();
   }
 }
 
