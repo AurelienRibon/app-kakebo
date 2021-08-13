@@ -5,15 +5,7 @@
 <template>
   <h1>dépenses fréquentes</h1>
   <section>
-    <div
-      v-for="item of categoriesFrequent"
-      :key="item.name"
-      v-ripple
-      v-tap
-      class="item"
-      :class="{ 'item-extra': item.extra }"
-      @tap="onItemClick(item.name)"
-    >
+    <div v-for="item of categoriesFrequent" :key="item.name" v-ripple v-tap class="item" @tap="done(item.name)">
       <span class="item-icon mdi" :class="item.icon"></span>
       <span class="item-name">{{ item.name }}</span>
     </div>
@@ -27,13 +19,16 @@
       v-ripple
       v-tap
       class="item"
-      :class="{ 'item-extra': item.extra }"
       @tap="onItemClick(item.name)"
     >
       <span class="item-icon mdi" :class="item.icon"></span>
       <span class="item-name">{{ item.name }}</span>
     </div>
   </section>
+
+  <ButtonsGroup class="buttons">
+    <button v-ripple v-tap class="btn-flat" @tap="cancel">ANNULER</button>
+  </ButtonsGroup>
 </template>
 
 <!-- ----------------------------------------------------------------------- -->
@@ -44,29 +39,26 @@
   import { defineComponent } from 'vue';
   import { CategoryDef } from '../lib/categories';
   import categories from '../meta/categories.json';
+  import ButtonsGroup from './ButtonsGroup.vue';
 
   export default defineComponent({
-    emits: ['done'],
+    components: { ButtonsGroup },
 
-    data() {
-      return {
-        categories: categories as CategoryDef[],
-      };
-    },
+    emits: ['cancel', 'done'],
 
-    computed: {
-      categoriesFrequent(): CategoryDef[] {
-        return this.categories.filter((it) => !it.infrequent);
-      },
-      categoriesInfrequent(): CategoryDef[] {
-        return this.categories.filter((it) => !!it.infrequent);
-      },
-    },
+    setup(props, { emit }) {
+      const categoriesFrequent = categories.filter((it) => !it.infrequent);
+      const categoriesInfrequent = categories.filter((it) => !!it.infrequent);
 
-    methods: {
-      onItemClick(category: string): void {
-        this.$emit('done', category);
-      },
+      return { categoriesFrequent, categoriesInfrequent, cancel, done };
+
+      function cancel(): void {
+        emit('cancel');
+      }
+
+      function done(category: string): void {
+        emit('done', category);
+      }
     },
   });
 </script>
@@ -111,10 +103,6 @@
     color: hsl(0, 0%, 0%);
     background: $text;
     border-radius: 6px;
-
-    &.item-extra {
-      background: $danger;
-    }
 
     @media #{$media-phone-small} {
       width: 90px;

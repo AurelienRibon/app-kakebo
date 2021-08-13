@@ -4,13 +4,8 @@
 
 <template>
   <div>
-    <AddExpenseCategory v-if="index === 1" @done="onCategoryDone"></AddExpenseCategory>
-    <AddExpenseDetails
-      v-if="index === 2"
-      :category="category"
-      @done="onDetailsDone"
-      @cancel="onDetailsCancel"
-    ></AddExpenseDetails>
+    <AddExpenseCategory v-if="index === 1" @done="doneCategory" @cancel="cancel"></AddExpenseCategory>
+    <AddExpenseDetails v-if="index === 2" :category="category" @done="done" @cancel="cancel"></AddExpenseDetails>
   </div>
 </template>
 
@@ -32,18 +27,18 @@
       const index = ref(1);
       const category = ref('');
 
-      return { index, category, onCategoryDone, onDetailsDone, onDetailsCancel };
+      return { index, category, doneCategory, done, cancel };
 
-      function onCategoryDone(cat: string): void {
+      function doneCategory(cat: string): void {
         category.value = cat;
         index.value += 1;
       }
 
-      function onDetailsDone(spec: ExpenseJSON): void {
+      function done(spec: ExpenseJSON): void {
         emit('done', spec);
       }
 
-      function onDetailsCancel(): void {
+      function cancel(): void {
         emit('cancel');
       }
     },
