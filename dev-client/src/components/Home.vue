@@ -55,25 +55,22 @@
 
     setup(props) {
       const currentExpenses = computed(() => filterExpensesOfCurrentMonth(props.expenses));
+      const values = computeValues(currentExpenses.value);
 
-      const monthBalance = ref(0);
+      const monthBalance = ref(values.monthBalance);
       const monthBalanceStr = computed(() => formatAmount(monthBalance.value));
 
-      const monthBalanceOfDebits = ref(0);
+      const monthBalanceOfDebits = ref(values.monthBalanceOfDebits);
       const monthBalanceOfDebitsStr = computed(() => formatAmount(monthBalanceOfDebits.value));
 
-      const monthBalanceOfOneTimeDebits = ref(0);
+      const monthBalanceOfOneTimeDebits = ref(values.monthBalanceOfOneTimeDebits);
       const monthBalanceOfOneTimeDebitsStr = computed(() => formatAmount(monthBalanceOfOneTimeDebits.value));
 
-      const monthBalanceOfRecurringDebits = ref(0);
+      const monthBalanceOfRecurringDebits = ref(values.monthBalanceOfRecurringDebits);
       const monthBalanceOfRecurringDebitsStr = computed(() => formatAmount(monthBalanceOfRecurringDebits.value));
 
-      watch(currentExpenses, () => {
-        animateNumber(monthBalance, computeBalance(currentExpenses.value), 2000);
-        animateNumber(monthBalanceOfDebits, computeBalanceOfDebits(currentExpenses.value), 2000);
-        animateNumber(monthBalanceOfOneTimeDebits, computeBalanceOfOneTimeDebits(currentExpenses.value), 2000);
-        animateNumber(monthBalanceOfRecurringDebits, computeBalanceOfRecurringDebits(currentExpenses.value), 2000);
-      });
+      watch(currentExpenses, animateNumbers);
+      animateNumbers();
 
       return {
         monthBalance,
@@ -85,6 +82,23 @@
         monthBalanceOfRecurringDebits,
         monthBalanceOfRecurringDebitsStr,
       };
+
+      function animateNumbers(): void {
+        const values = computeValues(currentExpenses.value);
+        animateNumber(monthBalance, values.monthBalance, 2000);
+        animateNumber(monthBalanceOfDebits, values.monthBalanceOfDebits, 1800);
+        animateNumber(monthBalanceOfOneTimeDebits, values.monthBalanceOfOneTimeDebits, 1600);
+        animateNumber(monthBalanceOfRecurringDebits, values.monthBalanceOfRecurringDebits, 1600);
+      }
+
+      function computeValues(currentExpenses: Expense[]) {
+        return {
+          monthBalance: computeBalance(currentExpenses),
+          monthBalanceOfDebits: computeBalanceOfDebits(currentExpenses),
+          monthBalanceOfOneTimeDebits: computeBalanceOfOneTimeDebits(currentExpenses),
+          monthBalanceOfRecurringDebits: computeBalanceOfRecurringDebits(currentExpenses),
+        };
+      }
     },
   });
 </script>
