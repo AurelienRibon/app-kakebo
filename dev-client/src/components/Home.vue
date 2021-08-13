@@ -8,20 +8,20 @@
 
     <div class="summary balance">
       <div class="label">mon solde</div>
-      <div class="value" :class="{ positive: monthBalance > 0 }">{{ monthBalance }}€</div>
+      <div class="value" :class="{ positive: monthBalance >= 0 }">{{ monthBalanceStr }}€</div>
     </div>
 
     <div class="summary debits">
       <div class="label">dépenses du mois</div>
-      <div class="value">{{ monthBalanceOfDebits }}€</div>
+      <div class="value">{{ monthBalanceOfDebitsStr }}€</div>
       <div class="details">
         <div>
           <div class="label">ponctuelles</div>
-          <div class="value">{{ monthBalanceOfOneTimeDebits }}€</div>
+          <div class="value">{{ monthBalanceOfOneTimeDebitsStr }}€</div>
         </div>
         <div>
           <div class="label">récurrentes</div>
-          <div class="value">{{ monthBalanceOfRecurringDebits }}€</div>
+          <div class="value">{{ monthBalanceOfRecurringDebitsStr }}€</div>
         </div>
       </div>
     </div>
@@ -33,9 +33,10 @@
 <!-- ----------------------------------------------------------------------- -->
 
 <script lang="ts">
-  import { computed, defineComponent, PropType } from 'vue';
+  import { computed, defineComponent, PropType, ref, watch } from 'vue';
   import { Expense } from '../models/expense';
   import { formatAmount } from '../lib/amounts';
+  import { animateNumber } from '../lib/animations';
   import {
     computeBalance,
     computeBalanceOfDebits,
@@ -54,20 +55,35 @@
 
     setup(props) {
       const currentExpenses = computed(() => filterExpensesOfCurrentMonth(props.expenses));
-      const monthBalance = computed(() => formatAmount(computeBalance(currentExpenses.value)));
-      const monthBalanceOfDebits = computed(() => formatAmount(computeBalanceOfDebits(currentExpenses.value)));
-      const monthBalanceOfOneTimeDebits = computed(() =>
-        formatAmount(computeBalanceOfOneTimeDebits(currentExpenses.value))
-      );
-      const monthBalanceOfRecurringDebits = computed(() =>
-        formatAmount(computeBalanceOfRecurringDebits(currentExpenses.value))
-      );
+
+      const monthBalance = ref(0);
+      const monthBalanceStr = computed(() => formatAmount(monthBalance.value));
+
+      const monthBalanceOfDebits = ref(0);
+      const monthBalanceOfDebitsStr = computed(() => formatAmount(monthBalanceOfDebits.value));
+
+      const monthBalanceOfOneTimeDebits = ref(0);
+      const monthBalanceOfOneTimeDebitsStr = computed(() => formatAmount(monthBalanceOfOneTimeDebits.value));
+
+      const monthBalanceOfRecurringDebits = ref(0);
+      const monthBalanceOfRecurringDebitsStr = computed(() => formatAmount(monthBalanceOfRecurringDebits.value));
+
+      watch(currentExpenses, () => {
+        animateNumber(monthBalance, computeBalance(currentExpenses.value), 2000);
+        animateNumber(monthBalanceOfDebits, computeBalanceOfDebits(currentExpenses.value), 2000);
+        animateNumber(monthBalanceOfOneTimeDebits, computeBalanceOfOneTimeDebits(currentExpenses.value), 2000);
+        animateNumber(monthBalanceOfRecurringDebits, computeBalanceOfRecurringDebits(currentExpenses.value), 2000);
+      });
 
       return {
         monthBalance,
+        monthBalanceStr,
         monthBalanceOfDebits,
+        monthBalanceOfDebitsStr,
         monthBalanceOfOneTimeDebits,
+        monthBalanceOfOneTimeDebitsStr,
         monthBalanceOfRecurringDebits,
+        monthBalanceOfRecurringDebitsStr,
       };
     },
   });
