@@ -191,7 +191,8 @@
     @include padded;
     overflow-y: auto;
     background: $background2;
-    border-top: 4px solid $accent1;
+    border-left: 4px solid $accent1;
+    border-right: 4px solid $accent1;
   }
 
   .loading {
