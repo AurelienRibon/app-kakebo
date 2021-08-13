@@ -25,7 +25,7 @@
         <div
           class="expense-item-category"
           :class="{
-            'expense-item-extra': expense.isExtra(),
+            [`expense-item-${expense.kind}`]: true,
             'expense-item-recurring': expense.isRecurring(),
           }"
         >
@@ -216,8 +216,6 @@
   }
 
   .expense-item-category {
-    background: $text;
-    color: $background1;
     padding: 2px 6px;
     border: 1px solid black;
     border-radius: 20px;
@@ -227,8 +225,18 @@
       margin-right: 2px;
     }
 
+    &.expense-item-essential {
+      background-color: $accent1;
+      color: $accent1-text;
+    }
+
+    &.expense-item-interesting {
+      background-color: $text;
+      color: $background1;
+    }
+
     &.expense-item-extra {
-      background: $danger;
+      background-color: $danger;
       color: $danger-text;
     }
 

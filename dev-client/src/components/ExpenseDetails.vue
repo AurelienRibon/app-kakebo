@@ -32,6 +32,22 @@
     </datalist>
   </section>
 
+  <section>
+    <label>importance</label>
+    <div class="kinds">
+      <div
+        v-for="def of kinds"
+        :key="def.name"
+        v-ripple
+        v-tap
+        :class="{ selected: def.name === kind, [def.name]: true }"
+        @tap="updateKind(def.name)"
+      >
+        <i class="mdi" :class="def.icon"></i>
+      </div>
+    </div>
+  </section>
+
   <section v-if="periodicity === 'one-time'">
     <label>date</label>
     <article>
@@ -67,6 +83,7 @@
   import { formatDateToDay, formatDateToMonth } from '../lib/dates';
   import { getCategoryDefs } from '../lib/categories';
   import { extractExpensesLabels } from '../lib/expenses';
+  import { ExpenseKind } from '../lib/expense-kinds';
   import { Expense, ExpenseSpec } from '../models/expense';
   import { store } from '../store/store';
 
@@ -87,6 +104,7 @@
     setup(props) {
       // Expense properties
       const date = ref(formatDate(props.expense.date, props.expense.periodicity));
+      const kind = ref(props.expense.kind);
       const periodicity = ref(props.expense.periodicity);
       const label = ref(props.expense.label);
       const amount = ref(formatAmount(props.expense.amount, true));
@@ -98,6 +116,12 @@
       const categories = getCategoryDefs();
       const labels = computed(() => extractExpensesLabels(store.expenses.value, category.value));
       const refAmount = ref(null);
+
+      const kinds = [
+        { name: 'essential', icon: 'mdi-star' },
+        { name: 'interesting', icon: 'mdi-thumb-up' },
+        { name: 'extra', icon: 'mdi-one-up' },
+      ];
 
       watch(periodicity, (value) => {
         date.value = formatDate(new Date(date.value), value);
@@ -115,16 +139,22 @@
         date,
         label,
         labels,
+        kind,
+        kinds,
         periodicity,
         sign,
         refAmount,
         updateAmount,
+        updateKind,
         updateSign,
       };
 
       function updateSign(): void {
         sign.value = sign.value === '-' ? '+' : '-';
-        focusAmount();
+      }
+
+      function updateKind(value: ExpenseKind): void {
+        kind.value = value;
       }
 
       function updateAmount(event: InputEvent): void {
@@ -154,9 +184,10 @@
         return {
           category: this.category,
           amount: Number(this.amount) * (this.sign === '-' ? -1 : +1),
-          periodicity: this.periodicity,
           date: new Date(this.date),
           label: this.label,
+          kind: this.kind,
+          periodicity: this.periodicity,
           checked: this.checked,
         };
       },
@@ -220,5 +251,32 @@
     justify-content: center;
     width: 60px;
     font-size: 1.6em;
+  }
+
+  .kinds {
+    display: flex;
+    height: 45px;
+    border: 1px solid $border1;
+    border-radius: 6px;
+
+    & > div {
+      flex: 1;
+      text-align: center;
+      line-height: 45px;
+      font-size: 2em;
+      transition: background 0.3s ease;
+
+      &:first-of-type {
+        border-radius: 6px 0 0 6px;
+      }
+
+      &:last-of-type {
+        border-radius: 0 6px 6px 0;
+      }
+
+      &.selected {
+        background: $accent1;
+      }
+    }
   }
 </style>

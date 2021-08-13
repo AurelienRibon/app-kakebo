@@ -1,8 +1,9 @@
-import { getCategoryDef } from '../lib/categories';
 import { formatDateToDay } from '../lib/dates';
 import { ExpensePeriodicity, getExpenseDefaultPeriodicity } from '../lib/expense-periodicities';
+import { ExpenseKind, getExpenseDefaultKind } from '../lib/expense-kinds';
 import { guid } from '../lib/utils';
 
+const DEFAULT_KIND = getExpenseDefaultKind();
 const DEFAULT_PERIODICITY = getExpenseDefaultPeriodicity();
 
 export interface ExpenseSpec {
@@ -11,6 +12,7 @@ export interface ExpenseSpec {
   amount?: number;
   category?: string;
   label?: string;
+  kind?: ExpenseKind;
   periodicity?: ExpensePeriodicity;
   deleted?: boolean;
   checked?: boolean;
@@ -23,6 +25,7 @@ export class Expense {
   private _amount: number;
   private _category: string;
   private _label: string;
+  private _kind: ExpenseKind;
   private _periodicity: ExpensePeriodicity;
   private _deleted: boolean;
   private _checked: boolean;
@@ -34,6 +37,7 @@ export class Expense {
     this._amount = spec.amount || 0;
     this._category = spec.category || 'unknown';
     this._label = spec.label || '';
+    this._kind = spec.kind || DEFAULT_KIND;
     this._periodicity = spec.periodicity || DEFAULT_PERIODICITY;
     this._deleted = spec.deleted || false;
     this._checked = spec.checked || false;
@@ -60,6 +64,10 @@ export class Expense {
     return this._label;
   }
 
+  get kind(): ExpenseKind {
+    return this._kind;
+  }
+
   get periodicity(): ExpensePeriodicity {
     return this._periodicity;
   }
@@ -74,10 +82,6 @@ export class Expense {
 
   get updatedAt(): Date {
     return this._updatedAt;
-  }
-
-  isExtra(): boolean {
-    return getCategoryDef(this.category).extra === true;
   }
 
   isRecurring(): boolean {
@@ -107,6 +111,9 @@ export class Expense {
         case 'label':
           this._label = value;
           break;
+        case 'kind':
+          this._kind = value;
+          break;
         case 'periodicity':
           this._periodicity = value;
           break;
@@ -129,6 +136,7 @@ export class Expense {
       amount: this.amount,
       category: this.category,
       label: this.label,
+      kind: this.kind,
       periodicity: this.periodicity,
       deleted: this.deleted,
       checked: this.checked,
