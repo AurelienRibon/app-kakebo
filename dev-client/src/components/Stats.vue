@@ -4,7 +4,7 @@
 
 <template>
   <div ref="refRoot" class="stats-container">
-    <h1>A propos du mois</h1>
+    <h1>A propos<br />du mois</h1>
 
     <div class="card stat">
       <h2>dépenses par catégorie</h2>
@@ -16,7 +16,7 @@
       <canvas id="balanceByDay" height="260"></canvas>
     </div>
 
-    <h1>A propos de l'année</h1>
+    <h1>A propos<br />de l'année</h1>
 
     <div class="card stat">
       <h2>dépenses par mois</h2>
@@ -47,6 +47,11 @@
     sumExpensesByCategory,
     sumExpensesByDay,
   } from '../lib/expenses-stats';
+
+  const CHART_TEXT_COLOR = '#ededed';
+  const CHART_GRID_COLOR = '#555';
+
+  Chart.defaults.global.defaultFontColor = CHART_TEXT_COLOR;
 
   export default defineComponent({
     props: {
@@ -108,7 +113,7 @@
           options: {
             scales: {
               xAxes: [{ type: 'time', time: { round: 'day' } }],
-              yAxes: [{ type: 'linear', ticks: { beginAtZero: true } }],
+              yAxes: [{ type: 'linear', ticks: { beginAtZero: true }, gridLines: { color: CHART_GRID_COLOR } }],
             },
           },
         });
@@ -133,7 +138,7 @@
           options: {
             scales: {
               xAxes: [{ stacked: true }],
-              yAxes: [{ ticks: { beginAtZero: true } }],
+              yAxes: [{ ticks: { beginAtZero: true }, gridLines: { color: CHART_GRID_COLOR } }],
             },
           },
         });
@@ -156,7 +161,7 @@
           options: {
             scales: {
               xAxes: [{ stacked: true }],
-              yAxes: [{ ticks: { beginAtZero: true } }],
+              yAxes: [{ ticks: { beginAtZero: true }, gridLines: { color: CHART_GRID_COLOR } }],
             },
           },
         });
@@ -179,27 +184,36 @@
     flex: 1;
 
     .stat {
+      margin-left: 20px;
+      margin-right: 20px;
       margin-bottom: 50px;
+
+      @media #{$media-phone-small} {
+        margin-left: 10px;
+        margin-right: 10px;
+      }
     }
 
     h1 {
       font-weight: 100;
-      font-size: 1.6em;
-      color: #8c8c8c;
+      font-size: 2.6em;
+      color: $text;
+      padding-right: 10px;
       padding-bottom: 10px;
-      margin-bottom: 30px;
-      margin-right: 10px;
+      margin-bottom: 10px;
       text-align: right;
 
       &:not(:first-of-type) {
-        margin-top: 150px;
+        margin-top: 50px;
+        padding-top: 40px;
+        border-top: 60px solid $background2;
       }
     }
 
     h2 {
       font-weight: 100;
       font-size: 1.6em;
-      border-bottom: 1px solid $border-light-color;
+      border-bottom: 1px solid $border1;
       padding-bottom: 10px;
       margin-bottom: 10px;
     }

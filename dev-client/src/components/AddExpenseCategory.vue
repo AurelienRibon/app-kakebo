@@ -109,12 +109,11 @@
     justify-content: center;
 
     color: hsl(0, 0%, 0%);
-    background: hsl(0, 0%, 100%);
-    border: 1px solid black;
-    border-radius: 10px;
+    background: $text;
+    border-radius: 6px;
 
     &.item-extra {
-      background: $accent1;
+      background: $danger;
     }
 
     @media #{$media-phone-small} {

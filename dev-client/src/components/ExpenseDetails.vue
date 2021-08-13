@@ -183,11 +183,12 @@
     height: 50px;
     display: flex;
     justify-content: stretch;
-    border: 1px solid $border-dark-color;
     border-radius: 6px;
+    background-color: $text;
+    color: $background1;
 
     &:focus-within {
-      background: #ffedcc;
+      background-color: #ffedcc;
       border: 3px solid #ffa500;
     }
 
@@ -200,14 +201,15 @@
       width: 100%;
       padding: 0 10px;
 
-      background: none;
       border: 0;
       outline: none;
       font-size: 1.4em;
+      background: none;
+      color: $background1;
 
       &[inputmode='numeric'] {
         text-align: right;
-        caret-color: #0000;
+        caret-color: $text;
       }
     }
   }

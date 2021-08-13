@@ -27,8 +27,8 @@ html {
   font-family: sans-serif;
   font-size: 17px;
 
-  background: $app-back-bgcolor;
-  color: $text-color;
+  background: $background1;
+  color: $text;
 
   -webkit-tap-highlight-color: transparent;
 }
@@ -38,29 +38,29 @@ button {
   border-radius: 6px;
   outline: none;
   background: $accent1;
-  color: $text-accent1;
+  color: $accent1-text;
   font-weight: bold;
   min-width: 94px;
   min-height: 50px;
 
   &.btn-primary {
     background: $accent1;
-    color: $text-color;
+    color: $text;
   }
 
   &.btn-primary-2 {
     background: white;
-    color: $text-color;
+    color: $text;
   }
 
   &.btn-secondary {
     background: #929292;
-    color: $text-inverse-color;
+    color: $text;
   }
 
   &.btn-danger {
-    background: #c30000;
-    color: $text-inverse-color;
+    background: $danger;
+    color: $danger-text;
   }
 
   &.btn-flat {
@@ -77,10 +77,4 @@ select {
   &:disabled {
     background: repeating-linear-gradient(45deg, #fefefe, #fefefe 10px, #d8d8d8 10px, #d8d8d8 20px);
   }
-}
-
-.card {
-  background: $app-front-bgcolor;
-  box-shadow: 0px 2px 10px 0px #00000036;
-  padding: 20px 10px;
 }

@@ -47,6 +47,8 @@
 <!-- ----------------------------------------------------------------------- -->
 
 <style lang="scss" scoped>
+  @import '../theme.scss';
+
   .menu-container {
     display: flex;
     padding-right: 100px;

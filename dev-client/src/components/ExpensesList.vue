@@ -121,7 +121,6 @@
 
   .list-container {
     @include padded;
-    background: $app-front-bgcolor;
 
     &.centered {
       flex: 1;
@@ -150,7 +149,7 @@
   .expense-group {
     margin-bottom: 30px;
     padding-top: 20px;
-    border-top: 1px solid $border-light-color;
+    border-top: 1px solid $border1;
 
     &:first-of-type {
       padding-top: 0;
@@ -172,7 +171,7 @@
 
     .sum {
       font-size: 0.5em;
-      color: #6b6b6b;
+      color: $text-faint;
     }
   }
 
@@ -205,7 +204,7 @@
     font-weight: bold;
 
     &.expense-item-positive {
-      color: #e09200;
+      color: $accent1;
     }
   }
 
@@ -217,6 +216,8 @@
   }
 
   .expense-item-category {
+    background: $text;
+    color: $background1;
     padding: 2px 6px;
     border: 1px solid black;
     border-radius: 20px;
@@ -227,7 +228,8 @@
     }
 
     &.expense-item-extra {
-      background: $accent1;
+      background: $danger;
+      color: $danger-text;
     }
 
     &.expense-item-recurring {
@@ -236,6 +238,6 @@
   }
 
   .expense-item-checked {
-    background-image: repeating-linear-gradient(45deg, #ccc, #ccc 30px, #dbdbdb 30px, #dbdbdb 60px);
+    background-image: repeating-linear-gradient(45deg, #5d5d5d, #5d5d5d 20px, #4c4c4c 20px, #4c4c4c 40px);
   }
 </style>

@@ -160,8 +160,8 @@
     bottom: 0;
     left: 0;
     right: 0;
-    background: $accent1;
-    border-top: 1px solid #404040;
+    background: $background2;
+    border-top: 1px solid $border1;
   }
 
   .btn-add-expense {
@@ -178,19 +178,19 @@
     height: var(--btn-size);
     line-height: var(--btn-size);
 
-    font-size: calc(var(--btn-size) - 10px);
+    font-size: calc(var(--btn-size) - 20px);
     text-align: center;
-    color: #404040;
-    background: #fafafa;
-    border: 2px solid $accent1;
+    color: $background2;
+    background: $accent1;
     border-radius: var(--btn-size);
+    box-shadow: 0 0 10px 4px $background2;
   }
 
   .panel {
     @include modal;
     @include padded;
     overflow-y: auto;
-    background: $app-front-bgcolor;
+    background: $background2;
     border-top: 4px solid $accent1;
   }
 
@@ -199,7 +199,7 @@
     top: 0;
     right: 10px;
     font-size: 40px;
-    color: #8a8a8a;
+    color: #ebebeb;
     animation: spin 0.6s linear infinite;
   }
 

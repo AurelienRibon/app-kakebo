@@ -1,17 +1,20 @@
-$app-back-bgcolor: #ececec;
-$app-front-bgcolor: #fefefe;
+$background1: #2a292e;
+$background2: #242327;
 
-$border-light-color: #d0d0d0;
-$border-dark-color: #868686;
+$text: #ededed;
+$text-faint: #afafaf;
 
-$text-color: #212121;
-$text-faint-color: #afafaf;
-$text-inverse-color: #fefefe;
+$accent1: #2db9b6;
+$accent1-text: #ededed;
 
-$accent1: #ffa500;
-$accent2: #506e9e;
+$danger: #d4405c;
+$danger-text: #ededed;
 
-$text-accent1: #212121;
+$warning: #927f4a;
+$warning-text: #242327;
+
+$border1: #929292;
+$border2: #868686;
 
 $media-phone-small: "(max-width: 320px)";
 $media-phone-medium: "(max-width: 375px)";

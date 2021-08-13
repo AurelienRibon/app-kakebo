@@ -6,12 +6,12 @@
   <div class="home-container">
     <h1>Kakeibo</h1>
 
-    <div class="card summary balance">
+    <div class="summary balance">
       <div class="label">mon solde</div>
       <div class="value" :class="{ positive: monthBalance > 0 }">{{ monthBalance }}€</div>
     </div>
 
-    <div class="card summary debits">
+    <div class="summary debits">
       <div class="label">dépenses du mois</div>
       <div class="value">{{ monthBalanceOfDebits }}€</div>
       <div class="details">
@@ -90,7 +90,6 @@
     font-size: 3em;
     font-weight: 200;
     margin: 30px 20px 10px 20px;
-    color: #8e8e8e;
 
     @media #{$media-phone-small} {
       font-size: 2.4em;
@@ -115,7 +114,7 @@
     }
 
     .label {
-      color: $text-faint-color;
+      color: $text-faint;
     }
 
     .value {
