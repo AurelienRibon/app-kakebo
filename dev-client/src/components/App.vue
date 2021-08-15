@@ -239,22 +239,4 @@
   .slide-leave-to {
     transform: translateY(var(--h));
   }
-
-  .zoom-enter-active {
-    transition: transform 0.3s ease-out;
-  }
-
-  .zoom-leave-active {
-    transition: transform 0.15s ease-in;
-  }
-
-  .zoom-enter-from,
-  .zoom-leave-to {
-    transform: scale(0);
-  }
-
-  .zoom-enter-to,
-  .zoom-leave-from {
-    transform: scale(1);
-  }
 </style>
