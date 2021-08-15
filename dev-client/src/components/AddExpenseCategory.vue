@@ -5,7 +5,15 @@
 <template>
   <h1>dépenses fréquentes</h1>
   <section>
-    <div v-for="item of categoriesFrequent" :key="item.name" v-ripple v-tap class="item" @tap="done(item.name)">
+    <div
+      v-for="item of categoriesFrequent"
+      :key="item.name"
+      v-ripple
+      v-tap
+      :class="{ [`item-kind-${item.defaultKind}`]: true }"
+      class="item"
+      @tap="done(item.name)"
+    >
       <span class="item-icon mdi" :class="item.icon"></span>
       <span class="item-name">{{ item.name }}</span>
     </div>
@@ -19,7 +27,8 @@
       v-ripple
       v-tap
       class="item"
-      @tap="onItemClick(item.name)"
+      :class="{ [`item-kind-${item.defaultKind}`]: true }"
+      @tap="done(item.name)"
     >
       <span class="item-icon mdi" :class="item.icon"></span>
       <span class="item-name">{{ item.name }}</span>
@@ -37,7 +46,6 @@
 
 <script lang="ts">
   import { defineComponent } from 'vue';
-  import { CategoryDef } from '../lib/categories';
   import categories from '../meta/categories.json';
   import ButtonsGroup from './ButtonsGroup.vue';
 

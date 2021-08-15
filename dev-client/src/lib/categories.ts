@@ -1,9 +1,11 @@
+import { ExpenseKind } from './expense-kinds';
 import categories from '../meta/categories.json';
 
 const categoriesMap = indexCategoryDefsByName();
 const unknownCategory: CategoryDef = {
   name: '$unknown',
   icon: 'mdi-help-circle',
+  defaultKind: 'extra',
 };
 
 // -----------------------------------------------------------------------------
@@ -13,7 +15,7 @@ const unknownCategory: CategoryDef = {
 export interface CategoryDef {
   name: string;
   icon: string;
-  extra?: boolean;
+  defaultKind: ExpenseKind;
   infrequent?: boolean;
 }
 
@@ -22,11 +24,15 @@ export interface CategoryDef {
 // -----------------------------------------------------------------------------
 
 export function getCategoryDefs(): CategoryDef[] {
-  return categories;
+  return categories as CategoryDef[];
 }
 
 export function getCategoryDef(name: string): CategoryDef {
   return categoriesMap.get(name) || unknownCategory;
+}
+
+export function getCategoryDefaultKind(name: string): ExpenseKind {
+  return getCategoryDef(name).defaultKind;
 }
 
 export function hasCategoryName(name: string): boolean {
@@ -38,5 +44,5 @@ export function hasCategoryName(name: string): boolean {
 // -----------------------------------------------------------------------------
 
 function indexCategoryDefsByName(): Map<string, CategoryDef> {
-  return new Map(categories.map((it) => [it.name, it]));
+  return new Map(categories.map((it) => [it.name, it as CategoryDef]));
 }
