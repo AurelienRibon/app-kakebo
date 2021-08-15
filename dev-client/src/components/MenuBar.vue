@@ -6,7 +6,7 @@
   <div class="menu-container">
     <div v-ripple v-tap class="menu-item" @tap="select('home')">
       <i class="mdi mdi-home"></i>
-      <span>acceuil</span>
+      <span>accueil</span>
     </div>
 
     <div v-ripple v-tap class="menu-item" @tap="select('stats')">
