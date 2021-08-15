@@ -274,8 +274,19 @@
         border-radius: 0 6px 6px 0;
       }
 
-      &.selected {
-        background: $accent1;
+      &.essential.selected {
+        background: $kind-essential;
+        color: $background1;
+      }
+
+      &.interesting.selected {
+        background: $kind-interesting;
+        color: $background1;
+      }
+
+      &.extra.selected {
+        background: $kind-extra;
+        color: $background1;
       }
     }
   }

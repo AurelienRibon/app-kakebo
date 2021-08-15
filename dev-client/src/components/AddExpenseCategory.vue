@@ -108,8 +108,7 @@
     align-items: center;
     justify-content: center;
 
-    color: hsl(0, 0%, 0%);
-    background: $text;
+    color: $background2;
     border-radius: 6px;
 
     @media #{$media-phone-small} {
@@ -121,5 +120,17 @@
   .item-icon {
     font-size: 36px;
     margin-bottom: 5px;
+  }
+
+  .item-kind-essential {
+    background: $kind-essential;
+  }
+
+  .item-kind-interesting {
+    background: $kind-interesting;
+  }
+
+  .item-kind-extra {
+    background: $kind-extra;
   }
 </style>

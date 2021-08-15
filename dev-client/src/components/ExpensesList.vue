@@ -22,15 +22,10 @@
         class="expense-item"
         :class="{ 'expense-item-checked': expense.checked }"
       >
-        <div
-          class="expense-item-category"
-          :class="{
-            [`expense-item-${expense.kind}`]: true,
-            'expense-item-recurring': expense.isRecurring(),
-          }"
-        >
+        <div class="expense-item-category" :class="{ [`expense-item-${expense.kind}`]: true }">
           <span class="mdi" :class="getExpenseIcon(expense)"></span>
           <span>{{ expense.category }}</span>
+          <span v-if="expense.isRecurring()" class="mdi mdi-refresh"></span>
         </div>
         <div class="expense-item-label">{{ expense.label }}</div>
         <div class="expense-item-amount" :class="{ 'expense-item-positive': expense.isPositive() }">
@@ -217,31 +212,24 @@
 
   .expense-item-category {
     padding: 2px 6px;
-    border: 1px solid black;
     border-radius: 20px;
     font-size: 0.9em;
+    color: $background1;
 
     & > span:first-of-type {
       margin-right: 2px;
     }
 
     &.expense-item-essential {
-      background-color: $accent1;
-      color: $accent1-text;
+      background-color: $kind-essential;
     }
 
     &.expense-item-interesting {
-      background-color: $text;
-      color: $background1;
+      background-color: $kind-interesting;
     }
 
     &.expense-item-extra {
-      background-color: $danger;
-      color: $danger-text;
-    }
-
-    &.expense-item-recurring {
-      border-style: dashed;
+      background-color: $kind-extra;
     }
   }
 
