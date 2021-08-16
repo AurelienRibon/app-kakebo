@@ -4,14 +4,9 @@
 
 <template>
   <main>
-    <Home v-if="page === 'home'" :expenses="expenses"></Home>
-    <Stats v-if="page === 'stats'" :expenses="expenses"></Stats>
-    <ExpensesList
-      v-if="page === 'list'"
-      :expenses="expenses"
-      @check="onExpenseCheck"
-      @edit="onExpenseEdit"
-    ></ExpensesList>
+    <keep-alive>
+      <component :is="page" class="page" :expenses="expenses" @check="onExpenseCheck" @edit="onExpenseEdit"></component>
+    </keep-alive>
 
     <MenuBar class="menu-bar" @select="onMenuSelect"></MenuBar>
 
@@ -52,23 +47,22 @@
 <script lang="ts">
   import { defineComponent, Ref, ref } from 'vue';
   import { Expense } from '../models/expense';
-  import { MainPage } from '../models/page';
   import { ExpenseJSON } from '../lib/expenses';
   import { store } from '../store/store';
   import AddExpense from './AddExpense.vue';
   import EditExpense from './EditExpense.vue';
-  import ExpensesList from './ExpensesList.vue';
   import Home from './Home.vue';
-  import MenuBar from './MenuBar.vue';
   import Stats from './Stats.vue';
+  import List from './List.vue';
+  import MenuBar from './MenuBar.vue';
 
   type State = 'idle' | 'addExpense' | 'editExpense';
 
   export default defineComponent({
-    components: { Home, Stats, MenuBar, AddExpense, EditExpense, ExpensesList },
+    components: { Home, Stats, List, MenuBar, AddExpense, EditExpense },
 
     setup() {
-      const page = ref('home') as Ref<MainPage>;
+      const page = ref('Home') as Ref<string>;
       const state = ref('idle') as Ref<State>;
       const editedExpense = ref(new Expense()) as Ref<Expense>;
       const expenses = store.expenses;
@@ -91,7 +85,7 @@
         state,
       };
 
-      function onMenuSelect(choice: MainPage): void {
+      function onMenuSelect(choice: string): void {
         page.value = choice;
       }
 
@@ -148,10 +142,14 @@
 
   main {
     height: var(--h);
-    overflow-y: scroll;
 
     display: flex;
     flex-direction: column;
+  }
+
+  .page {
+    flex: 1;
+    overflow-y: scroll;
   }
 
   .menu-bar {

@@ -4,17 +4,17 @@
 
 <template>
   <div class="menu-container">
-    <div v-ripple v-tap class="menu-item" @tap="select('home')">
+    <div v-ripple v-tap class="menu-item" @tap="select('Home')">
       <i class="mdi mdi-home"></i>
       <span>accueil</span>
     </div>
 
-    <div v-ripple v-tap class="menu-item" @tap="select('stats')">
+    <div v-ripple v-tap class="menu-item" @tap="select('Stats')">
       <i class="mdi mdi-chart-bar"></i>
       <span>stats</span>
     </div>
 
-    <div v-ripple v-tap class="menu-item" @tap="select('list')">
+    <div v-ripple v-tap class="menu-item" @tap="select('List')">
       <i class="mdi mdi-format-list-bulleted-square"></i>
       <span>liste</span>
     </div>
@@ -27,7 +27,6 @@
 
 <script lang="ts">
   import { defineComponent } from 'vue';
-  import { MainPage } from '../models/page';
 
   export default defineComponent({
     emits: ['select'],
@@ -35,7 +34,7 @@
     setup(props, ctx) {
       return { select };
 
-      function select(name: MainPage) {
+      function select(name: string) {
         ctx.emit('select', name);
       }
     },
