@@ -16,7 +16,7 @@
 
 <script lang="ts">
   import { defineComponent, ref } from 'vue';
-  import { getCategoryDefaultKind } from '../lib/categories';
+  import { getCategoryDef } from '../lib/categories';
   import { Expense } from '../models/expense';
   import ButtonsGroup from './ButtonsGroup.vue';
   import ExpenseDetails from './ExpenseDetails.vue';
@@ -34,7 +34,7 @@
     emits: ['cancel', 'done'],
 
     setup(props, { emit }) {
-      const kind = getCategoryDefaultKind(props.category);
+      const kind = getCategoryDef(props.category).defaultKind;
       const expense = new Expense({ category: props.category, kind });
       const refDetails = ref(null);
 

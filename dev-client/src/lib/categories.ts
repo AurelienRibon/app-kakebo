@@ -28,11 +28,7 @@ export function getCategoryDefs(): CategoryDef[] {
 }
 
 export function getCategoryDef(name: string): CategoryDef {
-  return categoriesMap.get(name) || unknownCategory;
-}
-
-export function getCategoryDefaultKind(name: string): ExpenseKind {
-  return getCategoryDef(name).defaultKind;
+  return categoriesMap.get(name) ?? unknownCategory;
 }
 
 export function hasCategoryName(name: string): boolean {
