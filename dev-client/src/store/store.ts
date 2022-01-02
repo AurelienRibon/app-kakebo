@@ -4,7 +4,7 @@ import { Expense, ExpenseSpec } from '../models/expense';
 import { createExpenseFromJSON, createExpensesFromJSONs, ExpenseJSON, sortExpenses } from '../lib/expenses';
 
 const IS_PROD = process.env.NODE_ENV === 'production';
-const SERVER_URL = IS_PROD ? 'https://kakebo-server.herokuapp.com' : 'http://192.168.1.42:5000';
+const SERVER_URL = IS_PROD ? 'https://kakebo-server.herokuapp.com' : 'http://192.168.1.46:5555';
 
 type DbExpensesSyncResult = ExpenseJSON[];
 

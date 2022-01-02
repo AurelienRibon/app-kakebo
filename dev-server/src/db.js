@@ -5,7 +5,7 @@ const { MongoClient } = require('mongodb');
 const HOST = process.env.MONGO_KAKEBO_HOST;
 const USER = process.env.MONGO_KAKEBO_USER;
 const PASS = process.env.MONGO_KAKEBO_PASS;
-const DATA = process.env.MONGO_KAKEBO_DATA || 'test';
+const DATA = process.env.MONGO_KAKEBO_DATA ?? 'test';
 const URI = `mongodb+srv://${USER}:${PASS}@${HOST}?retryWrites=true&w=majority`;
 
 const db = { expenses: null };
