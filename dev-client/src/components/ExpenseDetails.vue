@@ -74,6 +74,14 @@
         </select>
       </article>
     </section>
+
+    <section>
+      <label>pointage</label>
+      <div class="toggle">
+        <div v-ripple v-tap :class="{ selected: !checked }" @tap="updateChecked(false)">non pointée</div>
+        <div v-ripple v-tap :class="{ selected: checked }" @tap="updateChecked(true)">pointée</div>
+      </div>
+    </section>
   </template>
 </template>
 
@@ -151,6 +159,7 @@
         sign,
         refAmount,
         updateAmount,
+        updateChecked,
         updateKind,
         updateSeeMore,
         updateSign,
@@ -166,6 +175,10 @@
 
       function updateKind(value: ExpenseKind): void {
         kind.value = value;
+      }
+
+      function updateChecked(value: boolean): void {
+        checked.value = value;
       }
 
       function updateAmount(event: InputEvent): void {
@@ -271,6 +284,26 @@
     font-size: 1.6em;
   }
 
+  .toggle {
+    display: flex;
+    height: 45px;
+    border: 1px solid $border1;
+    border-radius: 6px;
+
+    & > div {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background-color 0.3s ease;
+
+      &.selected {
+        background-color: $text;
+        color: $background1;
+      }
+    }
+  }
+
   .kinds {
     display: flex;
     height: 45px;
@@ -282,7 +315,7 @@
       text-align: center;
       line-height: 45px;
       font-size: 2em;
-      transition: background 0.3s ease;
+      transition: background-color 0.3s ease;
 
       &:first-of-type {
         border-radius: 6px 0 0 6px;
@@ -293,17 +326,17 @@
       }
 
       &.essential.selected {
-        background: $kind-essential;
+        background-color: $kind-essential;
         color: $background1;
       }
 
       &.interesting.selected {
-        background: $kind-interesting;
+        background-color: $kind-interesting;
         color: $background1;
       }
 
       &.extra.selected {
-        background: $kind-extra;
+        background-color: $kind-extra;
         color: $background1;
       }
     }
