@@ -16,6 +16,7 @@ export interface ExpenseSpec {
   periodicity?: ExpensePeriodicity;
   deleted?: boolean;
   checked?: boolean;
+  exceptional?: boolean;
   updatedAt?: Date;
 }
 
@@ -29,19 +30,21 @@ export class Expense {
   private _periodicity: ExpensePeriodicity;
   private _deleted: boolean;
   private _checked: boolean;
+  private _exceptional: boolean;
   private _updatedAt: Date;
 
   constructor(spec: ExpenseSpec = {}) {
-    this._id = spec._id || guid();
-    this._date = spec.date || new Date();
-    this._amount = spec.amount || 0;
-    this._category = spec.category || 'unknown';
-    this._label = spec.label || '';
-    this._kind = spec.kind || DEFAULT_KIND;
-    this._periodicity = spec.periodicity || DEFAULT_PERIODICITY;
-    this._deleted = spec.deleted || false;
-    this._checked = spec.checked || false;
-    this._updatedAt = spec.updatedAt || new Date();
+    this._id = spec._id ?? guid();
+    this._date = spec.date ?? new Date();
+    this._amount = spec.amount ?? 0;
+    this._category = spec.category ?? 'unknown';
+    this._label = spec.label ?? '';
+    this._kind = spec.kind ?? DEFAULT_KIND;
+    this._periodicity = spec.periodicity ?? DEFAULT_PERIODICITY;
+    this._deleted = spec.deleted ?? false;
+    this._checked = spec.checked ?? false;
+    this._exceptional = spec.exceptional ?? false;
+    this._updatedAt = spec.updatedAt ?? new Date();
   }
 
   get id(): string {
@@ -78,6 +81,10 @@ export class Expense {
 
   get checked(): boolean {
     return this._checked;
+  }
+
+  get exceptional(): boolean {
+    return this._exceptional;
   }
 
   get updatedAt(): Date {
@@ -123,6 +130,9 @@ export class Expense {
         case 'checked':
           this._checked = value;
           break;
+        case 'exceptional':
+          this._exceptional = value;
+          break;
       }
 
       this._updatedAt = new Date();
@@ -140,6 +150,7 @@ export class Expense {
       periodicity: this.periodicity,
       deleted: this.deleted,
       checked: this.checked,
+      exceptional: this.exceptional,
       updatedAt: this.updatedAt.toISOString(),
     };
   }
