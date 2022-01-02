@@ -115,6 +115,10 @@
         state.value = 'idle';
         editedExpense.value.edit(spec);
         store.saveAndSync();
+
+        if ('date' in spec) {
+          store.refreshExpenses();
+        }
       }
 
       function onEditExpenseRemove(): void {
