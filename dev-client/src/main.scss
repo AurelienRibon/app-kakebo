@@ -40,7 +40,8 @@ button {
   background: $accent1;
   color: $accent1-text;
   font-weight: bold;
-  min-width: 94px;
+  padding: 4px;
+  min-width: 90px;
   min-height: 50px;
 
   &.btn-primary-2 {
