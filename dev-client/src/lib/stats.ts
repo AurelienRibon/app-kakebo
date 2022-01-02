@@ -40,6 +40,10 @@ export function groupExpensesByMonth(expenses: Expense[]): [string, Expense[]][]
 // FILTER
 // -----------------------------------------------------------------------------
 
+export function filterNonExceptionalExpenses(expenses: Expense[]): Expense[] {
+  return expenses.filter((it) => !it.exceptional);
+}
+
 export function filterExpensesByDate(expenses: Expense[], fromDate: Date, toDate: Date): Expense[] {
   return expenses.filter((it) => {
     const time = it.date.getTime();

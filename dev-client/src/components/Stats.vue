@@ -44,6 +44,7 @@
     computeBalanceByMonth,
     computeBalanceOfDebitsByMonth,
     filterExpensesOfCurrentMonth,
+    filterNonExceptionalExpenses,
     sumExpensesByCategory,
     sumExpensesByDay,
   } from '../lib/stats';
@@ -62,17 +63,19 @@
     },
 
     setup(props) {
-      const monthExpenses = filterExpensesOfCurrentMonth(props.expenses);
+      const filteredExpenses = filterNonExceptionalExpenses(props.expenses);
+
+      const monthExpenses = filterExpensesOfCurrentMonth(filteredExpenses);
       const monthNegativeExpenses = monthExpenses.filter((it) => !it.isPositive());
 
       const amountsByCategory = sumExpensesByCategory(monthNegativeExpenses, 5);
       const amountsByDay = sumExpensesByDay(monthNegativeExpenses);
 
       const aggregatedBalanceByDay = computeAggregatedBalanceByDay(monthExpenses);
-      const aggregatedBalanceByMonth = computeAggregatedBalanceByMonth(props.expenses);
+      const aggregatedBalanceByMonth = computeAggregatedBalanceByMonth(filteredExpenses);
 
-      const balanceByMonth = computeBalanceByMonth(props.expenses);
-      const balanceOfDebitsByMonth = computeBalanceOfDebitsByMonth(props.expenses);
+      const balanceByMonth = computeBalanceByMonth(filteredExpenses);
+      const balanceOfDebitsByMonth = computeBalanceOfDebitsByMonth(filteredExpenses);
 
       onMounted(() => {
         new Chart('amountsByCategory', {

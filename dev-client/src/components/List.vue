@@ -93,7 +93,9 @@
       }
 
       function formatExpensesSum(expenses: Expense[]): string {
-        return formatAmount(expenses.reduce((acc, it) => (it.amount < 0 ? acc + it.amount : acc), 0));
+        return formatAmount(
+          expenses.reduce((acc, it) => (it.amount < 0 && !it.exceptional ? acc + it.amount : acc), 0)
+        );
       }
 
       function formatGroupDate(date: string): string {
