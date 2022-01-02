@@ -6,7 +6,7 @@
   <section v-if="full">
     <label>catégorie</label>
     <article>
-      <select v-model="category">
+      <select v-model="category" @change="onCategoryChange">
         <option v-for="it of categories" :key="it.name">{{ it.name }}</option>
       </select>
     </article>
@@ -154,16 +154,21 @@
         labels,
         kind,
         kinds,
+        onCategoryChange,
         periodicity,
+        refAmount,
         seeMore,
         sign,
-        refAmount,
         updateAmount,
         updateChecked,
         updateKind,
         updateSeeMore,
         updateSign,
       };
+
+      function onCategoryChange(): void {
+        label.value = '';
+      }
 
       function updateSeeMore(): void {
         seeMore.value = true;
