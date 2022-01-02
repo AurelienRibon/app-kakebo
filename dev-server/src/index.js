@@ -3,7 +3,12 @@
 const express = require('express');
 const compression = require('compression');
 const db = require('./db');
-const { convertExpensesForDB, diffExpenses } = require('./lib/expenses');
+const {
+  convertExpensesForDB,
+  diffExpenses,
+  duplicateExpenses,
+  findRecurringExpensesToDuplicate,
+} = require('./lib/expenses');
 
 const PORT = process.env.PORT || 5000;
 
@@ -43,17 +48,25 @@ app.post('/expenses/sync', async (req, res) => {
 
   const t3 = Date.now();
 
-  const nbServer = expensesToUpsertForServer.length;
-  const nbUser = expensesToUpsertForUser.length;
+  const expensesToDuplicate = findRecurringExpensesToDuplicate(knownExpenses);
+  const expensesToInsert = duplicateExpenses(expensesToDuplicate);
+
+  const t4 = Date.now();
+
   const d1 = (t2 - t1).toFixed(2);
   const d2 = (t3 - t2).toFixed(2);
+  const d3 = (t4 - t2).toFixed(2);
 
-  console.log(`fetch:${d1}ms, diff:${d2}ms`);
-  console.log(`expensesToUpsertForServer:${nbServer}, expensesToUpsertForUser:${nbUser}`);
+  const nbServer = expensesToUpsertForServer.length;
+  const nbUser = expensesToUpsertForUser.length;
+  const nbDupl = expensesToInsert.length;
 
-  await db.upsertExpenses(expensesToUpsertForServer);
+  console.log(`fetch:${d1}ms, diff:${d2}ms, dupl:${d3}ms`);
+  console.log(`expensesToUpsertForServer:${nbServer}, expensesToUpsertForUser:${nbUser}, expensesToInsert:${nbDupl}`);
 
-  res.send(expensesToUpsertForUser);
+  await db.upsertExpenses([...expensesToUpsertForServer, ...expensesToInsert]);
+
+  res.send([...expensesToUpsertForUser, ...expensesToInsert]);
 });
 
 // -----------------------------------------------------------------------------
