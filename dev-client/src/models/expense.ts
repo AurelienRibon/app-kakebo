@@ -1,10 +1,7 @@
 import { formatDateToDay } from '../lib/dates';
-import { ExpensePeriodicity, getExpenseDefaultPeriodicity } from '../lib/expense-periodicities';
-import { ExpenseKind, getExpenseDefaultKind } from '../lib/expense-kinds';
+import { ExpensePeriodicity } from '../lib/expense-periodicities';
+import { ExpenseKind } from '../lib/expense-kinds';
 import { guid } from '../lib/utils';
-
-const DEFAULT_KIND = getExpenseDefaultKind();
-const DEFAULT_PERIODICITY = getExpenseDefaultPeriodicity();
 
 export interface ExpenseSpec {
   _id?: string;
@@ -39,8 +36,8 @@ export class Expense {
     this._amount = spec.amount ?? 0;
     this._category = spec.category ?? 'unknown';
     this._label = spec.label ?? '';
-    this._kind = spec.kind ?? DEFAULT_KIND;
-    this._periodicity = spec.periodicity ?? DEFAULT_PERIODICITY;
+    this._kind = spec.kind ?? 'interesting';
+    this._periodicity = spec.periodicity ?? 'one-time';
     this._deleted = spec.deleted ?? false;
     this._checked = spec.checked ?? false;
     this._exceptional = spec.exceptional ?? false;
