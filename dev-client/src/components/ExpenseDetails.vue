@@ -76,6 +76,14 @@
     </section>
 
     <section>
+      <label>spécificité</label>
+      <div class="toggle">
+        <div v-ripple v-tap :class="{ selected: !exceptional }" @tap="updateExceptional(false)">normale</div>
+        <div v-ripple v-tap :class="{ selected: exceptional }" @tap="updateExceptional(true)">exceptionelle</div>
+      </div>
+    </section>
+
+    <section>
       <label>pointage</label>
       <div class="toggle">
         <div v-ripple v-tap :class="{ selected: !checked }" @tap="updateChecked(false)">non pointée</div>
@@ -123,6 +131,7 @@
       const sign = ref(props.expense.getSign());
       const category = ref(props.expense.category);
       const checked = ref(props.expense.checked);
+      const exceptional = ref(props.expense.exceptional);
 
       // Misc values
       const categories = getCategoryDefs();
@@ -150,6 +159,7 @@
         category,
         checked,
         date,
+        exceptional,
         label,
         labels,
         kind,
@@ -160,6 +170,7 @@
         refAmount,
         updateAmount,
         updateChecked,
+        updateExceptional,
         updateKind,
         updateSeeMore,
         updateSign,
@@ -175,6 +186,10 @@
 
       function updateKind(value: ExpenseKind): void {
         kind.value = value;
+      }
+
+      function updateExceptional(value: boolean): void {
+        exceptional.value = value;
       }
 
       function updateChecked(value: boolean): void {
@@ -213,6 +228,7 @@
           kind: this.kind,
           periodicity: this.periodicity,
           checked: this.checked,
+          exceptional: this.exceptional,
         };
       },
     },

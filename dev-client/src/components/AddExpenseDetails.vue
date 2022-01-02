@@ -4,7 +4,6 @@
 
 <template>
   <ExpenseDetails ref="refDetails" autofocus :expense="expense"></ExpenseDetails>
-
   <ButtonsGroup class="buttons">
     <button v-ripple v-tap class="btn-flat" @tap="cancel">ANNULER</button>
     <button v-ripple v-tap class="btn-primary" @tap="done">AJOUTER</button>
