@@ -79,6 +79,6 @@ async function setupAndStart() {
 
   console.log('Starting server...');
   app.listen(PORT, () => {
-    console.log(`Server is listening on port ${PORT}.\n`);
+    console.log(`Server is listening on port ${PORT}.`);
   });
 }

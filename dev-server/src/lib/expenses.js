@@ -39,7 +39,7 @@ exports.findRecurringExpensesToDuplicate = function (expenses) {
 
   const lastMonthlyExpenseDatePrefix = lastMonthlyExpense.date.slice(0, 7); // slicing YYYY-MM out of date
   const lastMonthlyExpenses = expenses.filter(
-    (it) => it.date.startsWith(lastMonthlyExpenseDatePrefix) && it.periodicity === 'monthly' && !it.date.deleted
+    (it) => it.date.startsWith(lastMonthlyExpenseDatePrefix) && it.periodicity === 'monthly' && !it.deleted
   );
 
   return lastMonthlyExpenses;
