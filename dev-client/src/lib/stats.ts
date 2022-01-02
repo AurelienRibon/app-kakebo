@@ -96,6 +96,10 @@ export function sumExpensesByDay(expenses: Expense[]): [string, number][] {
   return sumGroups(groupExpensesByDay(expenses)).sort((a, b) => a[0].localeCompare(b[0]));
 }
 
+export function sumNegativeExpenses(expenses: Expense[]): number {
+  return expenses.reduce((acc, it) => (it.amount < 0 ? acc + it.amount : acc), 0);
+}
+
 // -----------------------------------------------------------------------------
 // BALANCE
 // -----------------------------------------------------------------------------

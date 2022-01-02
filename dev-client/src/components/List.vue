@@ -51,7 +51,12 @@
   import { formatAmount } from '../lib/amounts';
   import { getCategoryDef } from '../lib/categories';
   import { formatDateToDayHuman } from '../lib/dates';
-  import { filterExpensesOfLastMonths, groupExpensesByDay } from '../lib/stats';
+  import {
+    filterExpensesOfLastMonths,
+    filterNonExceptionalExpenses,
+    groupExpensesByDay,
+    sumNegativeExpenses,
+  } from '../lib/stats';
   import { Expense } from '../models/expense';
 
   export default defineComponent({
@@ -93,9 +98,7 @@
       }
 
       function formatExpensesSum(expenses: Expense[]): string {
-        return formatAmount(
-          expenses.reduce((acc, it) => (it.amount < 0 && !it.exceptional ? acc + it.amount : acc), 0)
-        );
+        return formatAmount(sumNegativeExpenses(filterNonExceptionalExpenses(expenses)));
       }
 
       function formatGroupDate(date: string): string {
