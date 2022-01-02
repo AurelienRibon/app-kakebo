@@ -62,15 +62,19 @@
     </article>
   </section>
 
-  <section>
-    <label>périodicité</label>
-    <article>
-      <select v-model="periodicity">
-        <option value="one-time">ponctuel</option>
-        <option value="monthly">une fois par mois</option>
-      </select>
-    </article>
-  </section>
+  <section v-if="!seeMore" v-ripple v-tap class="see-more" @tap="updateSeeMore()">▼ plus de détails...</section>
+
+  <template v-if="seeMore">
+    <section>
+      <label>périodicité</label>
+      <article>
+        <select v-model="periodicity">
+          <option value="one-time">ponctuel</option>
+          <option value="monthly">une fois par mois</option>
+        </select>
+      </article>
+    </section>
+  </template>
 </template>
 
 <!-- ----------------------------------------------------------------------- -->
@@ -116,6 +120,7 @@
       const categories = getCategoryDefs();
       const labels = computed(() => extractExpensesLabels(store.expenses.value, category.value));
       const refAmount = ref(null);
+      const seeMore = ref(props.full);
 
       const kinds = [
         { name: 'essential', icon: 'mdi-star' },
@@ -142,12 +147,18 @@
         kind,
         kinds,
         periodicity,
+        seeMore,
         sign,
         refAmount,
         updateAmount,
         updateKind,
+        updateSeeMore,
         updateSign,
       };
+
+      function updateSeeMore(): void {
+        seeMore.value = true;
+      }
 
       function updateSign(): void {
         sign.value = sign.value === '-' ? '+' : '-';
@@ -243,6 +254,13 @@
         caret-color: $text;
       }
     }
+  }
+
+  .see-more {
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
   }
 
   .sign {
