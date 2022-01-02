@@ -2,6 +2,7 @@ import { formatDateToDay } from '../lib/dates';
 import { ExpensePeriodicity } from '../lib/expense-periodicities';
 import { ExpenseKind } from '../lib/expense-kinds';
 import { guid } from '../lib/utils';
+import { getCategoryDef } from '../lib/categories';
 
 export interface ExpenseSpec {
   _id?: string;
@@ -13,7 +14,6 @@ export interface ExpenseSpec {
   periodicity?: ExpensePeriodicity;
   deleted?: boolean;
   checked?: boolean;
-  exceptional?: boolean;
   updatedAt?: Date;
 }
 
@@ -27,7 +27,6 @@ export class Expense {
   private _periodicity: ExpensePeriodicity;
   private _deleted: boolean;
   private _checked: boolean;
-  private _exceptional: boolean;
   private _updatedAt: Date;
 
   constructor(spec: ExpenseSpec = {}) {
@@ -40,7 +39,6 @@ export class Expense {
     this._periodicity = spec.periodicity ?? 'one-time';
     this._deleted = spec.deleted ?? false;
     this._checked = spec.checked ?? false;
-    this._exceptional = spec.exceptional ?? false;
     this._updatedAt = spec.updatedAt ?? new Date();
   }
 
@@ -80,10 +78,6 @@ export class Expense {
     return this._checked;
   }
 
-  get exceptional(): boolean {
-    return this._exceptional;
-  }
-
   get updatedAt(): Date {
     return this._updatedAt;
   }
@@ -94,6 +88,10 @@ export class Expense {
 
   isPositive(): boolean {
     return this.amount > 0;
+  }
+
+  isExceptional(): boolean {
+    return getCategoryDef(this.category).exceptional ?? false;
   }
 
   getSign(): string {
@@ -127,9 +125,6 @@ export class Expense {
         case 'checked':
           this._checked = value;
           break;
-        case 'exceptional':
-          this._exceptional = value;
-          break;
       }
 
       this._updatedAt = new Date();
@@ -147,7 +142,6 @@ export class Expense {
       periodicity: this.periodicity,
       deleted: this.deleted,
       checked: this.checked,
-      exceptional: this.exceptional,
       updatedAt: this.updatedAt.toISOString(),
     };
   }

@@ -18,5 +18,7 @@
   { "name": "animaux", "icon": "mdi-paw", "defaultKind": "essential", "infrequent": true },
   { "name": "salaires", "icon": "mdi-briefcase", "defaultKind": "essential", "infrequent": true },
   { "name": "dons", "icon": "mdi-charity", "defaultKind": "extra", "infrequent": true },
-  { "name": "divers", "icon": "mdi-help", "defaultKind": "extra", "infrequent": true }
+  { "name": "divers", "icon": "mdi-help", "defaultKind": "extra", "infrequent": true },
+
+  { "name": "exception", "icon": "mdi-flare", "defaultKind": "essential", "infrequent": true, "exceptional": true }
 ]

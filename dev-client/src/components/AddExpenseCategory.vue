@@ -27,7 +27,10 @@
       v-ripple
       v-tap
       class="item"
-      :class="{ [`item-kind-${item.defaultKind}`]: true }"
+      :class="{
+        [`item-kind-${item.defaultKind}`]: true,
+        'item-exceptional': item.exceptional,
+      }"
       @tap="done(item.name)"
     >
       <span class="item-icon mdi" :class="item.icon"></span>
@@ -123,14 +126,18 @@
   }
 
   .item-kind-essential {
-    background: $kind-essential;
+    background-color: $kind-essential;
   }
 
   .item-kind-interesting {
-    background: $kind-interesting;
+    background-color: $kind-interesting;
   }
 
   .item-kind-extra {
-    background: $kind-extra;
+    background-color: $kind-extra;
+  }
+
+  .item-exceptional {
+    background-color: $accent1;
   }
 </style>

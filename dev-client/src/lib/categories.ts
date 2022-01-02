@@ -17,6 +17,7 @@ export interface CategoryDef {
   icon: string;
   defaultKind: ExpenseKind;
   infrequent?: boolean;
+  exceptional?: boolean;
 }
 
 // -----------------------------------------------------------------------------

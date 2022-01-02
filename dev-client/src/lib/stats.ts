@@ -41,7 +41,7 @@ export function groupExpensesByMonth(expenses: Expense[]): [string, Expense[]][]
 // -----------------------------------------------------------------------------
 
 export function filterNonExceptionalExpenses(expenses: Expense[]): Expense[] {
-  return expenses.filter((it) => !it.exceptional);
+  return expenses.filter((it) => !it.isExceptional());
 }
 
 export function filterExpensesByDate(expenses: Expense[], fromDate: Date, toDate: Date): Expense[] {
