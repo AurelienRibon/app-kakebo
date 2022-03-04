@@ -24,7 +24,7 @@ exports.diffExpenses = function (newExpenses, oldExpenses) {
 
 exports.duplicateExpenses = function (expenses) {
   const date = getDateDayString(getDateForFirstDayOfCurrentMonth());
-  return expenses.map((it) => ({ ...it, _id: guid(), checked: false, date }));
+  return expenses.map((it) => ({ ...it, _id: guid(), checked: false, date, updatedAt: new Date() }));
 };
 
 exports.findRecurringExpensesToDuplicate = function (expenses) {
