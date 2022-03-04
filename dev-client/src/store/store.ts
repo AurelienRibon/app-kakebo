@@ -2,9 +2,10 @@ import { Ref, ref } from 'vue';
 import { Storage } from '@capacitor/storage';
 import { Expense, ExpenseSpec } from '../models/expense';
 import { createExpenseFromJSON, createExpensesFromJSONs, ExpenseJSON, sortExpenses } from '../lib/expenses';
+import { logError } from '../lib/logs';
 
 const IS_PROD = process.env.NODE_ENV === 'production';
-const SERVER_URL = IS_PROD ? 'https://kakebo-server.herokuapp.com' : 'http://192.168.1.46:5555';
+const SERVER_URL = IS_PROD ? 'https://kakebo-server.herokuapp.com' : 'http://192.168.1.19:5555';
 
 type DbExpensesSyncResult = ExpenseJSON[];
 
@@ -54,7 +55,7 @@ class Store {
       const specExpenses = spec.expenses as ExpenseJSON[];
       this._setExpenses(createExpensesFromJSONs(specExpenses));
     } catch (err) {
-      console.error(err); // eslint-disable-line no-console
+      logError(err);
       this._setExpenses([]);
     }
   }
@@ -77,7 +78,7 @@ class Store {
         await this.save();
       }
     } catch (err) {
-      console.error(err); // eslint-disable-line no-console
+      logError(err);
     }
 
     this._loading.value = false;
@@ -106,8 +107,12 @@ class Store {
     const knownExpensesById = new Map(this._expensesFull.value.map((it) => [it.id, it]));
 
     for (const json of jsons) {
-      const expense = createExpenseFromJSON(json);
-      knownExpensesById.set(expense.id, expense);
+      try {
+        const expense = createExpenseFromJSON(json);
+        knownExpensesById.set(expense.id, expense);
+      } catch (err) {
+        logError(err);
+      }
     }
 
     this._setExpenses(Array.from(knownExpensesById.values()));
