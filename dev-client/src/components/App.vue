@@ -146,6 +146,7 @@
 
   main {
     height: var(--h);
+    padding-top: env(safe-area-inset-top);
 
     display: flex;
     flex-direction: column;
@@ -157,7 +158,8 @@
   }
 
   .menu-bar {
-    height: 70px;
+    height: calc(70px + env(safe-area-inset-bottom));
+    padding-bottom: env(safe-area-inset-bottom);
     position: fixed;
     bottom: 0;
     left: 0;
@@ -174,7 +176,7 @@
     }
 
     position: fixed;
-    bottom: 15px;
+    bottom: calc(15px + env(safe-area-inset-bottom));
     right: 15px;
     width: var(--btn-size);
     height: var(--btn-size);
