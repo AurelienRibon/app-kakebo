@@ -14,8 +14,12 @@ function randInt(max) {
   return Math.floor(Math.random() * max);
 }
 
-var exps = db.expenses.find({ periodicity: "monthly", deleted: false, date: '2021-10-01' }).toArray();
-exps.forEach((it) => (it.date = "2021-11-01"));
+const updatedAt = new Date();
+const exps = db.expenses.find({ periodicity: "monthly", deleted: false, date: '2022-02-01' }).toArray();
+
+exps.forEach((it) => (it.updatedAt = updatedAt));
+exps.forEach((it) => (it.date = "2022-03-01"));
 exps.forEach((it) => (it.checked = false));
 exps.forEach((it) => (it._id = guid()));
+
 db.expenses.insertMany(exps);
