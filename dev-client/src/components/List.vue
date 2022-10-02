@@ -3,7 +3,7 @@
 <!-- ----------------------------------------------------------------------- -->
 
 <template>
-  <div class="list-container" :class="{ centered: empty }">
+  <div ref="refList" class="list-container" :class="{ centered: empty }">
     <div v-if="empty" class="panel-empty">
       <div class="label">Aucune dépense enregistrée</div>
       <div class="symbol mdi mdi-piggy-bank"></div>
@@ -56,6 +56,10 @@
           </div>
         </div>
       </div>
+
+      <div v-ripple v-tap class="arrow" @tap="scrollDown()">
+        <div class="mdi mdi-arrow-down"></div>
+      </div>
     </template>
   </div>
 </template>
@@ -90,6 +94,7 @@
     emits: ['edit', 'check'],
 
     setup(props, { emit }) {
+      const refList = ref(null);
       const expensesToShow = ref([]) as Ref<Expense[]>;
       const expensesToShowByDay = computed(() => groupExpensesByDay(expensesToShow.value));
       const empty = computed(() => props.expenses.length === 0);
@@ -106,18 +111,20 @@
       });
 
       return {
-        expensesToShowByDay,
-        empty,
-        view,
-        views,
-        showChecked,
-        edit,
         check,
+        edit,
+        empty,
+        expensesToShowByDay,
         formatExpenseAmount,
         formatExpensesSum,
         formatGroupDate,
-        getExpenseIcon,
         getExpenseCategoryClass,
+        getExpenseIcon,
+        refList,
+        scrollDown,
+        showChecked,
+        view,
+        views,
       };
 
       function edit(expense: Expense): void {
@@ -147,6 +154,11 @@
       function getExpenseCategoryClass(expense: Expense): string {
         return 'expense-item-' + (expense.isExceptional() ? 'exceptional' : expense.kind);
       }
+
+      function scrollDown(): void {
+        const el = refList.value as HTMLElement | null;
+        el?.scrollTo({ top: 9999999 });
+      }
     },
   });
 </script>
@@ -157,6 +169,24 @@
 
 <style lang="scss" scoped>
   @import '../theme.scss';
+
+  .arrow {
+    position: absolute;
+    bottom: 80px;
+    left: 20px;
+    width: 60px;
+    height: 60px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #2db9b6;
+    border-radius: 100px;
+    box-shadow: 0 2px 6px 0px #000000a1;
+    color: black;
+    font-size: 2em;
+  }
 
   header {
     display: flex;
