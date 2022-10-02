@@ -17,6 +17,7 @@
 <script lang="ts">
   import { defineComponent, ref } from 'vue';
   import { getCategoryDef } from '../lib/categories';
+  import { config } from '../models/config';
   import { Expense } from '../models/expense';
   import ButtonsGroup from './ButtonsGroup.vue';
   import ExpenseDetails from './ExpenseDetails.vue';
@@ -35,7 +36,7 @@
 
     setup(props, { emit }) {
       const kind = getCategoryDef(props.category).defaultKind;
-      const expense = new Expense({ category: props.category, kind });
+      const expense = new Expense({ category: props.category, kind, date: config.lastExpenseDate });
       const refDetails = ref(null);
 
       return { cancel, done, expense, refDetails };
@@ -46,7 +47,9 @@
 
       function done(): void {
         const el = refDetails.value as typeof ExpenseDetails | null;
-        emit('done', el && el.bundle());
+        const expenseSpec = el?.bundle();
+        config.lastExpenseDate = expenseSpec.date;
+        emit('done', expenseSpec);
       }
     },
   });

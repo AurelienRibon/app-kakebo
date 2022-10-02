@@ -77,6 +77,7 @@
     groupExpensesByDay,
     sumNegativeExpenses,
   } from '../lib/stats';
+  import { config } from '../models/config';
   import { Expense } from '../models/expense';
 
   export default defineComponent({
@@ -93,16 +94,20 @@
       const expensesToShow = ref([]) as Ref<Expense[]>;
       const expensesToShowByDay = computed(() => groupExpensesByDay(expensesToShow.value));
       const empty = computed(() => props.expenses.length === 0);
-      const view = ref('last3Months');
+      const view = ref(config.view);
       const showChecked = ref(true);
       const views = extractExpensesMonths(props.expenses);
 
       watchEffect(() => {
+        config.view = view.value;
+      });
+
+      watchEffect(() => {
         const expensesToConsider = showChecked.value ? props.expenses : props.expenses.filter((it) => !it.checked);
-        expensesToShow.value =
-          view.value === 'last3Months'
-            ? filterExpensesOfLastMonths(expensesToConsider, 3)
-            : filterExpensesOfMonth(expensesToConsider, new Date(view.value));
+        const showSpecificMonth = view.value !== 'last3Months';
+        expensesToShow.value = showSpecificMonth
+          ? filterExpensesOfMonth(expensesToConsider, new Date(view.value))
+          : filterExpensesOfLastMonths(expensesToConsider, 3);
       });
 
       return {
