@@ -57,7 +57,7 @@
 <!-- ----------------------------------------------------------------------- -->
 
 <script lang="ts">
-  import { computed, defineComponent, PropType, Ref, ref, watch, watchEffect } from 'vue';
+  import { computed, defineComponent, PropType, Ref, ref, watchEffect } from 'vue';
   import { formatAmount } from '../lib/amounts';
   import { getCategoryDef } from '../lib/categories';
   import { extractExpensesMonths } from '../lib/expenses';
