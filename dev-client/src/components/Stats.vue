@@ -73,6 +73,7 @@
 
       const aggregatedBalanceByDay = computeAggregatedBalanceByDay(monthExpenses);
       const aggregatedBalanceByMonth = computeAggregatedBalanceByMonth(filteredExpenses);
+      const aggregatedBalanceByMonthAll = computeAggregatedBalanceByMonth(props.expenses);
 
       const balanceByMonth = computeBalanceByMonth(filteredExpenses);
       const balanceOfDebitsByMonth = computeBalanceOfDebitsByMonth(filteredExpenses);
@@ -141,7 +142,7 @@
           options: {
             scales: {
               xAxes: [{ stacked: true }],
-              yAxes: [{ ticks: { beginAtZero: true }, gridLines: { color: CHART_GRID_COLOR } }],
+              yAxes: [{ type: 'linear', ticks: { beginAtZero: true }, gridLines: { color: CHART_GRID_COLOR } }],
             },
           },
         });
@@ -152,7 +153,15 @@
             labels: balanceByMonth.map((it) => it[0]),
             datasets: [
               {
-                label: 'Solde',
+                label: 'Solde total',
+                data: aggregatedBalanceByMonthAll.map((it) => ({ t: it[0], y: it[1] })),
+                backgroundColor: '#36a2eb88',
+                borderColor: '#36a2eb',
+                borderWidth: 2,
+                pointRadius: 0,
+              },
+              {
+                label: 'Solde quotidien',
                 data: aggregatedBalanceByMonth.map((it) => ({ t: it[0], y: it[1] })),
                 backgroundColor: '#4bc0c088',
                 borderColor: '#4bc0c0',
@@ -163,8 +172,8 @@
           },
           options: {
             scales: {
-              xAxes: [{ stacked: true }],
-              yAxes: [{ ticks: { beginAtZero: true }, gridLines: { color: CHART_GRID_COLOR } }],
+              xAxes: [{ type: 'time' }],
+              yAxes: [{ type: 'linear', ticks: { beginAtZero: true }, gridLines: { color: CHART_GRID_COLOR } }],
             },
           },
         });
