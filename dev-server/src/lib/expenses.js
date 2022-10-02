@@ -28,10 +28,14 @@ exports.duplicateExpenses = function (expenses) {
 };
 
 exports.findRecurringExpensesToDuplicate = function (expenses) {
-  const sortedExpenses = expenses.slice().sort((a, b) => new Date(b.date) - new Date(a.date));
-  const lastMonthlyExpense = sortedExpenses.find((it) => it.periodicity === 'monthly');
-  const lastMonthlyExpenseDate = new Date(lastMonthlyExpense.date);
   const today = new Date();
+
+  const lastMonthlyExpense = expenses
+    .filter((it) => it.periodicity === 'monthly' && new Date(it.date) <= today)
+    .sort((a, b) => new Date(b.date) - new Date(a.date))
+    .pop();
+
+  const lastMonthlyExpenseDate = new Date(lastMonthlyExpense.date);
 
   if (isSameMonth(lastMonthlyExpenseDate, today)) {
     return [];
