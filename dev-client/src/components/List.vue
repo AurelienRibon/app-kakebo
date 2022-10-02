@@ -18,6 +18,14 @@
         </select>
       </header>
 
+      <header>
+        <div class="icon mdi mdi-check"></div>
+        <select v-model="showChecked">
+          <option :value="true">montrer les valeurs pointées</option>
+          <option :value="false">cacher les valeurs pointées</option>
+        </select>
+      </header>
+
       <div v-for="group of expensesToShowByDay" :key="group[0]" class="expense-group">
         <div class="expense-group-title">
           <span>{{ formatGroupDate(group[0]) }}</span>
@@ -86,13 +94,15 @@
       const expensesToShowByDay = computed(() => groupExpensesByDay(expensesToShow.value));
       const empty = computed(() => props.expenses.length === 0);
       const view = ref('last3Months');
+      const showChecked = ref(true);
       const views = extractExpensesMonths(props.expenses);
 
       watchEffect(() => {
+        const expensesToConsider = showChecked.value ? props.expenses : props.expenses.filter((it) => !it.checked);
         expensesToShow.value =
           view.value === 'last3Months'
-            ? filterExpensesOfLastMonths(props.expenses, 3)
-            : filterExpensesOfMonth(props.expenses, new Date(view.value));
+            ? filterExpensesOfLastMonths(expensesToConsider, 3)
+            : filterExpensesOfMonth(expensesToConsider, new Date(view.value));
       });
 
       return {
@@ -100,6 +110,7 @@
         empty,
         view,
         views,
+        showChecked,
         edit,
         check,
         formatExpenseAmount,
@@ -150,7 +161,7 @@
   header {
     display: flex;
     align-items: center;
-    margin-bottom: 20px;
+    margin-bottom: 5px;
 
     .icon {
       margin-right: 10px;
@@ -206,7 +217,6 @@
     border-top: 1px solid $border1;
 
     &:first-of-type {
-      padding-top: 0;
       border-top: 0;
     }
   }
