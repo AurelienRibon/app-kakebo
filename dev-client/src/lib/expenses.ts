@@ -2,6 +2,7 @@ import { isExpenseKindValid } from './expense-kinds';
 import { isExpensePeriodicityValid } from './expense-periodicities';
 import { str } from './utils';
 import { Expense } from '../models/expense';
+import { formatDateToMonth } from './dates';
 
 // -----------------------------------------------------------------------------
 // TYPES
@@ -56,6 +57,16 @@ export function extractExpensesLabels(expenses: Expense[], category: string): st
   return Array.from(counts.entries())
     .sort((a, b) => a[1] - b[1])
     .map((it) => it[0]);
+}
+
+export function extractExpensesMonths(expenses: Expense[]): string[] {
+  const months = new Set<string>();
+
+  for (const expense of expenses) {
+    months.add(formatDateToMonth(expense.date));
+  }
+
+  return [...months].sort((a, b) => b.localeCompare(a));
 }
 
 export function sortExpenses(expenses: Expense[]): void {

@@ -35,6 +35,10 @@ export function addMonthsToDate(date: Date, monthsDiff: number): Date {
   return dayjs(date).add(monthsDiff, 'months').toDate();
 }
 
+// -----------------------------------------------------------------------------
+// MONTHS
+// -----------------------------------------------------------------------------
+
 export function getStartOfMonthDate(date: Date): Date {
   return dayjs(date).startOf('month').toDate();
 }

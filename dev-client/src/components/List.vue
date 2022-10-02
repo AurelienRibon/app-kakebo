@@ -9,36 +9,46 @@
       <div class="symbol mdi mdi-piggy-bank"></div>
     </div>
 
-    <div v-for="group of expensesByDay" :key="group[0]" class="expense-group">
-      <div class="expense-group-title">
-        <span>{{ formatGroupDate(group[0]) }}</span>
-        <span class="spacer"></span>
-        <span class="sum">{{ formatExpensesSum(group[1]) }}€</span>
-      </div>
+    <template v-else>
+      <header>
+        <div class="icon mdi mdi-eye"></div>
+        <select v-model="view">
+          <option value="last3Months">les 3 derniers mois</option>
+          <option v-for="item in views" :key="item">{{ item }}</option>
+        </select>
+      </header>
 
-      <div
-        v-for="expense of group[1]"
-        :key="expense.date"
-        class="expense-item"
-        :class="{ 'expense-item-checked': expense.checked }"
-      >
-        <div class="expense-item-category" :class="getExpenseCategoryClass(expense)">
-          <span class="mdi" :class="getExpenseIcon(expense)"></span>
-          <span>{{ expense.category }}</span>
-          <span v-if="expense.isRecurring()" class="mdi mdi-refresh"></span>
+      <div v-for="group of expensesToShowByDay" :key="group[0]" class="expense-group">
+        <div class="expense-group-title">
+          <span>{{ formatGroupDate(group[0]) }}</span>
+          <span class="spacer"></span>
+          <span class="sum">{{ formatExpensesSum(group[1]) }}€</span>
         </div>
-        <div class="expense-item-label">{{ expense.label }}</div>
-        <div class="expense-item-amount" :class="{ 'expense-item-positive': expense.isPositive() }">
-          {{ formatExpenseAmount(expense) }}€
-        </div>
-        <div v-ripple v-tap class="expense-item-action" @tap="edit(expense)">
-          <i class="mdi mdi-pencil"></i>
-        </div>
-        <div v-ripple v-tap class="expense-item-action" @tap="check(expense)">
-          <i class="mdi mdi-check-bold"></i>
+
+        <div
+          v-for="expense of group[1]"
+          :key="expense.date"
+          class="expense-item"
+          :class="{ 'expense-item-checked': expense.checked }"
+        >
+          <div class="expense-item-category" :class="getExpenseCategoryClass(expense)">
+            <span class="mdi" :class="getExpenseIcon(expense)"></span>
+            <span>{{ expense.category }}</span>
+            <span v-if="expense.isRecurring()" class="mdi mdi-refresh"></span>
+          </div>
+          <div class="expense-item-label">{{ expense.label }}</div>
+          <div class="expense-item-amount" :class="{ 'expense-item-positive': expense.isPositive() }">
+            {{ formatExpenseAmount(expense) }}€
+          </div>
+          <div v-ripple v-tap class="expense-item-action" @tap="edit(expense)">
+            <i class="mdi mdi-pencil"></i>
+          </div>
+          <div v-ripple v-tap class="expense-item-action" @tap="check(expense)">
+            <i class="mdi mdi-check-bold"></i>
+          </div>
         </div>
       </div>
-    </div>
+    </template>
   </div>
 </template>
 
@@ -47,12 +57,14 @@
 <!-- ----------------------------------------------------------------------- -->
 
 <script lang="ts">
-  import { computed, defineComponent, PropType } from 'vue';
+  import { computed, defineComponent, PropType, Ref, ref, watch, watchEffect } from 'vue';
   import { formatAmount } from '../lib/amounts';
   import { getCategoryDef } from '../lib/categories';
+  import { extractExpensesMonths } from '../lib/expenses';
   import { formatDateToDayHuman } from '../lib/dates';
   import {
     filterExpensesOfLastMonths,
+    filterExpensesOfMonth,
     filterNonExceptionalExpenses,
     groupExpensesByDay,
     sumNegativeExpenses,
@@ -70,13 +82,24 @@
     emits: ['edit', 'check'],
 
     setup(props, { emit }) {
-      const lastMonthsExpenses = computed(() => filterExpensesOfLastMonths(props.expenses, 3));
-      const expensesByDay = computed(() => groupExpensesByDay(lastMonthsExpenses.value));
-      const empty = computed(() => lastMonthsExpenses.value.length === 0);
+      const expensesToShow = ref([]) as Ref<Expense[]>;
+      const expensesToShowByDay = computed(() => groupExpensesByDay(expensesToShow.value));
+      const empty = computed(() => props.expenses.length === 0);
+      const view = ref('last3Months');
+      const views = extractExpensesMonths(props.expenses);
+
+      watchEffect(() => {
+        expensesToShow.value =
+          view.value === 'last3Months'
+            ? filterExpensesOfLastMonths(props.expenses, 3)
+            : filterExpensesOfMonth(props.expenses, new Date(view.value));
+      });
 
       return {
-        expensesByDay,
+        expensesToShowByDay,
         empty,
+        view,
+        views,
         edit,
         check,
         formatExpenseAmount,
@@ -123,6 +146,32 @@
 
 <style lang="scss" scoped>
   @import '../theme.scss';
+
+  header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+
+    .icon {
+      margin-right: 10px;
+    }
+
+    select {
+      flex: 1;
+      padding: 2px 10px;
+
+      border-radius: 6px;
+      outline: none;
+      font-size: 1em;
+      background-color: $text;
+      color: $background1;
+
+      &[inputmode='numeric'] {
+        text-align: right;
+        caret-color: $text;
+      }
+    }
+  }
 
   .list-container {
     @include padded;
