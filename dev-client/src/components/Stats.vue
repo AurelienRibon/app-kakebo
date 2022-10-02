@@ -128,7 +128,7 @@
             datasets: [
               {
                 label: 'Économies',
-                data: balanceByMonth.map((it) => it[1]),
+                data: balanceByMonth.map((it) => it[1]).map((it) => (it > 0 ? it : 0)),
                 backgroundColor: '#4bc0c0',
               },
               {
