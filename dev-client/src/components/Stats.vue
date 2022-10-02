@@ -24,8 +24,13 @@
     </div>
 
     <div class="card stat">
-      <h2>solde sur l'année</h2>
+      <h2>solde annuel</h2>
       <canvas id="aggregatedBalanceByMonth" height="260"></canvas>
+    </div>
+
+    <div class="card stat">
+      <h2>solde annuel total</h2>
+      <canvas id="aggregatedBalanceByMonthAll" height="260"></canvas>
     </div>
   </div>
 </template>
@@ -153,15 +158,6 @@
             labels: balanceByMonth.map((it) => it[0]),
             datasets: [
               {
-                label: 'Solde total',
-                data: aggregatedBalanceByMonthAll.map((it) => ({ t: it[0], y: it[1] })),
-                backgroundColor: '#36a2eb88',
-                borderColor: '#36a2eb',
-                borderWidth: 2,
-                pointRadius: 0,
-              },
-              {
-                label: 'Solde quotidien',
                 data: aggregatedBalanceByMonth.map((it) => ({ t: it[0], y: it[1] })),
                 backgroundColor: '#4bc0c088',
                 borderColor: '#4bc0c0',
@@ -171,9 +167,37 @@
             ],
           },
           options: {
+            plugins: {
+              legend: false,
+            },
             scales: {
-              xAxes: [{ type: 'time' }],
-              yAxes: [{ type: 'linear', ticks: { beginAtZero: true }, gridLines: { color: CHART_GRID_COLOR } }],
+              xAxes: [{ type: 'time', time: { displayFormats: { month: 'YYYY-MM' } } }],
+              yAxes: [{ type: 'linear', gridLines: { color: CHART_GRID_COLOR } }],
+            },
+          },
+        });
+
+        new Chart('aggregatedBalanceByMonthAll', {
+          type: 'line',
+          data: {
+            labels: balanceByMonth.map((it) => it[0]),
+            datasets: [
+              {
+                data: aggregatedBalanceByMonthAll.map((it) => ({ t: it[0], y: it[1] })),
+                backgroundColor: '#36a2eb88',
+                borderColor: '#36a2eb',
+                borderWidth: 2,
+                pointRadius: 0,
+              },
+            ],
+          },
+          options: {
+            plugins: {
+              legend: false,
+            },
+            scales: {
+              xAxes: [{ type: 'time', time: { displayFormats: { month: 'YYYY-MM' } } }],
+              yAxes: [{ type: 'linear', gridLines: { color: CHART_GRID_COLOR } }],
             },
           },
         });
