@@ -23,8 +23,8 @@ export function formatDateToMonth(date = new Date()): string {
 export function formatDateToDayHuman(date: Date): string {
   const rtf = new Intl.RelativeTimeFormat('fr', { numeric: 'auto' });
   const dtf = new Intl.DateTimeFormat('fr');
-  const daysDiff = dayjs(date).diff(dayjs(), 'days');
-  return daysDiff >= -1 && daysDiff <= 0 ? rtf.format(daysDiff, 'day') : dtf.format(date);
+  const daysDiff = dayjs(date).startOf('day').diff(dayjs().startOf('day'), 'days');
+  return daysDiff >= -1 && daysDiff <= 1 ? rtf.format(daysDiff, 'day') : dtf.format(date);
 }
 
 // -----------------------------------------------------------------------------
