@@ -14,6 +14,7 @@
         <div class="icon mdi mdi-eye"></div>
         <select v-model="view">
           <option value="last3Months">les 3 derniers mois</option>
+          <option value="future">les dépenses à venir</option>
           <option v-for="item in views" :key="item">{{ item }}</option>
         </select>
       </header>
@@ -73,6 +74,7 @@
   import {
     filterExpensesOfLastMonths,
     filterExpensesOfMonth,
+    filterFutureExpenses,
     filterNonExceptionalExpenses,
     groupExpensesByDay,
     sumNegativeExpenses,
@@ -104,10 +106,14 @@
 
       watchEffect(() => {
         const expensesToConsider = showChecked.value ? props.expenses : props.expenses.filter((it) => !it.checked);
-        const showSpecificMonth = view.value !== 'last3Months';
-        expensesToShow.value = showSpecificMonth
-          ? filterExpensesOfMonth(expensesToConsider, new Date(view.value))
-          : filterExpensesOfLastMonths(expensesToConsider, 3);
+
+        if (view.value === 'last3Months') {
+          expensesToShow.value = filterExpensesOfLastMonths(expensesToConsider, 3);
+        } else if (view.value === 'future') {
+          expensesToShow.value = filterFutureExpenses(expensesToConsider);
+        } else {
+          expensesToShow.value = filterExpensesOfMonth(expensesToConsider, new Date(view.value));
+        }
       });
 
       return {

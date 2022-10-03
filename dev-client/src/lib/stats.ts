@@ -44,6 +44,10 @@ export function filterNonExceptionalExpenses(expenses: Expense[]): Expense[] {
   return expenses.filter((it) => !it.isExceptional());
 }
 
+export function filterFutureExpenses(expenses: Expense[]): Expense[] {
+  return filterExpensesByDate(expenses, new Date(), new Date('2100-01-01'));
+}
+
 export function filterExpensesByDate(expenses: Expense[], fromDate: Date, toDate: Date): Expense[] {
   return expenses.filter((it) => {
     const time = it.date.getTime();
