@@ -101,7 +101,7 @@ export function sumExpensesByDay(expenses: Expense[]): [string, number][] {
 }
 
 export function sumNegativeExpenses(expenses: Expense[]): number {
-  return expenses.reduce((acc, it) => (it.amount < 0 ? acc + it.amount : acc), 0);
+  return sumExpenses(expenses.filter((it) => it.amount < 0));
 }
 
 // -----------------------------------------------------------------------------
