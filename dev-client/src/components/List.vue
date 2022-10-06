@@ -44,6 +44,7 @@
             <span class="mdi" :class="getExpenseIcon(expense)"></span>
             <span>{{ expense.category }}</span>
             <span v-if="expense.isRecurring()" class="mdi mdi-refresh"></span>
+            <span v-if="expense.isMirrorOrigin()" class="mdi mdi-ghost-outline"></span>
           </div>
           <div class="expense-item-label">{{ expense.label }}</div>
           <div class="expense-item-amount" :class="{ 'expense-item-positive': expense.isPositive() }">
@@ -69,13 +70,12 @@
   import { computed, defineComponent, PropType, Ref, ref, watchEffect } from 'vue';
   import { formatAmount } from '../lib/amounts';
   import { getCategoryDef } from '../lib/categories';
-  import { extractExpensesMonths } from '../lib/expenses';
+  import { extractExpensesMonths, injectExpensesMirrors } from '../lib/expenses';
   import { formatDateToDayHuman } from '../lib/dates';
   import {
     filterExpensesOfLastMonths,
     filterExpensesOfMonth,
     filterFutureExpenses,
-    filterNonExceptionalExpenses,
     groupExpensesByDay,
     sumNegativeExpenses,
   } from '../lib/stats';
@@ -94,7 +94,7 @@
 
     setup(props, { emit }) {
       const expensesToShow = ref([]) as Ref<Expense[]>;
-      const expensesToShowByDay = computed(() => groupExpensesByDay(expensesToShow.value));
+      const expensesToShowByDay = computed(() => groupExpensesByDay(injectExpensesMirrors(expensesToShow.value)));
       const empty = computed(() => props.expenses.length === 0);
       const view = ref(config.view);
       const showChecked = ref(true);
@@ -144,7 +144,8 @@
       }
 
       function formatExpensesSum(expenses: Expense[]): string {
-        return formatAmount(sumNegativeExpenses(filterNonExceptionalExpenses(expenses)));
+        const expensesToSum = expenses.filter((it) => !it.isMirrorOrigin() || it.isExceptional());
+        return formatAmount(sumNegativeExpenses(expensesToSum));
       }
 
       function formatGroupDate(date: string): string {

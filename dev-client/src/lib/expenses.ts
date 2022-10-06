@@ -2,7 +2,7 @@ import { isExpenseKindValid } from './expense-kinds';
 import { isExpensePeriodicityValid } from './expense-periodicities';
 import { str } from './utils';
 import { Expense } from '../models/expense';
-import { formatDateToMonth } from './dates';
+import { formatDateToMonth, getStartOfMonthDate, isDateOnFirstDayOfMonth } from './dates';
 
 // -----------------------------------------------------------------------------
 // TYPES
@@ -38,6 +38,29 @@ export function createExpensesFromJSONs(specs: ExpenseJSON[]): Expense[] {
   const expenses = specs.map(createExpenseFromJSON);
   sortExpenses(expenses);
   return expenses;
+}
+
+// -----------------------------------------------------------------------------
+// MIRRORS
+// -----------------------------------------------------------------------------
+
+export function injectExpensesMirrors(expenses: Expense[]): Expense[] {
+  const newExpenses = expenses.slice();
+  const recurringExpenses = expenses.filter((it) => it.isRecurring());
+
+  for (const expense of recurringExpenses) {
+    if (!isDateOnFirstDayOfMonth(expense.date)) {
+      const mirrorDate = getStartOfMonthDate(expense.date);
+      const mirror = expense.duplicate({ date: mirrorDate });
+      mirror.setMirrorOf(expense);
+
+      const index = newExpenses.findIndex((it) => new Date(it.date) > mirrorDate);
+      newExpenses.splice(index, 0, mirror);
+    }
+  }
+
+  sortExpenses(newExpenses);
+  return newExpenses;
 }
 
 // -----------------------------------------------------------------------------

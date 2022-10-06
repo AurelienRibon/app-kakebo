@@ -48,17 +48,11 @@
     </div>
   </section>
 
-  <section v-if="periodicity === 'one-time'">
-    <label>date</label>
+  <section>
+    <label v-if="periodicity === 'one-time'">date</label>
+    <label v-if="periodicity === 'monthly'">date de prélèvement</label>
     <article>
       <input v-model="date" type="date" />
-    </article>
-  </section>
-
-  <section v-if="periodicity === 'monthly'">
-    <label>date de début</label>
-    <article>
-      <input v-model="date" type="month" />
     </article>
   </section>
 
@@ -90,9 +84,9 @@
 <!-- ----------------------------------------------------------------------- -->
 
 <script lang="ts">
-  import { defineComponent, onMounted, ref, computed, watch } from 'vue';
+  import { defineComponent, onMounted, ref, computed } from 'vue';
   import { addDigitToAmount, formatAmount } from '../lib/amounts';
-  import { formatDateToDay, formatDateToMonth } from '../lib/dates';
+  import { formatDateToDay } from '../lib/dates';
   import { getCategoryDefs } from '../lib/categories';
   import { extractExpensesLabels } from '../lib/expenses';
   import { ExpenseKind } from '../lib/expense-kinds';
@@ -116,7 +110,7 @@
 
     setup(props) {
       // Expense properties
-      const date = ref(formatDate(props.expense.date, props.expense.periodicity));
+      const date = ref(formatDateToDay(props.expense.date));
       const kind = ref(props.expense.kind);
       const periodicity = ref(props.expense.periodicity);
       const label = ref(props.expense.label);
@@ -136,10 +130,6 @@
         { name: 'interesting', icon: 'mdi-thumb-up' },
         { name: 'extra', icon: 'mdi-one-up' },
       ];
-
-      watch(periodicity, (value) => {
-        date.value = formatDate(new Date(date.value), value);
-      });
 
       if (props.autofocus) {
         onMounted(focusAmount);
@@ -203,10 +193,6 @@
         if (el) {
           el.focus();
         }
-      }
-
-      function formatDate(date: Date, periodicity: string) {
-        return periodicity === 'monthly' ? formatDateToMonth(date) : formatDateToDay(date);
       }
     },
 

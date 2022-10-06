@@ -49,6 +49,10 @@ export function getEndOfMonthDate(date: Date): Date {
   return dayjs.utc(date).endOf('month').toDate();
 }
 
+export function isDateOnFirstDayOfMonth(date: Date): boolean {
+  return date.getDate() === 1;
+}
+
 // -----------------------------------------------------------------------------
 // HELPERS
 // -----------------------------------------------------------------------------
