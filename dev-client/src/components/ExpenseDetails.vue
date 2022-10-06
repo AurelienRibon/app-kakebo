@@ -96,6 +96,7 @@
   import { getCategoryDefs } from '../lib/categories';
   import { extractExpensesLabels } from '../lib/expenses';
   import { ExpenseKind } from '../lib/expense-kinds';
+  import { hideKeyboard } from '../lib/dom';
   import { Expense, ExpenseSpec } from '../models/expense';
   import { store } from '../store/store';
 
@@ -171,6 +172,7 @@
       }
 
       function updateSeeMore(): void {
+        hideKeyboard();
         seeMore.value = true;
       }
 
