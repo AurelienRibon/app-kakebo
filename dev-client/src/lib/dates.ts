@@ -1,7 +1,9 @@
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
+import utc from 'dayjs/plugin/utc';
 
 dayjs.extend(duration);
+dayjs.extend(utc);
 
 // -----------------------------------------------------------------------------
 // FORMAT
@@ -40,11 +42,11 @@ export function addMonthsToDate(date: Date, monthsDiff: number): Date {
 // -----------------------------------------------------------------------------
 
 export function getStartOfMonthDate(date: Date): Date {
-  return dayjs(date).startOf('month').toDate();
+  return dayjs.utc(date).startOf('month').toDate();
 }
 
 export function getEndOfMonthDate(date: Date): Date {
-  return dayjs(date).endOf('month').toDate();
+  return dayjs.utc(date).endOf('month').toDate();
 }
 
 // -----------------------------------------------------------------------------
