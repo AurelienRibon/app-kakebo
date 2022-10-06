@@ -35,6 +35,10 @@ exports.findRecurringExpensesToDuplicate = function (expenses) {
     .sort((a, b) => new Date(a.date) - new Date(b.date))
     .pop();
 
+  if (!lastMonthlyExpense) {
+    return [];
+  }
+
   const lastMonthlyExpenseDate = new Date(lastMonthlyExpense.date);
 
   if (isSameMonth(lastMonthlyExpenseDate, today)) {
