@@ -12,6 +12,11 @@
     </div>
 
     <div class="card stat">
+      <h2>dépenses mensuelles</h2>
+      <canvas id="recurringAmountsByCategory" height="260"></canvas>
+    </div>
+
+    <div class="card stat">
       <h2>solde sur le mois</h2>
       <canvas id="balanceByDay" height="260"></canvas>
     </div>
@@ -56,6 +61,7 @@
 
   const CHART_TEXT_COLOR = '#ededed';
   const CHART_GRID_COLOR = '#555';
+  const PALETTE = ['#ff6384', '#4bc0c0', '#36a2eb', '#9966ff', '#ffa500', '#a6324b', '#336a6a', '#2873a6', '#cccccc'];
 
   Chart.defaults.global.defaultFontColor = CHART_TEXT_COLOR;
 
@@ -72,8 +78,10 @@
 
       const monthExpenses = filterExpensesOfCurrentMonth(filteredExpenses);
       const monthNegativeExpenses = monthExpenses.filter((it) => !it.isPositive());
+      const monthRecurringNegativeExpenses = monthExpenses.filter((it) => !it.isPositive() && it.isRecurring());
 
-      const amountsByCategory = sumExpensesByCategory(monthNegativeExpenses, 5);
+      const recurringAmountsByCategory = sumExpensesByCategory(monthRecurringNegativeExpenses, 8);
+      const amountsByCategory = sumExpensesByCategory(monthNegativeExpenses, 8);
       const amountsByDay = sumExpensesByDay(monthNegativeExpenses);
 
       const aggregatedBalanceByDay = computeAggregatedBalanceByDay(monthExpenses);
@@ -91,7 +99,21 @@
             datasets: [
               {
                 data: amountsByCategory.map((it) => -it[1]),
-                backgroundColor: ['#ff6384', '#4bc0c0', '#36a2eb', '#9966ff', '#ffa500', '#ccc'],
+                backgroundColor: PALETTE,
+                borderWidth: 0,
+              },
+            ],
+          },
+        });
+
+        new Chart('recurringAmountsByCategory', {
+          type: 'pie',
+          data: {
+            labels: recurringAmountsByCategory.map((it) => it[0]),
+            datasets: [
+              {
+                data: recurringAmountsByCategory.map((it) => -it[1]),
+                backgroundColor: PALETTE,
                 borderWidth: 0,
               },
             ],
@@ -242,7 +264,7 @@
       &:not(:first-of-type) {
         margin-top: 50px;
         padding-top: 40px;
-        border-top: 60px solid $background2;
+        border-top: 140px solid $background2;
       }
     }
 
