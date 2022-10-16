@@ -85,12 +85,12 @@ export function sumExpensesByCategory(expenses: Expense[], limit: number): [stri
 
   sums.sort((a, b) => a[1] - b[1]);
 
-  if (sums.length < limit) {
+  if (sums.length <= limit) {
     return sums;
   }
 
-  const sums1 = sums.slice(0, limit);
-  const sums2 = sums.slice(limit);
+  const sums1 = sums.slice(0, limit - 1);
+  const sums2 = sums.slice(limit - 1);
   const sums2Acc = sum(sums2.map((it) => it[1]));
 
   return [...sums1, ['autres', sums2Acc]];

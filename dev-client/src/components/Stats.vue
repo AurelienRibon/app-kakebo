@@ -7,12 +7,12 @@
     <h1>A propos<br />du mois</h1>
 
     <div class="card stat">
-      <h2>dépenses par catégorie</h2>
+      <h2>dépenses du mois</h2>
       <canvas id="amountsByCategory" height="260"></canvas>
     </div>
 
     <div class="card stat">
-      <h2>dépenses mensuelles</h2>
+      <h2>dépenses récurrentes</h2>
       <canvas id="recurringAmountsByCategory" height="260"></canvas>
     </div>
 
@@ -24,18 +24,13 @@
     <h1>A propos<br />de l'année</h1>
 
     <div class="card stat">
-      <h2>dépenses par mois</h2>
-      <canvas id="balanceByMonth" height="360"></canvas>
+      <h2>économies par mois</h2>
+      <canvas id="balanceByMonth" height="260"></canvas>
     </div>
 
     <div class="card stat">
       <h2>solde annuel</h2>
       <canvas id="aggregatedBalanceByMonth" height="260"></canvas>
-    </div>
-
-    <div class="card stat">
-      <h2>solde annuel total</h2>
-      <canvas id="aggregatedBalanceByMonthAll" height="260"></canvas>
     </div>
   </div>
 </template>
@@ -52,7 +47,6 @@
     computeAggregatedBalanceByDay,
     computeAggregatedBalanceByMonth,
     computeBalanceByMonth,
-    computeBalanceOfDebitsByMonth,
     filterExpensesOfCurrentMonth,
     filterNonExceptionalExpenses,
     sumExpensesByCategory,
@@ -61,7 +55,7 @@
 
   const CHART_TEXT_COLOR = '#ededed';
   const CHART_GRID_COLOR = '#555';
-  const PALETTE = ['#ff6384', '#4bc0c0', '#36a2eb', '#9966ff', '#ffa500', '#a6324b', '#336a6a', '#2873a6', '#cccccc'];
+  const PALETTE = ['#ff6384', '#4bc0c0', '#36a2eb', '#9966ff', '#ffa500', '#a6324b', '#336a6a', '#2873a6'];
 
   Chart.defaults.global.defaultFontColor = CHART_TEXT_COLOR;
 
@@ -81,15 +75,13 @@
       const monthRecurringNegativeExpenses = monthExpenses.filter((it) => !it.isPositive() && it.isRecurring());
 
       const recurringAmountsByCategory = sumExpensesByCategory(monthRecurringNegativeExpenses, 8);
-      const amountsByCategory = sumExpensesByCategory(monthNegativeExpenses, 8);
+      const amountsByCategory = sumExpensesByCategory(monthNegativeExpenses, 6);
       const amountsByDay = sumExpensesByDay(monthNegativeExpenses);
 
       const aggregatedBalanceByDay = computeAggregatedBalanceByDay(monthExpenses);
       const aggregatedBalanceByMonth = computeAggregatedBalanceByMonth(filteredExpenses);
-      const aggregatedBalanceByMonthAll = computeAggregatedBalanceByMonth(props.expenses);
 
       const balanceByMonth = computeBalanceByMonth(filteredExpenses);
-      const balanceOfDebitsByMonth = computeBalanceOfDebitsByMonth(filteredExpenses);
 
       onMounted(() => {
         new Chart('amountsByCategory', {
@@ -155,18 +147,13 @@
             labels: balanceByMonth.map((it) => it[0]),
             datasets: [
               {
-                label: 'Économies',
-                data: balanceByMonth.map((it) => it[1]).map((it) => (it > 0 ? it : 0)),
-                backgroundColor: '#4bc0c0',
-              },
-              {
-                label: 'Dépenses',
-                data: balanceOfDebitsByMonth.map((it) => it[1]),
-                backgroundColor: '#ff6384',
+                data: balanceByMonth.map((it) => it[1]),
+                backgroundColor: balanceByMonth.map((it) => (it[1] >= 0 ? '#4bc0c0' : '#ff6384')),
               },
             ],
           },
           options: {
+            plugins: { legend: false },
             scales: {
               xAxes: [{ stacked: true }],
               yAxes: [{ type: 'linear', ticks: { beginAtZero: true }, gridLines: { color: CHART_GRID_COLOR } }],
@@ -189,34 +176,7 @@
             ],
           },
           options: {
-            plugins: {
-              legend: false,
-            },
-            scales: {
-              xAxes: [{ type: 'time', time: { displayFormats: { month: 'YYYY-MM' } } }],
-              yAxes: [{ type: 'linear', gridLines: { color: CHART_GRID_COLOR } }],
-            },
-          },
-        });
-
-        new Chart('aggregatedBalanceByMonthAll', {
-          type: 'line',
-          data: {
-            labels: balanceByMonth.map((it) => it[0]),
-            datasets: [
-              {
-                data: aggregatedBalanceByMonthAll.map((it) => ({ t: it[0], y: it[1] })),
-                backgroundColor: '#36a2eb88',
-                borderColor: '#36a2eb',
-                borderWidth: 2,
-                pointRadius: 0,
-              },
-            ],
-          },
-          options: {
-            plugins: {
-              legend: false,
-            },
+            plugins: { legend: false },
             scales: {
               xAxes: [{ type: 'time', time: { displayFormats: { month: 'YYYY-MM' } } }],
               yAxes: [{ type: 'linear', gridLines: { color: CHART_GRID_COLOR } }],
