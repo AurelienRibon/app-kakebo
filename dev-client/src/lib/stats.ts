@@ -2,6 +2,10 @@ import { addMonthsToDate, formatDateToDay, formatDateToMonth, getEndOfMonthDate,
 import { mapGroups, sum } from './utils';
 import { Expense } from '../models/expense';
 
+type GroupOptions = {
+  sorted?: boolean;
+};
+
 // -----------------------------------------------------------------------------
 // GROUPBY
 // -----------------------------------------------------------------------------
@@ -28,21 +32,19 @@ export function groupExpensesByCategory(expenses: Expense[]): [string, Expense[]
   return groupExpensesBy(expenses, (it) => it.category);
 }
 
-export function groupExpensesByDay(expenses: Expense[]): [string, Expense[]][] {
-  return groupExpensesBy(expenses, (it) => formatDateToDay(it.date));
+export function groupExpensesByDay(expenses: Expense[], options?: GroupOptions): [string, Expense[]][] {
+  const result = groupExpensesBy(expenses, (it) => formatDateToDay(it.date));
+  return options?.sorted ? result.sort((a, b) => a[0].localeCompare(b[0])) : result;
 }
 
-export function groupExpensesByMonth(expenses: Expense[]): [string, Expense[]][] {
-  return groupExpensesBy(expenses, (it) => formatDateToMonth(it.date));
+export function groupExpensesByMonth(expenses: Expense[], options?: GroupOptions): [string, Expense[]][] {
+  const result = groupExpensesBy(expenses, (it) => formatDateToMonth(it.date));
+  return options?.sorted ? result.sort((a, b) => a[0].localeCompare(b[0])) : result;
 }
 
 // -----------------------------------------------------------------------------
 // FILTER
 // -----------------------------------------------------------------------------
-
-export function filterNonExceptionalExpenses(expenses: Expense[]): Expense[] {
-  return expenses.filter((it) => !it.isExceptional());
-}
 
 export function filterFutureExpenses(expenses: Expense[]): Expense[] {
   return filterExpensesByDate(expenses, new Date(), new Date('2100-01-01'));
@@ -93,11 +95,11 @@ export function sumExpensesByCategory(expenses: Expense[], limit: number): [stri
   const sums2 = sums.slice(limit - 1);
   const sums2Acc = sum(sums2.map((it) => it[1]));
 
-  return [...sums1, ['autres', sums2Acc]];
+  return [...sums1, ['...', sums2Acc]];
 }
 
 export function sumExpensesByDay(expenses: Expense[]): [string, number][] {
-  return sumGroups(groupExpensesByDay(expenses)).sort((a, b) => a[0].localeCompare(b[0]));
+  return sumGroups(groupExpensesByDay(expenses, { sorted: true }));
 }
 
 export function sumNegativeExpenses(expenses: Expense[]): number {
@@ -125,25 +127,35 @@ export function computeBalanceOfRecurringDebits(expenses: Expense[]): number {
 }
 
 export function computeBalanceByMonth(expenses: Expense[]): [string, number][] {
-  return sumGroups(groupExpensesByMonth(expenses)).sort((a, b) => a[0].localeCompare(b[0]));
+  return sumGroups(groupExpensesByMonth(expenses, { sorted: true }));
 }
 
-export function computeBalanceOfDebitsByMonth(expenses: Expense[]): [string, number][] {
-  return computeBalanceByMonth(expenses.filter((it) => it.amount < 0));
+export function computeDebitsByMonth(expenses: Expense[]): [string, Map<string, number>][] {
+  const debits = expenses.filter((it) => it.amount < 0);
+  const groups = groupExpensesByMonth(debits, { sorted: true });
+  const result = [] as [string, Map<string, number>][];
+
+  for (const [month, monthExpenses] of groups) {
+    const map = new Map<string, number>();
+    result.push([month, map]);
+
+    for (const expense of monthExpenses) {
+      const sum = map.get(expense.category) ?? 0;
+      map.set(expense.category, sum + expense.amount);
+    }
+  }
+
+  return result;
 }
 
 export function computeAggregatedBalanceByDay(expenses: Expense[]): [string, number][] {
   let balance = 0;
-  return sumGroups(groupExpensesByDay(expenses))
-    .sort((a, b) => a[0].localeCompare(b[0]))
-    .map((it) => [it[0], (balance += it[1])]);
+  return sumGroups(groupExpensesByDay(expenses, { sorted: true })).map((it) => [it[0], (balance += it[1])]);
 }
 
 export function computeAggregatedBalanceByMonth(expenses: Expense[]): [string, number][] {
   let balance = 0;
-  return sumGroups(groupExpensesByMonth(expenses))
-    .sort((a, b) => a[0].localeCompare(b[0]))
-    .map((it) => [it[0], (balance += it[1])]);
+  return sumGroups(groupExpensesByMonth(expenses, { sorted: true })).map((it) => [it[0], (balance += it[1])]);
 }
 
 // -----------------------------------------------------------------------------
