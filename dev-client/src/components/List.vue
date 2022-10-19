@@ -47,7 +47,7 @@
             <span v-if="expense.isMirrorOrigin()" class="mdi mdi-ghost-outline"></span>
           </div>
           <div class="expense-item-label">{{ expense.label }}</div>
-          <div class="expense-item-amount" :class="{ 'expense-item-positive': expense.isPositive() }">
+          <div class="expense-item-amount" :class="{ 'expense-item-positive': expense.amount >= 0 }">
             {{ formatExpenseAmount(expense) }}€
           </div>
           <div v-ripple v-tap class="expense-item-action" @tap="edit(expense)">

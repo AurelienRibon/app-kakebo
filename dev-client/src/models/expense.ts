@@ -1,4 +1,4 @@
-import { formatDateToDay, isDateOnFirstDayOfMonth } from '../lib/dates';
+import { formatDateToDay, getStartOfMonthDate, isDateOnFirstDayOfMonth } from '../lib/dates';
 import { ExpensePeriodicity } from '../lib/expense-periodicities';
 import { ExpenseKind } from '../lib/expense-kinds';
 import { guid } from '../lib/utils';
@@ -101,20 +101,12 @@ export class Expense {
     return this.periodicity !== 'one-time';
   }
 
-  isPositive(): boolean {
-    return this.amount > 0;
-  }
-
   isExceptional(): boolean {
     return getCategoryDef(this.category).exceptional ?? false;
   }
 
   getSign(): string {
-    return this.isPositive() ? '+' : '-';
-  }
-
-  getRealAmount(): number {
-    return this.isMirrorOrigin() ? 0 : this.amount;
+    return this.amount >= 0 ? '+' : '-';
   }
 
   // Mutations

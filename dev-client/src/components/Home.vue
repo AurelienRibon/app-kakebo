@@ -43,7 +43,6 @@
     computeBalanceOfOneTimeDebits,
     computeBalanceOfRecurringDebits,
     filterExpensesOfCurrentMonth,
-    filterNonExceptionalExpenses,
   } from '../lib/stats';
 
   export default defineComponent({
@@ -55,8 +54,8 @@
     },
 
     setup(props) {
-      const filteredExpenses = computed(() => filterNonExceptionalExpenses(props.expenses));
-      const currentExpenses = computed(() => filterExpensesOfCurrentMonth(filteredExpenses.value));
+      const standardExpenses = computed(() => props.expenses.filter((it) => !it.isExceptional()));
+      const currentExpenses = computed(() => filterExpensesOfCurrentMonth(standardExpenses.value));
       const values = computeValues(currentExpenses.value);
 
       const monthBalance = ref(values.monthBalance);
