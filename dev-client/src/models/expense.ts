@@ -106,7 +106,7 @@ export class Expense {
   }
 
   getSign(): string {
-    return this.amount >= 0 ? '+' : '-';
+    return this.amount > 0 ? '+' : '-';
   }
 
   // Mutations
