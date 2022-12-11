@@ -2,12 +2,9 @@ import { Ref, ref } from 'vue';
 import { Storage } from '@capacitor/storage';
 import { Expense, ExpenseSpec } from '../models/expense';
 import { createExpenseFromJSON, createExpensesFromJSONs, ExpenseJSON, sortExpenses } from '../lib/expenses';
-import { logError } from '../lib/logs';
+import { logError, logInfo } from '../lib/logs';
 
-const IS_PROD = process.env.NODE_ENV === 'production';
-const SERVER_URL = IS_PROD ? 'https://kakebo-server.herokuapp.com' : 'http://localhost:5555';
-
-type DbExpensesSyncResult = ExpenseJSON[];
+type DbExpensesSyncResult = { expenses: ExpenseJSON[] };
 
 class Store {
   private _expensesFull = ref([]) as Ref<Expense[]>;
@@ -49,6 +46,8 @@ class Store {
   }
 
   async load(): Promise<void> {
+    logInfo('Loading expenses from store...');
+
     try {
       const { value } = await Storage.get({ key: 'data' });
       const spec = value ? JSON.parse(value) : { expenses: [] };
@@ -70,6 +69,8 @@ class Store {
   }
 
   async sync() {
+    logInfo('Synchronizing expenses...');
+
     this._loading.value = true;
 
     try {
@@ -95,8 +96,8 @@ class Store {
 
     let changed = false;
 
-    if (syncResult.length > 0) {
-      this._upsertExpenseJSONs(syncResult);
+    if (syncResult.expenses.length > 0) {
+      this._upsertExpenseJSONs(syncResult.expenses);
       changed = true;
     }
 
@@ -104,6 +105,8 @@ class Store {
   }
 
   private _upsertExpenseJSONs(jsons: ExpenseJSON[]): void {
+    logInfo('Creating expenses from jsons...');
+
     const knownExpensesById = new Map(this._expensesFull.value.map((it) => [it.id, it]));
 
     for (const json of jsons) {
@@ -131,9 +134,26 @@ export const store = new Store();
 // -----------------------------------------------------------------------------
 
 async function syncExpensesWithDB(expenses: Expense[]): Promise<DbExpensesSyncResult | undefined> {
-  const body = JSON.stringify({ expenses: expenses.map((it) => it.serialize()) });
+  const body = JSON.stringify({
+    route: '/expenses/sync',
+    expenses: expenses.map((it) => it.serialize()),
+  });
+
   const headers = { 'Content-Type': 'application/json' };
-  const url = `${SERVER_URL}/expenses/sync`;
-  const res = await fetch(url, { method: 'POST', mode: 'cors', headers, body });
-  return res.status === 200 ? res.json() : undefined;
+  const prod = process.env.NODE_ENV === 'production';
+  const url = prod
+    ? 'https://gv3on4rtym5vnqsf3tzhehnwtm0mzhjy.lambda-url.eu-west-3.on.aws'
+    : 'https://zvpzxxtfmapliyof443jlb7i6a0aqrna.lambda-url.eu-west-3.on.aws';
+
+  logInfo('Fetching remote...');
+  const res = await fetch(url, { method: 'POST', headers, body });
+
+  if (!res.ok) {
+    logInfo(`Request failed with status ${res.status} (${res.statusText}).`);
+    logInfo(await res.text());
+    return;
+  }
+
+  logInfo('Fetch success!');
+  return res.json();
 }
