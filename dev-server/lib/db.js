@@ -5,25 +5,28 @@ const { MongoClient } = require('mongodb');
 const HOST = process.env.MONGO_KAKEBO_HOST;
 const USER = process.env.MONGO_KAKEBO_USER;
 const PASS = process.env.MONGO_KAKEBO_PASS;
-const DATA = process.env.MONGO_KAKEBO_DATA ?? 'test';
+const DB = process.env.MONGO_KAKEBO_DB ?? 'test';
 const URI = `mongodb+srv://${USER}:${PASS}@${HOST}?retryWrites=true&w=majority`;
 
-const db = { expenses: null };
+const client = new MongoClient(URI);
+let connected = false;
 
 exports.connect = async function () {
-  try {
-    const client = new MongoClient(URI, { useUnifiedTopology: true });
-    const conn = await client.connect();
-    db.expenses = conn.db(DATA).collection('expenses');
-  } catch (err) {
-    console.error('Connection to database failed.');
-    console.error(err.stack);
-    process.exit(1);
+  if (!connected) {
+    console.log('[db] Connecting to DBbase...');
+    await client.connect();
+    connected = true;
+    console.log('[db] Connected!');
+  } else {
+    console.log('[db] Already connected!');
   }
 };
 
 exports.getExpenses = async function () {
-  return db.expenses.find().toArray();
+  console.log('[db] Fetching all expenses...');
+  const result = await client.db(DB).collection('expenses').find().toArray();
+  console.log('[db] Fetching done!');
+  return result;
 };
 
 exports.upsertExpenses = async function (expenses) {
@@ -39,5 +42,5 @@ exports.upsertExpenses = async function (expenses) {
     },
   }));
 
-  await db.expenses.bulkWrite(operations);
+  await client.db(DB).collection('expenses').bulkWrite(operations);
 };

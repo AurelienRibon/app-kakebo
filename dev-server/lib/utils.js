@@ -17,3 +17,15 @@ exports.guid = function () {
 exports.randInt = function (max) {
   return Math.floor(Math.random() * max);
 };
+
+exports.createTimer = function () {
+  let start = Date.now();
+
+  const timer = function (id) {
+    timer.times = timer.times ?? {};
+    timer.times[id] = Date.now() - start;
+    start = Date.now();
+  };
+
+  return timer;
+};
