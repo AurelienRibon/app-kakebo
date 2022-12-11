@@ -35,8 +35,12 @@
     emits: ['cancel', 'done'],
 
     setup(props, { emit }) {
+      // If last expense was entered less than 10 minutes ago, we reuse the same date.
+      const durationSinceLastInput = Date.now() - config.lastExpenseAt;
+      const expenseDate = durationSinceLastInput < 1000 * 60 * 10 ? config.lastExpenseDate : undefined;
+
       const kind = getCategoryDef(props.category).defaultKind;
-      const expense = new Expense({ category: props.category, kind, date: config.lastExpenseDate });
+      const expense = new Expense({ category: props.category, kind, date: expenseDate });
       const refDetails = ref(null);
 
       return { cancel, done, expense, refDetails };
@@ -49,6 +53,7 @@
         const el = refDetails.value as typeof ExpenseDetails | null;
         const expenseSpec = el?.bundle();
         config.lastExpenseDate = expenseSpec.date;
+        config.lastExpenseAt = Date.now();
         emit('done', expenseSpec);
       }
     },
