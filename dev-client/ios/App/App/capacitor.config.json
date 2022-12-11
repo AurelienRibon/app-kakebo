@@ -5,6 +5,9 @@
 	"npmClient": "npm",
 	"webDir": "dist",
 	"plugins": {
+		"CapacitorHttp": {
+			"enabled": true
+		},
 		"SplashScreen": {
 			"launchShowDuration": 0
 		}
