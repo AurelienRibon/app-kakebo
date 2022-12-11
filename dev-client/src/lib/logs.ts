@@ -1,4 +1,6 @@
-/* eslint-disable no-console */
+export function logInfo(message: string): void {
+  console.log(message);
+}
 
 export function logError(err: unknown): void {
   if (err instanceof Error) {
