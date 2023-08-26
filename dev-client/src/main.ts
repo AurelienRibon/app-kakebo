@@ -52,6 +52,7 @@ function setupPlatformMobile() {
 // -----------------------------------------------------------------------------
 
 function updateCSSViewportHeight() {
-  const h = visualViewport.height;
-  document.documentElement.style.setProperty('--h', `${h}px`);
+  if (visualViewport?.height) {
+    document.documentElement.style.setProperty('--h', `${visualViewport.height}px`);
+  }
 }
