@@ -3,7 +3,7 @@ import { Directive } from 'vue';
 export function getVTapDirective(): Directive {
   return {
     mounted(el: HTMLElement) {
-      el.addEventListener('touchstart', (event1: TouchEvent) => {
+      const touchstartListener = (event1: TouchEvent) => {
         const t1 = Date.now();
         const x1 = event1.changedTouches[0].screenX;
         const y1 = event1.changedTouches[0].screenY;
@@ -22,8 +22,10 @@ export function getVTapDirective(): Directive {
           }
         };
 
-        el.addEventListener('touchend', touchendListener);
-      });
+        el.addEventListener('touchend', touchendListener, { passive: true });
+      };
+
+      el.addEventListener('touchstart', touchstartListener, { passive: true });
     },
   };
 }

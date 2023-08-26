@@ -9,7 +9,7 @@ export function getVRippleDirective(): Directive {
       }
 
       el.style.overflow = 'hidden';
-      el.addEventListener('touchstart', (event) => applyRippleEffect(event, el));
+      el.addEventListener('touchstart', (event) => applyRippleEffect(event, el), { passive: true });
     },
   };
 }
