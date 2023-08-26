@@ -34,7 +34,7 @@
     "@capacitor/cli": "^3.1.2",
     "@capacitor/core": "^3.1.2",
     "@capacitor/ios": "^3.1.2",
-    "@types/node": "^16.4.11",
+    "@types/node": "^18.17.11",
     "@typescript-eslint/eslint-plugin": "^4.5.0",
     "@typescript-eslint/parser": "^4.5.0",
     "@vue/cli-plugin-typescript": "~4.5.0",
