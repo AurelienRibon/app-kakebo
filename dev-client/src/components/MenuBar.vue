@@ -9,14 +9,14 @@
       <span>accueil</span>
     </div>
 
-    <div v-ripple v-tap class="menu-item" @tap="select('Stats')">
-      <i class="mdi mdi-chart-bar"></i>
-      <span>stats</span>
-    </div>
-
     <div v-ripple v-tap class="menu-item" @tap="select('List')">
       <i class="mdi mdi-format-list-bulleted-square"></i>
       <span>liste</span>
+    </div>
+
+    <div v-ripple v-tap class="menu-item" @tap="select('Stats')">
+      <i class="mdi mdi-chart-bar"></i>
+      <span>stats</span>
     </div>
   </div>
 </template>
