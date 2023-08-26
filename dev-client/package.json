@@ -4,8 +4,8 @@
   "private": true,
   "main": "src/index.html",
   "scripts": {
-    "serve": "NODE_OPTIONS=--openssl-legacy-provider vue-cli-service serve --port 4356",
-    "build": "NODE_OPTIONS=--openssl-legacy-provider vue-cli-service build && cap copy",
+    "serve": "vue-cli-service serve --port 4356",
+    "build": "vue-cli-service build && cap copy",
     "lint": "eslint 'src/**/*.{js,ts,vue}'",
     "format": "prettier --write 'src/**/*.{js,ts,vue}'"
   },
