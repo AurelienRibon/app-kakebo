@@ -16,7 +16,6 @@
 
 <script lang="ts">
   import { defineComponent, ref } from 'vue';
-  import { getCategoryDef } from '../lib/categories';
   import { config } from '../models/config';
   import { Expense } from '../models/expense';
   import ButtonsGroup from './ButtonsGroup.vue';
@@ -38,9 +37,7 @@
       // If last expense was entered less than 10 minutes ago, we reuse the same date.
       const durationSinceLastInput = Date.now() - config.lastExpenseAt;
       const expenseDate = durationSinceLastInput < 1000 * 60 * 10 ? config.lastExpenseDate : undefined;
-
-      const kind = getCategoryDef(props.category).defaultKind;
-      const expense = new Expense({ category: props.category, kind, date: expenseDate });
+      const expense = new Expense({ category: props.category, date: expenseDate });
       const refDetails = ref(null);
 
       return { cancel, done, expense, refDetails };

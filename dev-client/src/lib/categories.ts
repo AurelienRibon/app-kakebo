@@ -1,11 +1,9 @@
-import { ExpenseKind } from './expense-kinds';
 import categories from '../meta/categories.json';
 
 const categoriesMap = indexCategoryDefsByName();
 const unknownCategory: CategoryDef = {
   name: '$unknown',
   icon: 'mdi-help-circle',
-  defaultKind: 'extra',
 };
 
 // -----------------------------------------------------------------------------
@@ -15,7 +13,6 @@ const unknownCategory: CategoryDef = {
 export interface CategoryDef {
   name: string;
   icon: string;
-  defaultKind: ExpenseKind;
   infrequent?: boolean;
   exceptional?: boolean;
 }

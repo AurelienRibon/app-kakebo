@@ -1,4 +1,3 @@
-import { isExpenseKindValid } from './expense-kinds';
 import { isExpensePeriodicityValid } from './expense-periodicities';
 import { str } from './utils';
 import { Expense } from '../models/expense';
@@ -25,13 +24,12 @@ export function createExpenseFromJSON(spec: ExpenseJSON): Expense {
   }
 
   const label = typeof spec.label === 'string' ? spec.label : undefined;
-  const kind = isExpenseKindValid(spec.kind) ? spec.kind : undefined;
   const periodicity = isExpensePeriodicityValid(spec.periodicity) ? spec.periodicity : undefined;
   const deleted = typeof spec.deleted === 'boolean' ? spec.deleted : undefined;
   const checked = typeof spec.checked === 'boolean' ? spec.checked : undefined;
   const updatedAt = typeof spec.updatedAt === 'string' ? new Date(spec.updatedAt) : undefined;
 
-  return new Expense({ _id, date, amount, category, label, kind, periodicity, deleted, checked, updatedAt });
+  return new Expense({ _id, date, amount, category, label, periodicity, deleted, checked, updatedAt });
 }
 
 export function createExpensesFromJSONs(specs: ExpenseJSON[]): Expense[] {

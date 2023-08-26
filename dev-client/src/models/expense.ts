@@ -1,6 +1,5 @@
-import { formatDateToDay, getStartOfMonthDate, isDateOnFirstDayOfMonth } from '../lib/dates';
+import { formatDateToDay, isDateOnFirstDayOfMonth } from '../lib/dates';
 import { ExpensePeriodicity } from '../lib/expense-periodicities';
-import { ExpenseKind } from '../lib/expense-kinds';
 import { guid } from '../lib/utils';
 import { getCategoryDef } from '../lib/categories';
 
@@ -10,7 +9,6 @@ export interface ExpenseSpec {
   amount?: number;
   category?: string;
   label?: string;
-  kind?: ExpenseKind;
   periodicity?: ExpensePeriodicity;
   deleted?: boolean;
   checked?: boolean;
@@ -23,7 +21,6 @@ export class Expense {
   private _amount: number;
   private _category: string;
   private _label: string;
-  private _kind: ExpenseKind;
   private _periodicity: ExpensePeriodicity;
   private _deleted: boolean;
   private _checked: boolean;
@@ -36,7 +33,6 @@ export class Expense {
     this._amount = spec.amount ?? 0;
     this._category = spec.category ?? 'unknown';
     this._label = spec.label ?? '';
-    this._kind = spec.kind ?? 'interesting';
     this._periodicity = spec.periodicity ?? 'one-time';
     this._deleted = spec.deleted ?? false;
     this._checked = spec.checked ?? false;
@@ -64,10 +60,6 @@ export class Expense {
 
   get label(): string {
     return this._label;
-  }
-
-  get kind(): ExpenseKind {
-    return this._kind;
   }
 
   get periodicity(): ExpensePeriodicity {
@@ -127,7 +119,6 @@ export class Expense {
         case 'amount': target._amount = value; break;
         case 'category': target._category = value; break;
         case 'label': target._label = value; break;
-        case 'kind': target._kind = value; break;
         case 'periodicity': target._periodicity = value; break;
         case 'deleted': target._deleted = value; break;
         case 'checked': target._checked = value; break;
@@ -146,7 +137,6 @@ export class Expense {
       amount: this.amount,
       category: this.category,
       label: this.label,
-      kind: this.kind,
       periodicity: this.periodicity,
       deleted: this.deleted,
       checked: this.checked,
@@ -166,7 +156,6 @@ export class Expense {
       amount: this.amount,
       category: this.category,
       label: this.label,
-      kind: this.kind,
       periodicity: this.periodicity,
       deleted: this.deleted,
       checked: this.checked,

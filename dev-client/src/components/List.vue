@@ -40,7 +40,7 @@
           class="expense-item"
           :class="{ 'expense-item-checked': expense.checked }"
         >
-          <div class="expense-item-category" :class="getExpenseCategoryClass(expense)">
+          <div class="expense-item-category">
             <span class="mdi" :class="getExpenseIcon(expense)"></span>
             <span>{{ expense.category }}</span>
             <span v-if="expense.isRecurring()" class="mdi mdi-refresh"></span>
@@ -128,7 +128,6 @@
         formatExpensesSum,
         formatGroupDate,
         getExpenseIcon,
-        getExpenseCategoryClass,
       };
 
       function edit(expense: Expense): void {
@@ -154,10 +153,6 @@
 
       function getExpenseIcon(expense: Expense): string {
         return getCategoryDef(expense.category).icon;
-      }
-
-      function getExpenseCategoryClass(expense: Expense): string {
-        return 'expense-item-' + (expense.isExceptional() ? 'exceptional' : expense.kind);
       }
     },
   });
@@ -296,25 +291,10 @@
     border-radius: 20px;
     font-size: 0.9em;
     color: $background1;
+    background-color: $text;
 
     & > span:first-of-type {
       margin-right: 2px;
-    }
-
-    &.expense-item-essential {
-      background-color: $kind-essential;
-    }
-
-    &.expense-item-interesting {
-      background-color: $kind-interesting;
-    }
-
-    &.expense-item-extra {
-      background-color: $kind-extra;
-    }
-
-    &.expense-item-exceptional {
-      background-color: $accent1;
     }
   }
 

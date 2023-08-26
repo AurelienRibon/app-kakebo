@@ -94,7 +94,6 @@
     setup(props) {
       // Expense properties
       const date = ref(formatDateToDay(props.expense.date));
-      const kind = ref(props.expense.kind);
       const periodicity = ref(props.expense.periodicity);
       const label = ref(props.expense.label);
       const amount = ref(formatAmount(props.expense.amount, true));
@@ -120,7 +119,6 @@
         date,
         label,
         labels,
-        kind,
         onCategoryChange,
         periodicity,
         refAmount,
@@ -175,7 +173,6 @@
           amount: Number(this.amount) * (this.sign === '-' ? -1 : +1),
           date: new Date(this.date),
           label: this.label,
-          kind: this.kind,
           periodicity: this.periodicity,
           checked: this.checked,
         };

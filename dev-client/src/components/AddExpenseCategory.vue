@@ -5,15 +5,7 @@
 <template>
   <h1>dépenses fréquentes</h1>
   <section>
-    <div
-      v-for="item of categoriesFrequent"
-      :key="item.name"
-      v-ripple
-      v-tap
-      :class="{ [`item-kind-${item.defaultKind}`]: true }"
-      class="item"
-      @tap="done(item.name)"
-    >
+    <div v-for="item of categoriesFrequent" :key="item.name" v-ripple v-tap class="item" @tap="done(item.name)">
       <span class="item-icon mdi" :class="item.icon"></span>
       <span class="item-name">{{ item.name }}</span>
     </div>
@@ -21,18 +13,7 @@
 
   <h1>dépenses peu fréquentes</h1>
   <section>
-    <div
-      v-for="item of categoriesInfrequent"
-      :key="item.name"
-      v-ripple
-      v-tap
-      class="item"
-      :class="{
-        [`item-kind-${item.defaultKind}`]: true,
-        'item-exceptional': item.exceptional,
-      }"
-      @tap="done(item.name)"
-    >
+    <div v-for="item of categoriesInfrequent" :key="item.name" v-ripple v-tap class="item" @tap="done(item.name)">
       <span class="item-icon mdi" :class="item.icon"></span>
       <span class="item-name">{{ item.name }}</span>
     </div>
@@ -111,7 +92,8 @@
     align-items: center;
     justify-content: center;
 
-    color: $background2;
+    background-color: $text;
+    color: $background1;
     border-radius: 6px;
 
     @media #{$media-phone-small} {
@@ -123,21 +105,5 @@
   .item-icon {
     font-size: 36px;
     margin-bottom: 5px;
-  }
-
-  .item-kind-essential {
-    background-color: $kind-essential;
-  }
-
-  .item-kind-interesting {
-    background-color: $kind-interesting;
-  }
-
-  .item-kind-extra {
-    background-color: $kind-extra;
-  }
-
-  .item-exceptional {
-    background-color: $accent1;
   }
 </style>
