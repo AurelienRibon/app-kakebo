@@ -210,7 +210,7 @@
           type: 'bar',
           data: {
             labels: dailyDebitsByMonth.map((it) => it[0]),
-            datasets: categories.map((cat, i) => ({
+            datasets: categories.map((cat) => ({
               data: dailyDebitsByMonth.map((it) => -(it[1].get(cat) ?? 0)),
               backgroundColor: genColor(cat),
               label: cat,

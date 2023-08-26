@@ -36,7 +36,7 @@
 
         <div
           v-for="expense of group[1]"
-          :key="expense.date"
+          :key="expense.date.toISOString()"
           class="expense-item"
           :class="{ 'expense-item-checked': expense.checked }"
         >
