@@ -23,28 +23,10 @@
   </section>
 
   <section>
-    <label>libellé</label>
-    <article>
-      <input v-model="label" type="text" list="labels" />
-    </article>
-    <datalist id="labels">
-      <option v-for="it of labels" :key="it" :value="it"></option>
-    </datalist>
-  </section>
-
-  <section>
-    <label>importance</label>
-    <div class="kinds">
-      <div
-        v-for="def of kinds"
-        :key="def.name"
-        v-ripple
-        v-tap
-        :class="{ selected: def.name === kind, [def.name]: true }"
-        @tap="updateKind(def.name)"
-      >
-        <i class="mdi" :class="def.icon"></i>
-      </div>
+    <label>pointage</label>
+    <div class="toggle">
+      <div v-ripple v-tap :class="{ selected: !checked }" @tap="updateChecked(false)">non pointée</div>
+      <div v-ripple v-tap :class="{ selected: checked }" @tap="updateChecked(true)">pointée</div>
     </div>
   </section>
 
@@ -69,12 +51,14 @@
       </article>
     </section>
 
-    <section>
-      <label>pointage</label>
-      <div class="toggle">
-        <div v-ripple v-tap :class="{ selected: !checked }" @tap="updateChecked(false)">non pointée</div>
-        <div v-ripple v-tap :class="{ selected: checked }" @tap="updateChecked(true)">pointée</div>
-      </div>
+    <section v-if="periodicity !== 'one-time'">
+      <label>libellé</label>
+      <article>
+        <input v-model="label" type="text" list="labels" />
+      </article>
+      <datalist id="labels">
+        <option v-for="it of labels" :key="it" :value="it"></option>
+      </datalist>
     </section>
   </template>
 </template>
@@ -89,7 +73,6 @@
   import { formatDateToDay } from '../lib/dates';
   import { getCategoryDefs } from '../lib/categories';
   import { extractExpensesLabels } from '../lib/expenses';
-  import { ExpenseKind } from '../lib/expense-kinds';
   import { hideKeyboard } from '../lib/dom';
   import { Expense, ExpenseSpec } from '../models/expense';
   import { store } from '../store/store';
@@ -125,12 +108,6 @@
       const refAmount = ref(null);
       const seeMore = ref(props.full);
 
-      const kinds = [
-        { name: 'essential', icon: 'mdi-star' },
-        { name: 'interesting', icon: 'mdi-thumb-up' },
-        { name: 'extra', icon: 'mdi-one-up' },
-      ];
-
       if (props.autofocus) {
         onMounted(focusAmount);
       }
@@ -144,7 +121,6 @@
         label,
         labels,
         kind,
-        kinds,
         onCategoryChange,
         periodicity,
         refAmount,
@@ -152,7 +128,6 @@
         sign,
         updateAmount,
         updateChecked,
-        updateKind,
         updateSeeMore,
         updateSign,
       };
@@ -168,10 +143,7 @@
 
       function updateSign(): void {
         sign.value = sign.value === '-' ? '+' : '-';
-      }
-
-      function updateKind(value: ExpenseKind): void {
-        kind.value = value;
+        focusAmount();
       }
 
       function updateChecked(value: boolean): void {
@@ -183,7 +155,7 @@
 
         if (event.inputType === 'deleteContentBackward') {
           amount.value = addDigitToAmount(amount.value, null);
-        } else if (event.inputType === 'insertText' && typeof event.data === 'string' && /^\d$/.test(event.data)) {
+        } else if (event.inputType === 'insertText' && !!event.data && /^\d$/.test(event.data)) {
           amount.value = addDigitToAmount(amount.value, event.data);
         }
       }
@@ -292,44 +264,6 @@
 
       &.selected {
         background-color: $text;
-        color: $background1;
-      }
-    }
-  }
-
-  .kinds {
-    display: flex;
-    height: 45px;
-    border: 1px solid $border1;
-    border-radius: 6px;
-
-    & > div {
-      flex: 1;
-      text-align: center;
-      line-height: 45px;
-      font-size: 2em;
-      transition: background-color 0.3s ease;
-
-      &:first-of-type {
-        border-radius: 6px 0 0 6px;
-      }
-
-      &:last-of-type {
-        border-radius: 0 6px 6px 0;
-      }
-
-      &.essential.selected {
-        background-color: $kind-essential;
-        color: $background1;
-      }
-
-      &.interesting.selected {
-        background-color: $kind-interesting;
-        color: $background1;
-      }
-
-      &.extra.selected {
-        background-color: $kind-extra;
         color: $background1;
       }
     }
