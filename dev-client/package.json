@@ -5,7 +5,7 @@
   "main": "src/index.html",
   "scripts": {
     "dev": "vite --port 4356",
-    "build": "vue-tsc && vite build && cap copy",
+    "build": "vite build && cap copy",
     "lint": "eslint 'src/**/*.{js,ts,vue}'"
   },
   "author": "Aurelien Ribon <aurelien.ribon@gmail.com>",
@@ -46,7 +46,6 @@
     "sass-loader": "^13.3.2",
     "typescript": "^5.2.2",
     "vite": "^4.4.9",
-    "vue-eslint-parser": "^9.3.1",
-    "vue-tsc": "^1.8.11"
+    "vue-eslint-parser": "^9.3.1"
   }
 }
