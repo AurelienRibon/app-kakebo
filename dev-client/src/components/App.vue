@@ -51,18 +51,18 @@
   import { store } from '../store/store';
   import AddExpense from './AddExpense.vue';
   import EditExpense from './EditExpense.vue';
-  import Home from './Home.vue';
-  import Stats from './Stats.vue';
-  import List from './List.vue';
+  import PageHome from './PageHome.vue';
+  import PageStats from './PageStats.vue';
+  import PageList from './PageList.vue';
   import MenuBar from './MenuBar.vue';
 
   type State = 'idle' | 'addExpense' | 'editExpense';
 
   export default defineComponent({
-    components: { Home, Stats, List, MenuBar, AddExpense, EditExpense },
+    components: { PageHome, PageStats, PageList, MenuBar, AddExpense, EditExpense },
 
     setup() {
-      const page = ref('Home') as Ref<string>;
+      const page = ref('PageHome') as Ref<string>;
       const state = ref('idle') as Ref<State>;
       const editedExpense = ref(new Expense()) as Ref<Expense>;
       const expenses = store.expenses;

@@ -4,17 +4,17 @@
 
 <template>
   <div class="menu-container">
-    <div v-ripple v-tap class="menu-item" @tap="select('Home')">
+    <div v-ripple v-tap class="menu-item" @tap="select('PageHome')">
       <i class="mdi mdi-home"></i>
       <span>accueil</span>
     </div>
 
-    <div v-ripple v-tap class="menu-item" @tap="select('List')">
+    <div v-ripple v-tap class="menu-item" @tap="select('PageList')">
       <i class="mdi mdi-format-list-bulleted-square"></i>
       <span>liste</span>
     </div>
 
-    <div v-ripple v-tap class="menu-item" @tap="select('Stats')">
+    <div v-ripple v-tap class="menu-item" @tap="select('PageStats')">
       <i class="mdi mdi-chart-bar"></i>
       <span>stats</span>
     </div>
